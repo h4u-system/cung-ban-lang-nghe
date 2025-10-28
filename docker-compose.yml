@@ -1,0 +1,86 @@
+**Đường dẫn:** `cung-ban-lang-nghe/docker-compose.yml`
+
+```yaml
+version: '3.8'
+
+services:
+  # ============================================
+  # PostgreSQL Database (Local Development)
+  # ============================================
+  postgres:
+    image: postgres:15.4-alpine
+    container_name: cbln-postgres
+    environment:
+      POSTGRES_DB: cungbanlangnghe
+      POSTGRES_USER: cbln_user
+      POSTGRES_PASSWORD: dev_password_change_me
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - cbln-network
+
+  # ============================================
+  # Redis Cache (Local Development)
+  # ============================================
+  redis:
+    image: redis:7.0-alpine
+    container_name: cbln-redis
+    ports:
+      - "6379:6379"
+    command: redis-server --requirepass dev_password_change_me
+    volumes:
+      - redis_data:/data
+    networks:
+      - cbln-network
+
+  # ============================================
+  # Backend API (FastAPI)
+  # ============================================
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: cbln-backend
+    environment:
+      - DATABASE_URL=postgresql://cbln_user:dev_password_change_me@postgres:5432/cungbanlangnghe
+      - REDIS_URL=redis://:dev_password_change_me@redis:6379
+    ports:
+      - "8000:8000"
+    depends_on:
+      - postgres
+      - redis
+    volumes:
+      - ./backend:/app
+    networks:
+      - cbln-network
+
+  # ============================================
+  # Frontend (React)
+  # ============================================
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: cbln-frontend
+    ports:
+      - "3000:3000"
+    environment:
+      - VITE_API_URL=http://localhost:8000
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+    networks:
+      - cbln-network
+
+volumes:
+  postgres_data:
+  redis_data:
+
+networks:
+  cbln-network:
+    driver: bridge
+```
+
+---
