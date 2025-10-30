@@ -20,6 +20,8 @@ from slowapi.errors import RateLimitExceeded
 from prometheus_client import make_asgi_app
 import time
 
+from app.api.endpoints import sessions, messages, feedback
+
 # Add backend directory to Python path
 backend_dir = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(backend_dir))
@@ -282,6 +284,13 @@ app.include_router(
     messages.router,
     prefix="/api/v1/messages",
     tags=["Messages"]
+)
+
+# Feedback endpoints
+app.include_router(
+    feedback.router,
+    prefix="/api/v1/feedback",
+    tags=["Feedback"]
 )
 
 # ============================================
