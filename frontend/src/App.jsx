@@ -1,12 +1,15 @@
 import React from 'react';
+import { BrowserRouter } from 'react-router-dom';
 import MainLayout from './components/Layout/MainLayout';
-import ChatInterface from './components/Chat/ChatInterface';
+import AppRoutes from './routes/AppRoutes';
 
 function App() {
   return (
-    <MainLayout>
-      <ChatInterface />
-    </MainLayout>
+    <BrowserRouter>
+      <MainLayout>
+        <AppRoutes />
+      </MainLayout>
+    </BrowserRouter>
   );
 }
 

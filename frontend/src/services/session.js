@@ -9,7 +9,7 @@ class SessionService {
    */
   async createSession() {
     try {
-      const response = await api.post('/sessions');
+      const response = await api.post('/sessions', {});
       const { session_id, expires_at } = response.data;
       
       // Store session ID in localStorage
