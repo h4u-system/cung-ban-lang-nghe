@@ -14,24 +14,19 @@ from uuid import UUID
 # ============================================
 
 class SessionCreate(BaseModel):
-    """Schema for creating anonymous session"""
-    language_preference: str = Field(
+    """Schema for creating anonymous session - All fields optional"""
+    language_preference: Optional[str] = Field(
         default="vi",
-        description="User's language preference",
+        description="User's language preference (vi or en)",
         pattern="^(vi|en)$"
-    )
-    user_agent: Optional[str] = Field(
-        None,
-        description="Browser user agent (will be hashed)",
-        max_length=500
     )
     
     @field_validator('language_preference')
     @classmethod
     def validate_language(cls, v):
-        if v not in ['vi', 'en']:
+        if v and v not in ['vi', 'en']:
             raise ValueError('Language must be "vi" or "en"')
-        return v
+        return v or "vi"  # Default to 'vi' if None
 
 
 class SessionUpdate(BaseModel):
@@ -57,20 +52,6 @@ class SessionResponse(BaseModel):
     is_active: bool
     is_crisis_mode: bool
     
-    # Computed fields
-    @property
-    def is_expired(self) -> bool:
-        """Check if session has expired"""
-        return datetime.utcnow() > self.expires_at
-    
-    @property
-    def time_remaining(self) -> int:
-        """Get remaining time in seconds"""
-        if self.is_expired:
-            return 0
-        delta = self.expires_at - datetime.utcnow()
-        return int(delta.total_seconds())
-    
     model_config = {
         "from_attributes": True,
         "json_schema_extra": {
@@ -95,7 +76,7 @@ class SessionCreateResponse(BaseModel):
     instructions: dict = {
         "store_token": "Save session_token securely on client-side",
         "expiry": "Session expires in 30 days",
-        "usage": "Include session_token in X-Session-Token header for all requests"
+        "usage": "Include session_token in all API requests"
     }
 
 

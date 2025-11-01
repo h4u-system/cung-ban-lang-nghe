@@ -9,7 +9,7 @@ from datetime import datetime, timedelta
 from typing import Optional
 from uuid import UUID
 
-from fastapi import APIRouter, Depends, HTTPException, Header, status
+from fastapi import APIRouter, Depends, HTTPException, Header, Body, status
 from sqlalchemy.orm import Session
 
 from app.database import get_db
@@ -104,21 +104,26 @@ def get_session_by_token(
     response_model=SessionCreateResponse,
     status_code=status.HTTP_201_CREATED,
     summary="Create Anonymous Session",
-    description="Create a new anonymous session. No personal information required."
+    description="Create a new anonymous session. No body required - all fields optional."
 )
 async def create_session(
-    session_data: SessionCreate,
+    session_data: Optional[SessionCreate] = Body(None),
     user_agent: Optional[str] = Header(None, alias="User-Agent"),
     db: Session = Depends(get_db)
 ):
     """
     Create a new anonymous session
     
-    - **language_preference**: User's preferred language (vi or en)
+    - **Body**: Optional. Can send empty body or {"language_preference": "vi"}
+    - **language_preference**: Optional. Defaults to "vi" if not provided
     - **user_agent**: Automatically extracted from headers
     
     Returns session token that should be stored securely on client-side
     """
+    # Handle empty body or None
+    if session_data is None:
+        session_data = SessionCreate()
+    
     # Generate session token
     session_token = generate_session_token()
     
@@ -128,7 +133,7 @@ async def create_session(
     # Create session
     new_session = SessionModel(
         session_token=session_token,
-        language_preference=session_data.language_preference,
+        language_preference=session_data.language_preference or "vi",
         user_agent_hash=user_agent_hash,
         is_active=True,
         is_crisis_mode=False
