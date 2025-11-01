@@ -9,15 +9,18 @@ class SessionService {
    */
   async createSession() {
     try {
-      const response = await api.post('/sessions', {});
-      const { session_id, expires_at } = response.data;
+      const response = await api.post('/sessions');
       
-      // Store session ID in localStorage
-      localStorage.setItem('sessionId', session_id);
+      // ✅ FIX: Parse đúng structure từ backend
+      const { session } = response.data;
+      const { session_token, expires_at } = session;
+      
+      // Store session token in localStorage
+      localStorage.setItem('sessionId', session_token);
       localStorage.setItem('sessionExpiresAt', expires_at);
       
-      console.log('Session created:', session_id);
-      return { sessionId: session_id, expiresAt: expires_at };
+      console.log('Session created:', session_token);
+      return { sessionId: session_token, expiresAt: expires_at };
     } catch (error) {
       console.error('Failed to create session:', error);
       throw error;
