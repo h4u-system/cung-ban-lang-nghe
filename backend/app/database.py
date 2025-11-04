@@ -24,12 +24,16 @@ load_dotenv()
 # DATABASE URL CONFIGURATION
 # ============================================
 
-# Get database URL from environment
-DATABASE_URL = os.getenv(
-    "DATABASE_URL",
-    #"postgresql://user:password@localhost:5432/cungbanlangnghe"
-    "postgresql://postgres.yfrkvqwujfiqqlzoobjn:YizzfspbSzXWk4ar@aws-1-ap-southeast-1.pooler.supabase.com:6543/postgres"
-)
+# ✅ Get database URL from environment variable (REQUIRED)
+DATABASE_URL = os.getenv("DATABASE_URL")
+
+# ✅ Raise error if DATABASE_URL is not set
+if not DATABASE_URL:
+    raise ValueError(
+        "\n❌ DATABASE_URL environment variable is required!\n"
+        "   Please set it in your .env file:\n"
+        "   DATABASE_URL=postgresql://user:pass@host:port/database\n"
+    )
 
 # Supabase uses 'postgres://' but SQLAlchemy needs 'postgresql://'
 if DATABASE_URL.startswith("postgres://"):
