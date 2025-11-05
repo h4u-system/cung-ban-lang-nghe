@@ -1,0 +1,36 @@
+services:
+  - type: web
+    name: cung-ban-lang-nghe-api
+    env: python
+    region: singapore
+    plan: free
+    buildCommand: pip install --upgrade pip && pip install -r backend/requirements.txt
+    startCommand: cd backend && uvicorn app.main:app --host 0.0.0.0 --port $PORT
+    healthCheckPath: /api/v1/health
+    envVars:
+      - key: DATABASE_URL
+        sync: false
+      - key: REDIS_URL
+        sync: false
+      - key: SECRET_KEY
+        sync: false
+      - key: ENVIRONMENT
+        value: production
+      - key: DEBUG
+        value: false
+      - key: CORS_ORIGINS
+        sync: false
+      - key: DB_POOL_SIZE
+        value: 3
+      - key: DB_MAX_OVERFLOW
+        value: 5
+      - key: REDIS_TTL
+        value: 3600
+      - key: APP_NAME
+        value: cung-ban-lang-nghe-api
+      - key: APP_VERSION
+        value: 1.0.0
+      - key: API_HOST
+        value: 0.0.0.0
+      - key: API_PORT
+        value: $PORT
