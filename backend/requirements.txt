@@ -24,9 +24,9 @@ cryptography==41.0.4
 
 # AI/ML (for AI engine integration)
 openai==0.28.0
-transformers==4.33.0
-torch==2.9.0
-numpy==1.24.3
+#transformers==4.33.0
+#torch==2.9.0
+#numpy==1.24.3
 
 # HTTP Clients
 httpx==0.24.1
