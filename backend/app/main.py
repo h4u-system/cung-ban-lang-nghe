@@ -203,7 +203,7 @@ async def root():
 # HEALTH CHECK ENDPOINTS
 # ============================================
 
-@app.get("/health", tags=["Health"])
+@app.get("/api/v1/health", tags=["Health"])
 @limiter.limit("60/minute")
 async def health_check(request: Request):
     """
