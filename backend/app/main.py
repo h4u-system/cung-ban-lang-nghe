@@ -106,7 +106,10 @@ app.add_exception_handler(RateLimitExceeded, _rate_limit_exceeded_handler)
 # ============================================
 
 # 1. CORS Middleware
-CORS_ORIGINS = os.getenv("CORS_ORIGINS", "http://localhost:3000,http://localhost:5173").split(",")
+CORS_ORIGINS = os.getenv(
+    "CORS_ORIGINS", 
+    "http://localhost:3000,http://localhost:5173,https://cung-ban-lang-nghe.pages.dev"
+).split(",")
 
 app.add_middleware(
     CORSMiddleware,
