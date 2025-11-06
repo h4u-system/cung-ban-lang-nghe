@@ -1,60 +1,41 @@
 # ============================================
-# FILE 1: backend/requirements.txt
+# BACKEND REQUIREMENTS - RENDER.COM OPTIMIZED
+# Python 3.11 compatible
 # ============================================
 
 # Web Framework
-fastapi==0.103.0
-uvicorn[standard]==0.23.2
-python-multipart==0.0.6
+fastapi==0.115.5
+uvicorn[standard]==0.32.1
+python-multipart==0.0.20
 
 # Database
-sqlalchemy==2.0.20
+sqlalchemy==2.0.36
 psycopg2-binary==2.9.11
-alembic==1.12.0
+alembic==1.14.0
 
 # Redis Cache
-redis==5.0.0
-hiredis==2.2.3
+redis==5.2.1
 
 # Authentication & Security
 python-jose[cryptography]==3.3.0
 passlib[bcrypt]==1.7.4
-python-dotenv==1.0.0
-cryptography==41.0.4
+python-dotenv==1.0.1
+cryptography==44.0.0
 
-# AI/ML (for AI engine integration)
-openai==0.28.0
-#transformers==4.33.0
-#torch==2.9.0
-#numpy==1.24.3
+# AI/ML (Lightweight - OpenAI API only)
+openai==1.57.4
 
 # HTTP Clients
-httpx==0.24.1
-aiohttp==3.8.5
+httpx==0.28.1
 
 # Validation
-pydantic==2.3.0
-pydantic-settings==2.0.3
-email-validator==2.0.0
+pydantic==2.10.4
+pydantic-settings==2.7.0
+email-validator==2.2.0
 
 # Monitoring & Logging
-prometheus-client==0.17.1
-python-json-logger==2.0.7
+prometheus-client==0.21.1
+python-json-logger==3.2.1
 
 # Rate Limiting
 slowapi==0.1.9
-
-# CORS
-# python-cors==1.0.0
-
-
-# Testing
-pytest==7.4.2
-pytest-asyncio==0.21.1
-pytest-cov==4.1.0
-httpx==0.24.1
-
-# Development
-black==23.9.1
-flake8==6.1.0
-mypy==1.5.1

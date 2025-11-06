@@ -1,3 +1,7 @@
+/**
+ * File: frontend/src/routes/AppRoutes.js
+ */
+
 import React from 'react';
 import { Routes, Route } from 'react-router-dom';
 

@@ -1,3 +1,7 @@
+/**
+ * File: frontend/src/services/session.js
+ */
+
 import api from './api';
 
 /**

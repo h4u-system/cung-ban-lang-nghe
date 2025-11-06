@@ -1,3 +1,7 @@
+/**
+ * File: frontend/src/services/message.js
+ */
+
 import api from './api';
 import encryptionService from '../utils/encryption';
 

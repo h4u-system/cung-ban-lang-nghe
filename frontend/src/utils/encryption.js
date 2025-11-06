@@ -1,7 +1,12 @@
 /**
+ * File: frontend/src/utils/encryption.js
+ */
+
+/**
  * Client-side encryption utilities
  * Uses Web Crypto API for AES-256-GCM encryption
  */
+
 import { CRISIS_KEYWORDS } from './constants';
 
 class EncryptionService {
