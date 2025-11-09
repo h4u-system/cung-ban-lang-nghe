@@ -22,6 +22,10 @@ import time
 
 from app.api.endpoints import sessions, messages, feedback
 
+from app.admin.routes import auth as admin_auth
+from app.admin.routes import content as admin_content
+from app.admin.routes import analytics as admin_analytics
+
 # Add backend directory to Python path
 backend_dir = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(backend_dir))
@@ -274,6 +278,10 @@ from app.api.endpoints import sessions, messages
 # app.include_router(sessions.router, prefix="/api/v1/sessions", tags=["Sessions"])
 # app.include_router(messages.router, prefix="/api/v1/messages", tags=["Messages"])
 # app.include_router(feedback.router, prefix="/api/v1/feedback", tags=["Feedback"])
+
+app.include_router(admin_auth.router, prefix="/api/v1")
+app.include_router(admin_content.router, prefix="/api/v1")
+app.include_router(admin_analytics.router, prefix="/api/v1")
 
 # Session endpoints
 app.include_router(

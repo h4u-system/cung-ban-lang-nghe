@@ -25,6 +25,8 @@ from app.utils.encryption import encrypt_message, decrypt_message
 from app.utils.crisis_detection import detect_crisis_in_message, get_emergency_info
 from app.api.endpoints.sessions import get_session_by_token
 
+from app.utils.ai_engine import GroqAI
+
 logger = logging.getLogger(__name__)
 
 router = APIRouter()
@@ -62,33 +64,69 @@ def create_message_response(message: MessageModel) -> MessageResponse:
     )
 
 
-def generate_ai_response(user_message: str, is_crisis: bool = False) -> str:
+#def generate_ai_response(user_message: str, is_crisis: bool = False) -> str:
+#    """
+#    Generate AI response (placeholder)
+#    TODO: Integrate with PhoBERT/GPT-3.5-turbo
+#    
+#    Args:
+#        user_message: User's message
+#        is_crisis: Whether crisis was detected
+#        
+#    Returns:
+#        AI response text
+#    """
+#   if is_crisis:
+#        return (
+#            "Mình thấy bạn đang trải qua giai đoạn rất khó khăn. "
+#            "Mình ở đây để lắng nghe bạn. "
+#            "Tuy nhiên, nếu bạn đang nghĩ đến việc tự làm hại bản thân, "
+#            "hãy liên hệ ngay với đường dây nóng 111 (miễn phí 24/7). "
+#            "An toàn của bạn là ưu tiên số một."
+#        )
+#    
+#    # Simple echo response for now
+#    return (
+#        f"Cảm ơn bạn đã chia sẻ. Mình hiểu bạn đang cảm thấy như vậy. "
+#        f"Bạn có thể kể thêm về điều gì đang khiến bạn cảm thấy vậy không?"
+#    )
+
+# REPLACE generate_ai_response() function with:
+
+async def generate_ai_response_advanced(
+    user_message: str,
+    conversation_history: list = None,
+    is_crisis: bool = False
+) -> str:
     """
-    Generate AI response (placeholder)
-    TODO: Integrate with PhoBERT/GPT-3.5-turbo
+    Generate AI response using Groq API
     
     Args:
         user_message: User's message
+        conversation_history: Previous messages for context
         is_crisis: Whether crisis was detected
-        
+    
     Returns:
         AI response text
     """
-    if is_crisis:
-        return (
-            "Mình thấy bạn đang trải qua giai đoạn rất khó khăn. "
-            "Mình ở đây để lắng nghe bạn. "
-            "Tuy nhiên, nếu bạn đang nghĩ đến việc tự làm hại bản thân, "
-            "hãy liên hệ ngay với đường dây nóng 111 (miễn phí 24/7). "
-            "An toàn của bạn là ưu tiên số một."
-        )
+    ai = GroqAI()
     
-    # Simple echo response for now
-    return (
-        f"Cảm ơn bạn đã chia sẻ. Mình hiểu bạn đang cảm thấy như vậy. "
-        f"Bạn có thể kể thêm về điều gì đang khiến bạn cảm thấy vậy không?"
-    )
-
+    try:
+        result = await ai.generate_response(
+            user_message=user_message,
+            conversation_history=conversation_history,
+            is_crisis=is_crisis
+        )
+        
+        if result["success"]:
+            logger.info(f"AI response generated: {result['tokens_used']} tokens")
+            return result["response"]
+        else:
+            logger.warning(f"AI fallback used: {result.get('error')}")
+            return result["response"]
+    
+    finally:
+        await ai.close()
 
 # ============================================
 # MESSAGE ENDPOINTS
@@ -154,8 +192,28 @@ async def send_message(
     db.flush()  # Get ID without committing
     
     # 4. Generate AI response
-    ai_response_text = generate_ai_response(message_data.content, is_crisis)
+    # ai_response_text = generate_ai_response(message_data.content, is_crisis)
     
+    # Get conversation history for context
+    conversation_history = []
+    previous_messages = db.query(MessageModel).filter(
+        MessageModel.session_id == session.id
+    ).order_by(MessageModel.created_at.desc()).limit(5).all()
+
+    for msg in reversed(previous_messages):
+        decrypted = decrypt_message_content(msg)
+        conversation_history.append({
+            "role": msg.role,
+            "content": decrypted
+        })
+
+    # Generate AI response with full context
+    ai_response_text = await generate_ai_response_advanced(
+        user_message=message_data.content,
+        conversation_history=conversation_history,
+        is_crisis=is_crisis
+    )
+
     # 5. Encrypt and store AI message
     ai_encrypted_content, ai_iv = encrypt_message(ai_response_text)
     
