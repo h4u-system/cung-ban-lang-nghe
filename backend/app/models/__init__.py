@@ -16,7 +16,7 @@ from sqlalchemy.orm import relationship
 from sqlalchemy.sql import func
 import uuid
 
-from app.admin.models import AdminUser, ContentItem, AnalyticsEvent
+#from app.admin.models import AdminUser, ContentItem, AnalyticsEvent
 
 Base = declarative_base()
 
@@ -373,7 +373,7 @@ __all__ = [
     'init_db',
     'drop_db',
     # Admin models
-    'AdminUser',
-    'ContentItem',
-    'AnalyticsEvent'
+    #'AdminUser',
+    #'ContentItem',
+    #'AnalyticsEvent'
 ]
