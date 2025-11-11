@@ -1,5 +1,5 @@
 # ============================================
-# ADMIN MODELS
+# ADMIN MODELS (FIXED)
 # File: backend/app/admin/models.py
 # ============================================
 
@@ -20,7 +20,7 @@ class AdminUser(Base):
     email = Column(String(255), unique=True, nullable=False, index=True)
     password_hash = Column(String(255), nullable=False)
     full_name = Column(String(255))
-    role = Column(String(50), default="editor")  # admin, editor, viewer
+    role = Column(String(50), default="editor")
     is_active = Column(Boolean, default=True)
     created_at = Column(DateTime, default=datetime.utcnow)
     last_login = Column(DateTime)
@@ -46,7 +46,7 @@ class ContentItem(Base):
     tags = Column(ARRAY(String))
     is_published = Column(Boolean, default=False)
     order_index = Column(Integer, default=0)
-    metadata = Column(JSONB)
+    meta_data = Column(JSONB)  # ← CHANGED FROM 'metadata'
     created_at = Column(DateTime, default=datetime.utcnow)
     updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
     created_by = Column(UUID(as_uuid=True), ForeignKey("admin_users.id"))
@@ -67,5 +67,5 @@ class AnalyticsEvent(Base):
     id = Column(UUID(as_uuid=True), primary_key=True, default=uuid4)
     event_type = Column(String(100), nullable=False, index=True)
     session_id = Column(UUID(as_uuid=True), ForeignKey("sessions.id"))
-    metadata = Column(JSONB)
+    meta_data = Column(JSONB)  # ← CHANGED FROM 'metadata'
     created_at = Column(DateTime, default=datetime.utcnow, index=True)

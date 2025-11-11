@@ -22,7 +22,7 @@ class ContentCreate(BaseModel):
     category: Optional[str] = None
     tags: List[str] = []
     is_published: bool = False
-    metadata: Optional[dict] = None
+    meta_data: Optional[dict] = None
 
 
 class ContentUpdate(BaseModel):
@@ -31,7 +31,7 @@ class ContentUpdate(BaseModel):
     category: Optional[str] = None
     tags: Optional[List[str]] = None
     is_published: Optional[bool] = None
-    metadata: Optional[dict] = None
+    meta_data: Optional[dict] = None
 
 
 class ContentResponse(BaseModel):
@@ -43,7 +43,7 @@ class ContentResponse(BaseModel):
     tags: List[str]
     is_published: bool
     order_index: int
-    metadata: Optional[dict]
+    meta_data: Optional[dict]
     created_at: str
     updated_at: str
 
@@ -87,7 +87,7 @@ async def create_content(
         category=content.category,
         tags=content.tags or [],
         is_published=content.is_published,
-        metadata=content.metadata,
+        meta_data=content.meta_data,
         created_by=admin.id,
         updated_by=admin.id
     )
