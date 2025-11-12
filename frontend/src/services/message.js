@@ -1,31 +1,38 @@
 /**
  * File: frontend/src/services/message.js
+ * Fixed version with proper response handling
  */
 
 import api from './api';
-import encryptionService from '../utils/encryption';
 
 /**
  * Message Service
  */
 class MessageService {
   /**
-   * Send message
+   * Send message and return structured response
    */
-  async sendMessage(sessionId, content, isEncrypted = false) {
+  async sendMessage(sessionId, content) {
     try {
-      // Client-side encryption if enabled (optional for now)
-      let finalContent = content;
-      
       // Backend endpoint: POST /api/v1/messages/
-      const response = await api.post('/messages', {
-        content: finalContent,
-        session_token: sessionId  // ✅ Gửi session_token trong body
+      const response = await api.post('/messages/', {
+        content: content,
+        session_token: sessionId
       });
 
-      return response.data;
+      // ✅ FIX: Return structured response matching backend format
+      return {
+        user_message: response.data.user_message,
+        ai_message: response.data.ai_message,
+        crisis_info: response.data.crisis_info,
+        // Legacy fields for backward compatibility
+        message_id: response.data.ai_message.id,
+        ai_response: response.data.ai_message.content,
+        crisis_detected: response.data.ai_message.is_crisis_detected || false
+      };
     } catch (error) {
       console.error('Failed to send message:', error);
+      console.error('Error response:', error.response?.data);
       throw error;
     }
   }
@@ -35,13 +42,13 @@ class MessageService {
    */
   async getMessages(sessionId) {
     try {
-      // Backend endpoint: GET /api/v1/messages/?session_token=xxx
-      const response = await api.get('/messages', {
+      // ✅ FIX: Add trailing slash
+      const response = await api.get('/messages/', {
         params: {
           session_token: sessionId
         }
       });
-      return response.data.messages;
+      return response.data.messages || [];
     } catch (error) {
       console.error('Failed to get messages:', error);
       throw error;
@@ -51,11 +58,12 @@ class MessageService {
   /**
    * Submit feedback
    */
-  async submitFeedback(sessionId, messageId, rating, comment = null) {
+  async submitFeedback(sessionId, rating, comment = null) {
     try {
-      const response = await api.post('/feedback', {
+      // ✅ FIX: Add trailing slash
+      const response = await api.post('/feedback/', {
         session_token: sessionId,
-        rating,
+        rating: rating,
         feedback_text: comment,
         category: rating >= 4 ? 'helpful' : 'not_helpful'
       });
