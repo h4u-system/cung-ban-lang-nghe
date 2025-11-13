@@ -31,7 +31,8 @@ const ChatInterface = () => {
         setMessages([{
           id: 'welcome',
           role: 'assistant',
-          content: UI_MESSAGES.welcome || 'Xin chào! Mình là Banana của bạn. Bạn muốn chia sẻ điều gì?',
+          //content: UI_MESSAGES.welcome || 'Xin chào! Mình là Banana của bạn. Bạn muốn chia sẻ điều gì?',
+          content: UI_MESSAGES.welcome,
           timestamp: new Date().toISOString()
         }]);
       } catch (err) {
