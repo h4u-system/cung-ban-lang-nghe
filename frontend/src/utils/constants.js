@@ -38,7 +38,7 @@ export const EMERGENCY_CONTACTS = {
 
 // UI Messages
 export const UI_MESSAGES = {
-  welcome: 'Xin chào! Mình là trợ lý tâm lý của bạn. Bạn có thể chia sẻ bất cứ điều gì với mình nhé 💙',
+  welcome: 'Xin chào! Mình là Banana của bạn. Bạn có thể chia sẻ bất cứ điều gì với Banana nhé 💙',
   placeholder: 'Nhập tin nhắn của bạn...',
   sending: 'Đang gửi...',
   error: 'Đã có lỗi xảy ra. Vui lòng thử lại.',
