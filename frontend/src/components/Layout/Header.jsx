@@ -1,39 +1,46 @@
 // frontend/src/components/Layout/Header.jsx
 
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 
 const Header = () => {
   const [showInfo, setShowInfo] = useState(false);
   const navigate = useNavigate();
+  const location = useLocation();
 
-  const handleLogoClick = () => {
-    navigate('/');
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+  const handleLogoClick = (e) => {
+    e.preventDefault();
+    // Always navigate to home and scroll to top
+    if (location.pathname === '/') {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    } else {
+      navigate('/');
+    }
   };
 
   return (
     <>
-      <header className="bg-gradient-to-r from-blue-600 via-blue-700 to-blue-800 text-white shadow-xl sticky top-0 z-50 backdrop-blur-sm">
+      <header className="bg-gradient-to-r from-blue-600 via-blue-700 to-blue-800 text-white shadow-xl sticky top-0 z-50">
         <div className="container mx-auto px-4 py-4">
           <div className="flex items-center justify-between">
             {/* Logo & Title - CLICKABLE */}
-            <button 
+            <a 
+              href="/"
               onClick={handleLogoClick}
-              className="flex items-center space-x-3 hover:opacity-80 transition-all duration-200 group"
+              className="flex items-center space-x-3 hover:opacity-90 transition-all duration-200 group cursor-pointer"
             >
               <div className="w-14 h-14 bg-white rounded-2xl flex items-center justify-center shadow-lg group-hover:scale-105 transition-transform">
                 <span className="text-4xl">💙</span>
               </div>
               <div className="text-left">
-                <h1 className="text-xl md:text-2xl font-bold tracking-tight group-hover:scale-105 transition-transform">
+                <h1 className="text-xl md:text-2xl font-bold tracking-tight group-hover:scale-[1.02] transition-transform">
                   Cùng Bạn Lắng Nghe
                 </h1>
                 <p className="text-xs md:text-sm text-blue-100 font-medium">
                   Trợ lý tâm lý học đường AI
                 </p>
               </div>
-            </button>
+            </a>
 
             {/* Info Button */}
             <button 
@@ -88,7 +95,7 @@ const Header = () => {
             
             <div className="space-y-4 text-sm text-gray-600">
               <p className="leading-relaxed">
-                <strong className="text-blue-600 text-base">Cùng Bạn Lắng Nghe</strong> là nền tảng hỗ trợ 
+                <strong className="text-blue-600 text-base">Cùng Bạn Lắng Nghe</strong> là một trong những nền tảng hỗ trợ 
                 tâm lý học đường đầu tiên tại Việt Nam sử dụng công nghệ AI.
               </p>
               

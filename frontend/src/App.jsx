@@ -3,9 +3,6 @@
 import React from 'react';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import MainLayout from './components/Layout/MainLayout';
-import AdminLayout from './components/Admin/AdminLayout';
-import ProtectedRoute from './components/Admin/ProtectedRoute
-
 import HomePage from './pages/Home/HomePage';
 import EmotionPage from './pages/Emotion/EmotionPage';
 import StoryPage from './pages/Story/StoryPage';
@@ -13,7 +10,9 @@ import QAPage from './pages/QA/QAPage';
 import AboutPage from './pages/About/AboutPage';
 import NotFoundPage from './pages/NotFound/NotFoundPage';
 
-// Admin Pages
+// Admin Components
+import AdminLayout from './components/Admin/AdminLayout';
+import ProtectedRoute from './components/Admin/ProtectedRoute';
 import LoginPage from './pages/Admin/LoginPage';
 import DashboardPage from './pages/Admin/DashboardPage';
 import MessagesPage from './pages/Admin/MessagesPage';
