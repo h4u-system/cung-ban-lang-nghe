@@ -17,11 +17,13 @@ const ChatInterface = () => {
   const [showCrisisAlert, setShowCrisisAlert] = useState(false);
   const [crisisInfo, setCrisisInfo] = useState(null);
   const [error, setError] = useState(null);
+  const [isInitializing, setIsInitializing] = useState(true);
 
   // Initialize session
   useEffect(() => {
     const initSession = async () => {
       try {
+        setIsInitializing(true);
         const session = await sessionService.getOrCreateSession();
         setSessionId(session.sessionId);
         
@@ -29,12 +31,14 @@ const ChatInterface = () => {
         setMessages([{
           id: 'welcome',
           role: 'assistant',
-          content: UI_MESSAGES.welcome,
+          content: UI_MESSAGES.welcome || 'Xin chào! Mình là Banana của bạn. Bạn muốn chia sẻ điều gì?',
           timestamp: new Date().toISOString()
         }]);
       } catch (err) {
         setError('Không thể khởi tạo phiên làm việc. Vui lòng tải lại trang.');
         console.error('Session init error:', err);
+      } finally {
+        setIsInitializing(false);
       }
     };
 
@@ -46,8 +50,9 @@ const ChatInterface = () => {
     if (!sessionId || isSending) return;
 
     // Check for crisis keywords (client-side)
-    if (encryptionService.containsCrisisKeywords(content)) {
+    if (encryptionService.containsCrisisKeywords && encryptionService.containsCrisisKeywords(content)) {
       setShowCrisisAlert(true);
+      setCrisisInfo({ trigger: 'client_side_detection' });
       return;
     }
 
@@ -55,7 +60,7 @@ const ChatInterface = () => {
     setError(null);
 
     // Add user message to UI immediately
-    const tempUserMessageId = Date.now().toString();
+    const tempUserMessageId = `temp-${Date.now()}`;
     const userMessage = {
       id: tempUserMessageId,
       role: 'user',
@@ -69,29 +74,29 @@ const ChatInterface = () => {
       setIsTyping(true);
       const response = await messageService.sendMessage(sessionId, content);
 
-      // ✅ FIX: Update user message with actual ID from backend
+      // Update user message with actual ID from backend
       setMessages(prev => prev.map(msg => 
         msg.id === tempUserMessageId 
-          ? { ...msg, id: response.user_message.id }
+          ? { ...msg, id: response.user_message?.id || msg.id }
           : msg
       ));
 
-      // ✅ FIX: Add AI response with proper structure
+      // Add AI response with proper structure
       const aiMessage = {
-        id: response.ai_message.id,
+        id: response.ai_message?.id || `ai-${Date.now()}`,
         role: 'assistant',
-        content: response.ai_message.content,
-        timestamp: response.ai_message.created_at,
-        model_used: response.ai_message.model_used,
-        processing_time_ms: response.ai_message.processing_time_ms
+        content: response.ai_message?.content || response.content || 'Xin lỗi, tôi không thể trả lời lúc này.',
+        timestamp: response.ai_message?.created_at || new Date().toISOString(),
+        model_used: response.ai_message?.model_used,
+        processing_time_ms: response.ai_message?.processing_time_ms
       };
 
       setMessages(prev => [...prev, aiMessage]);
 
-      // ✅ FIX: Check if AI detected crisis (server-side detection)
+      // Check if AI detected crisis (server-side detection)
       if (response.crisis_detected || response.crisis_info) {
         setShowCrisisAlert(true);
-        setCrisisInfo(response.crisis_info);
+        setCrisisInfo(response.crisis_info || { trigger: 'server_side_detection' });
       }
     } catch (err) {
       setError('Không thể gửi tin nhắn. Vui lòng thử lại.');
@@ -105,11 +110,33 @@ const ChatInterface = () => {
     }
   };
 
+  // Clear error after 5 seconds
+  useEffect(() => {
+    if (error) {
+      const timer = setTimeout(() => setError(null), 5000);
+      return () => clearTimeout(timer);
+    }
+  }, [error]);
+
+  if (isInitializing) {
+    return (
+      <div className="flex items-center justify-center h-[500px] bg-gradient-to-br from-primary-50 to-blue-50 rounded-2xl">
+        <div className="text-center space-y-3">
+          <div className="animate-spin rounded-full h-12 w-12 border-4 border-primary-500 border-t-transparent mx-auto"></div>
+          <p className="text-gray-600 font-medium">Đang khởi tạo...</p>
+        </div>
+      </div>
+    );
+  }
+
   return (
-    <div className="flex flex-col h-[calc(100vh-180px)] bg-white rounded-lg shadow-chat overflow-hidden">
+    <div className="flex flex-col h-[600px] bg-white rounded-2xl shadow-lg overflow-hidden border border-gray-200">
       {/* Error Banner */}
       {error && (
-        <div className="bg-danger-500 text-white px-4 py-2 text-sm text-center">
+        <div className="bg-red-500 text-white px-4 py-3 text-sm text-center flex items-center justify-center gap-2 animate-slide-down">
+          <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+          </svg>
           {error}
         </div>
       )}
@@ -118,7 +145,11 @@ const ChatInterface = () => {
       <MessageList messages={messages} isTyping={isTyping} />
 
       {/* Input */}
-      <MessageInput onSend={handleSendMessage} disabled={isSending || !sessionId} />
+      <MessageInput 
+        onSend={handleSendMessage} 
+        disabled={isSending || !sessionId || isInitializing} 
+        isSending={isSending}
+      />
 
       {/* Crisis Alert Modal */}
       {showCrisisAlert && (

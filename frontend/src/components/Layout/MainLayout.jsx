@@ -6,10 +6,10 @@ import Footer from './Footer';
 
 const MainLayout = ({ children }) => {
   return (
-    <div className="flex flex-col min-h-screen bg-gray-50">
+    <div className="flex flex-col min-h-screen bg-gradient-to-b from-gray-50 to-gray-100">
       <Header />
       
-      <main className="flex-1 container mx-auto px-4 py-4 max-w-4xl">
+      <main className="flex-1 container mx-auto px-4 py-6 max-w-5xl">
         {children}
       </main>
       
