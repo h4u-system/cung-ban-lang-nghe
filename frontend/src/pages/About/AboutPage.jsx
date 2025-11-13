@@ -7,7 +7,7 @@ const AboutPage = () => {
       <div className="bg-gradient-to-r from-primary-500 to-primary-600 rounded-lg p-8 text-white text-center">
         <h1 className="text-4xl font-bold mb-3">💙 Cùng Bạn Lắng Nghe</h1>
         <p className="text-xl opacity-90">
-          Trợ lý tâm lý học đường đầu tiên tại TP.HCM
+          Trợ lý tâm lý học đường đầu tiên tại Việt Nam.
         </p>
       </div>
 
@@ -101,49 +101,6 @@ const AboutPage = () => {
         <p className="text-gray-700 leading-relaxed mt-4 italic">
           Tất cả đều cam kết làm việc <span className="font-semibold">không lương</span> vì sứ mệnh xã hội.
         </p>
-      </div>
-
-      {/* Roadmap */}
-      <div className="bg-white rounded-lg shadow-sm p-6">
-        <h2 className="text-2xl font-bold mb-4">🗺️ Lộ trình phát triển</h2>
-        <div className="space-y-4">
-          <div className="flex items-start space-x-4">
-            <div className="bg-primary-500 text-white rounded-full w-12 h-12 flex items-center justify-center flex-shrink-0 font-bold">
-              1
-            </div>
-            <div>
-              <h3 className="font-semibold">Giai đoạn 1 (0-12 tháng)</h3>
-              <p className="text-sm text-gray-600">Tập trung vào học sinh, sinh viên tại TP.HCM</p>
-            </div>
-          </div>
-          <div className="flex items-start space-x-4">
-            <div className="bg-gray-300 text-gray-700 rounded-full w-12 h-12 flex items-center justify-center flex-shrink-0 font-bold">
-              2
-            </div>
-            <div>
-              <h3 className="font-semibold">Giai đoạn 2 (12-24 tháng)</h3>
-              <p className="text-sm text-gray-600">Mở rộng ra toàn quốc</p>
-            </div>
-          </div>
-          <div className="flex items-start space-x-4">
-            <div className="bg-gray-300 text-gray-700 rounded-full w-12 h-12 flex items-center justify-center flex-shrink-0 font-bold">
-              3
-            </div>
-            <div>
-              <h3 className="font-semibold">Giai đoạn 3 (24-36 tháng)</h3>
-              <p className="text-sm text-gray-600">Hỗ trợ thầy cô giáo, phụ huynh</p>
-            </div>
-          </div>
-          <div className="flex items-start space-x-4">
-            <div className="bg-gray-300 text-gray-700 rounded-full w-12 h-12 flex items-center justify-center flex-shrink-0 font-bold">
-              4
-            </div>
-            <div>
-              <h3 className="font-semibold">Giai đoạn 4 (36+ tháng)</h3>
-              <p className="text-sm text-gray-600">Phục vụ người trưởng thành có nhu cầu</p>
-            </div>
-          </div>
-        </div>
       </div>
 
       {/* Contact CTA */}

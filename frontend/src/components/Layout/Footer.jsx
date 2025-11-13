@@ -1,3 +1,5 @@
+//frontend/src/components/Layout/Footer.jsx
+
 import React from 'react';
 import { EMERGENCY_CONTACTS } from '../../utils/constants';
 

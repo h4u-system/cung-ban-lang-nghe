@@ -1,3 +1,5 @@
+// frontend/src/components/Layout/MainLayout.jsx
+
 import React from 'react';
 import Header from './Header';
 import Footer from './Footer';

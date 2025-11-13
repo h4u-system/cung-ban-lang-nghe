@@ -1,3 +1,5 @@
+//frontend/src/pages/Home/HomePage.jsx
+
 import React from 'react';
 import ChatInterface from '../../components/Chat/ChatInterface';
 

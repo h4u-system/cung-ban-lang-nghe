@@ -1,4 +1,6 @@
-import React from 'react';
+// frontend/src/components/Layout/Header.jsx
+
+mport React from 'react';
 
 const Header = () => {
   return (
