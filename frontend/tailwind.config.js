@@ -1,4 +1,4 @@
-// frontend/tailwind.config.js
+// frontend/tailwind.config.js (thêm vào)
 
 /** @type {import('tailwindcss').Config} */
 export default {
