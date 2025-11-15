@@ -10,8 +10,10 @@ const Header = () => {
   const handleLogoClick = (e) => {
     e.preventDefault();
     if (location.pathname === '/') {
+      // Cuộn lên đầu trang nếu đang ở trang chủ
       window.scrollTo({ top: 0, behavior: 'smooth' });
     } else {
+      // Chuyển hướng về trang chủ nếu đang ở trang con
       navigate('/');
     }
   };
@@ -22,6 +24,8 @@ const Header = () => {
         <div className="container mx-auto px-4 py-4">
           <div className="flex items-center justify-between">
             
+            {/* THẺ <a> ĐÃ ĐƯỢC THÊM VÀO ĐÚNG VỊ TRÍ */}
+            <a
               href="/"
               onClick={handleLogoClick}
               className="flex items-center gap-3 hover:opacity-90 transition-all duration-200 group cursor-pointer"
