@@ -1,5 +1,4 @@
 // frontend/src/components/Layout/Footer.jsx
-// ✅ IMPROVED: Consistent spacing and sizing
 import React from 'react';
 import { EMERGENCY_CONTACTS } from '../../utils/constants';
 
@@ -11,7 +10,6 @@ const Footer = () => {
   return (
     <footer className="bg-white border-t-2 border-gray-200 shadow-inner mt-auto">
       <div className="container mx-auto px-4 py-6">
-        {/* Emergency Contacts */}
         <div className="mb-6">
           <div className="flex items-center justify-center gap-2 mb-4">
             <span className="text-2xl">🆘</span>
@@ -36,7 +34,6 @@ const Footer = () => {
           </div>
         </div>
 
-        {/* Security & Info */}
         <div className="text-center space-y-3 pt-6 border-t border-gray-200">
           <div className="flex items-center justify-center gap-2 text-sm text-gray-700">
             <span className="text-green-600 text-lg">🔒</span>

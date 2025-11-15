@@ -1,5 +1,4 @@
 // frontend/src/components/Layout/Header.jsx
-// ✅ FIXED: Escape dấu > trong JSX
 import React, { useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 
@@ -22,7 +21,6 @@ const Header = () => {
       <header className="bg-gradient-to-r from-blue-600 via-blue-700 to-blue-800 text-white shadow-xl sticky top-0 z-50">
         <div className="container mx-auto px-4 py-4">
           <div className="flex items-center justify-between">
-            {/* Logo & Title - CLICKABLE */}
             
               href="/"
               onClick={handleLogoClick}
@@ -32,7 +30,7 @@ const Header = () => {
                 <span className="text-3xl md:text-4xl">💙</span>
               </div>
               <div className="text-left">
-                <h1 className="text-lg md:text-xl font-bold tracking-tight group-hover:scale-[1.02] transition-transform">
+                <h1 className="text-lg md:text-xl font-bold tracking-tight">
                   Cùng Bạn Lắng Nghe
                 </h1>
                 <p className="text-xs md:text-sm text-blue-100 font-medium">
@@ -41,7 +39,6 @@ const Header = () => {
               </div>
             </a>
 
-            {/* Info Button */}
             <button
               onClick={() => setShowInfo(true)}
               className="p-3 hover:bg-white/10 rounded-xl transition-all duration-200 hover:scale-110 active:scale-95 focus:outline-none focus:ring-2 focus:ring-white/50"
@@ -65,7 +62,6 @@ const Header = () => {
         </div>
       </header>
 
-      {/* Info Modal */}
       {showInfo && (
         <div
           className="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4 animate-fade-in"
@@ -75,7 +71,6 @@ const Header = () => {
             className="bg-white rounded-3xl max-w-md w-full shadow-2xl animate-scale-in"
             onClick={(e) => e.stopPropagation()}
           >
-            {/* Header */}
             <div className="flex justify-between items-start p-6 border-b border-gray-200">
               <div>
                 <h2 className="text-2xl font-bold text-gray-800 flex items-center gap-2">
@@ -94,7 +89,6 @@ const Header = () => {
               </button>
             </div>
 
-            {/* Content */}
             <div className="p-6 space-y-4 text-sm text-gray-700">
               <p className="leading-relaxed">
                 <strong className="text-blue-600 text-base">Cùng Bạn Lắng Nghe</strong> là một trong những nền tảng hỗ trợ
@@ -126,7 +120,6 @@ const Header = () => {
               </div>
             </div>
 
-            {/* Footer */}
             <div className="p-6 bg-gray-50 rounded-b-3xl border-t border-gray-200">
               <button
                 onClick={() => setShowInfo(false)}

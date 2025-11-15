@@ -1,5 +1,4 @@
 // frontend/src/components/Chat/MessageList.jsx
-// ✅ FIXED: Chỉ scroll khi có tin nhắn mới, không scroll khi mount
 import React, { useEffect, useRef } from 'react';
 import MessageBubble from './MessageBubble';
 import TypingIndicator from './TypingIndicator';
@@ -14,14 +13,12 @@ const MessageList = ({ messages, isTyping }) => {
   };
 
   useEffect(() => {
-    // ✅ CHỈ scroll khi có tin nhắn mới được thêm vào
     if (messages.length > prevMessageCountRef.current) {
       scrollToBottom();
     }
     prevMessageCountRef.current = messages.length;
   }, [messages]);
 
-  // ✅ Scroll khi AI đang typing
   useEffect(() => {
     if (isTyping) {
       scrollToBottom();

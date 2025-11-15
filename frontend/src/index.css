@@ -1,6 +1,6 @@
 /**
  * File: frontend/src/index.css
- * ✅ STANDARDIZED TYPOGRAPHY & SPACING SYSTEM
+ * STANDARDIZED DESIGN SYSTEM
  */
 
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
@@ -10,47 +10,41 @@
 @tailwind utilities;
 
 @layer base {
-  /* ===== ROOT VARIABLES ===== */
   :root {
-    /* Typography Scale (Major Third - 1.250) */
-    --text-xs: 0.75rem;      /* 12px */
-    --text-sm: 0.875rem;     /* 14px */
-    --text-base: 1rem;       /* 16px */
-    --text-lg: 1.125rem;     /* 18px */
-    --text-xl: 1.25rem;      /* 20px */
-    --text-2xl: 1.5rem;      /* 24px */
-    --text-3xl: 1.875rem;    /* 30px */
-    --text-4xl: 2.25rem;     /* 36px */
-    --text-5xl: 3rem;        /* 48px */
+    --text-xs: 0.75rem;
+    --text-sm: 0.875rem;
+    --text-base: 1rem;
+    --text-lg: 1.125rem;
+    --text-xl: 1.25rem;
+    --text-2xl: 1.5rem;
+    --text-3xl: 1.875rem;
+    --text-4xl: 2.25rem;
+    --text-5xl: 3rem;
 
-    /* Spacing Scale (4px base) */
-    --spacing-1: 0.25rem;    /* 4px */
-    --spacing-2: 0.5rem;     /* 8px */
-    --spacing-3: 0.75rem;    /* 12px */
-    --spacing-4: 1rem;       /* 16px */
-    --spacing-5: 1.25rem;    /* 20px */
-    --spacing-6: 1.5rem;     /* 24px */
-    --spacing-8: 2rem;       /* 32px */
-    --spacing-10: 2.5rem;    /* 40px */
-    --spacing-12: 3rem;      /* 48px */
-    --spacing-16: 4rem;      /* 64px */
+    --spacing-1: 0.25rem;
+    --spacing-2: 0.5rem;
+    --spacing-3: 0.75rem;
+    --spacing-4: 1rem;
+    --spacing-5: 1.25rem;
+    --spacing-6: 1.5rem;
+    --spacing-8: 2rem;
+    --spacing-10: 2.5rem;
+    --spacing-12: 3rem;
+    --spacing-16: 4rem;
 
-    /* Border Radius */
-    --radius-sm: 0.5rem;     /* 8px */
-    --radius-md: 0.75rem;    /* 12px */
-    --radius-lg: 1rem;       /* 16px */
-    --radius-xl: 1.5rem;     /* 24px */
-    --radius-2xl: 2rem;      /* 32px */
+    --radius-sm: 0.5rem;
+    --radius-md: 0.75rem;
+    --radius-lg: 1rem;
+    --radius-xl: 1.5rem;
+    --radius-2xl: 2rem;
     --radius-full: 9999px;
 
-    /* Shadows */
     --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
     --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.07);
     --shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.1);
     --shadow-xl: 0 20px 25px rgba(0, 0, 0, 0.15);
   }
 
-  /* ===== GLOBAL STYLES ===== */
   * {
     margin: 0;
     padding: 0;
@@ -70,7 +64,6 @@
     -moz-osx-font-smoothing: grayscale;
   }
 
-  /* ===== TYPOGRAPHY STANDARDS ===== */
   h1, h2, h3, h4, h5, h6 {
     font-weight: 700;
     line-height: 1.3;
@@ -89,7 +82,6 @@
     line-height: 1.7;
   }
 
-  /* ===== BUTTON STANDARDS ===== */
   button {
     font-family: inherit;
     font-size: var(--text-base);
@@ -98,7 +90,6 @@
     transition: all 0.2s ease;
   }
 
-  /* ===== INPUT STANDARDS ===== */
   input, textarea, select {
     font-family: inherit;
     font-size: var(--text-base);
@@ -107,18 +98,15 @@
 }
 
 @layer components {
-  /* ===== CARD COMPONENT ===== */
   .card {
     @apply bg-white rounded-2xl shadow-lg;
     padding: var(--spacing-6);
   }
 
-  /* ===== SECTION SPACING ===== */
   .section {
     padding: var(--spacing-8) 0;
   }
 
-  /* ===== CONTAINER ===== */
   .container-custom {
     max-width: 1280px;
     margin: 0 auto;
@@ -127,7 +115,6 @@
 }
 
 @layer utilities {
-  /* ===== CUSTOM SCROLLBAR ===== */
   ::-webkit-scrollbar {
     width: 8px;
     height: 8px;
@@ -147,13 +134,11 @@
     background: linear-gradient(180deg, #2563eb, #7c3aed);
   }
 
-  /* Firefox */
   * {
     scrollbar-width: thin;
     scrollbar-color: #3b82f6 #f1f5f9;
   }
 
-  /* ===== HIDE SCROLLBAR ===== */
   .scrollbar-hide::-webkit-scrollbar {
     display: none;
   }
@@ -163,7 +148,6 @@
     scrollbar-width: none;
   }
 
-  /* ===== ANIMATIONS ===== */
   @keyframes fadeIn {
     from { opacity: 0; }
     to { opacity: 1; }
@@ -207,27 +191,23 @@
   .animate-slide-down { animation: slideDown 0.3s ease-out; }
   .animate-scale-in { animation: scaleIn 0.3s ease-out; }
 
-  /* ===== TEXT UTILITIES ===== */
   .text-balance {
     text-wrap: balance;
   }
 
-  /* ===== FOCUS STYLES ===== */
   .focus-ring {
     @apply focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2;
   }
 }
 
-/* ===== RESPONSIVE TYPOGRAPHY ===== */
 @media (max-width: 768px) {
   :root {
-    --text-4xl: 2rem;        /* 32px on mobile */
-    --text-3xl: 1.75rem;     /* 28px on mobile */
-    --text-2xl: 1.5rem;      /* 24px on mobile */
+    --text-4xl: 2rem;
+    --text-3xl: 1.75rem;
+    --text-2xl: 1.5rem;
   }
 }
 
-/* ===== PRINT STYLES ===== */
 @media print {
   body {
     background: white;

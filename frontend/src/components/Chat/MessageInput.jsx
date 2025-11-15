@@ -1,5 +1,4 @@
 // frontend/src/components/Chat/MessageInput.jsx
-// ✅ IMPROVED: Better feedback and accessibility
 import React, { useState, useRef, useEffect } from 'react';
 
 const MESSAGE_MAX_LENGTH = 2000;
@@ -8,7 +7,6 @@ const MessageInput = ({ onSend, disabled, isSending }) => {
   const [message, setMessage] = useState('');
   const textareaRef = useRef(null);
 
-  // Auto-resize textarea
   useEffect(() => {
     if (textareaRef.current) {
       textareaRef.current.style.height = 'auto';
@@ -44,7 +42,6 @@ const MessageInput = ({ onSend, disabled, isSending }) => {
     <div className="border-t-2 border-gray-200 bg-gray-50 p-4">
       <form onSubmit={handleSubmit}>
         <div className="flex items-end gap-3">
-          {/* Input Area */}
           <div className="flex-1">
             <textarea
               ref={textareaRef}
@@ -65,7 +62,6 @@ const MessageInput = ({ onSend, disabled, isSending }) => {
             )}
           </div>
 
-          {/* Send Button */}
           <button
             type="submit"
             disabled={disabled || !message.trim() || isSending || isOverLimit}

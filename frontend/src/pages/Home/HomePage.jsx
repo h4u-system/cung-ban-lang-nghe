@@ -1,5 +1,4 @@
 // frontend/src/pages/Home/HomePage.jsx
-// ✅ IMPROVED: Consistent spacing, typography, and professional layout
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import ChatInterface from '../../components/Chat/ChatInterface';
@@ -52,27 +51,22 @@ const HomePage = () => {
 
   return (
     <div className="space-y-10">
-      {/* ===== HERO SECTION ===== */}
       <section className="relative overflow-hidden bg-gradient-to-br from-blue-600 via-blue-700 to-indigo-800 rounded-3xl p-8 md:p-12 text-center shadow-2xl">
-        {/* Background Pattern */}
         <div className="absolute inset-0 opacity-10">
           <div className="absolute top-0 left-0 w-96 h-96 bg-white rounded-full blur-3xl"></div>
           <div className="absolute bottom-0 right-0 w-96 h-96 bg-white rounded-full blur-3xl"></div>
         </div>
 
         <div className="relative z-10 max-w-3xl mx-auto">
-          {/* Logo */}
           <div className="inline-flex items-center justify-center w-20 h-20 mb-6 bg-white/20 backdrop-blur-sm rounded-3xl shadow-xl animate-bounce">
             <span className="text-5xl">💙</span>
           </div>
 
-          {/* Heading */}
           <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-4 text-white leading-tight">
             Chào mừng đến với<br className="md:hidden" />
             <span className="block md:inline"> Cùng Bạn Lắng Nghe</span>
           </h1>
 
-          {/* Subheading */}
           <p className="text-base md:text-lg text-blue-100 mb-2 leading-relaxed">
             Trợ lý tâm lý học đường với công nghệ AI
           </p>
@@ -100,7 +94,6 @@ const HomePage = () => {
             </span>
           </div>
 
-          {/* Trust Badges */}
           <div className="flex flex-wrap justify-center gap-3">
             {[
               { icon: '🔓', text: 'Không cần đăng ký' },
@@ -119,7 +112,6 @@ const HomePage = () => {
         </div>
       </section>
 
-      {/* ===== QUICK ACCESS SECTION ===== */}
       <section>
         <div className="flex items-center gap-3 mb-6">
           <span className="text-3xl">🎯</span>
@@ -147,7 +139,6 @@ const HomePage = () => {
         </div>
       </section>
 
-      {/* ===== CHAT INTERFACE SECTION ===== */}
       <section>
         <div className="flex items-center gap-3 mb-6">
           <span className="text-3xl">💬</span>
@@ -162,7 +153,6 @@ const HomePage = () => {
         </div>
       </section>
 
-      {/* ===== TRUST SECTION ===== */}
       <section className="bg-gradient-to-br from-blue-50 to-indigo-50 rounded-2xl p-8 border-2 border-blue-200">
         <div className="max-w-3xl mx-auto text-center">
           <div className="text-4xl mb-4">🛡️</div>

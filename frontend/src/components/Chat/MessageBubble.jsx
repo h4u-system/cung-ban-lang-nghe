@@ -1,5 +1,4 @@
 // frontend/src/components/Chat/MessageBubble.jsx
-// ✅ IMPROVED: Better spacing and visual hierarchy
 import React from 'react';
 
 const MessageBubble = ({ message, isUser }) => {
@@ -12,14 +11,12 @@ const MessageBubble = ({ message, isUser }) => {
   return (
     <div className={`flex ${isUser ? 'justify-end' : 'justify-start'} mb-4 animate-fade-in`}>
       <div className={`flex items-end gap-2 max-w-[85%] md:max-w-[75%] ${isUser ? 'flex-row-reverse' : ''}`}>
-        {/* Avatar */}
         {!isUser && (
           <div className="w-8 h-8 flex-shrink-0 rounded-full bg-gradient-to-br from-primary-500 to-primary-600 flex items-center justify-center shadow-md">
             <span className="text-white text-sm">💙</span>
           </div>
         )}
 
-        {/* Message Bubble */}
         <div className="flex flex-col">
           <div
             className={`px-4 py-3 rounded-2xl shadow-sm transition-all duration-200 ${
@@ -32,7 +29,6 @@ const MessageBubble = ({ message, isUser }) => {
               {message.content}
             </p>
 
-            {/* Model info (optional, for debugging) */}
             {!isUser && message.model_used && process.env.NODE_ENV === 'development' && (
               <div className="text-[10px] text-gray-500 mt-1 opacity-60">
                 {message.model_used}
@@ -40,13 +36,11 @@ const MessageBubble = ({ message, isUser }) => {
             )}
           </div>
 
-          {/* Timestamp */}
           <span className={`text-[10px] text-gray-400 mt-1 px-1 ${isUser ? 'text-right' : 'text-left'}`}>
             {timeString}
           </span>
         </div>
 
-        {/* User Avatar */}
         {isUser && (
           <div className="w-8 h-8 flex-shrink-0 rounded-full bg-gradient-to-br from-gray-400 to-gray-500 flex items-center justify-center shadow-md">
             <span className="text-white text-sm">👤</span>
