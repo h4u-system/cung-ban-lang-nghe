@@ -1,5 +1,5 @@
 // frontend/src/components/Layout/Header.jsx
-// ✅ IMPROVED: Consistent sizing and spacing
+// ✅ FIXED: Escape dấu > trong JSX
 import React, { useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 
