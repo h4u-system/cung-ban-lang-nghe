@@ -5,6 +5,12 @@ import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import MainLayout from './components/Layout/MainLayout';
 import HomePage from './pages/Home/HomePage';
 import EmotionsPage from './pages/Emotions/EmotionsPage';      // ← Emotions (số nhiều)
+import EmotionsPage from './pages/Emotions/ExamPage';          // ← Emotions (số nhiều)
+import EmotionsPage from './pages/Emotions/FamilyPage';        // ← Emotions (số nhiều)
+import EmotionsPage from './pages/Emotions/LonelyPage';        // ← Emotions (số nhiều)
+import EmotionsPage from './pages/Emotions/LovePage';          // ← Emotions (số nhiều)
+import EmotionsPage from './pages/Emotions/StressPage';        // ← Emotions (số nhiều)
+
 import StoriesPage from './pages/Stories/StoriesPage';         // ← Stories (số nhiều)
 import QAPage from './pages/QA/QAPage';
 import AboutPage from './pages/About/AboutPage';
