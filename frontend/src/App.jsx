@@ -4,14 +4,17 @@ import React from 'react';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import MainLayout from './components/Layout/MainLayout';
 import HomePage from './pages/Home/HomePage';
-import EmotionsPage from './pages/Emotions/EmotionsPage';      // ← Emotions (số nhiều)
-import ExamPage from './pages/Emotions/ExamPage';          // ← Emotions (số nhiều)
-import FamilyPage from './pages/Emotions/FamilyPage';        // ← Emotions (số nhiều)
-import LonelyPage from './pages/Emotions/LonelyPage';        // ← Emotions (số nhiều)
-import LovePage from './pages/Emotions/LovePage';          // ← Emotions (số nhiều)
-import StressPage from './pages/Emotions/StressPage';        // ← Emotions (số nhiều)
 
-import StoriesPage from './pages/Stories/StoriesPage';         // ← Stories (số nhiều)
+// Emotions Pages
+import EmotionsPage from './pages/Emotions/EmotionsPage';
+import StressPage from './pages/Emotions/StressPage';
+import LonelyPage from './pages/Emotions/LonelyPage';
+import LovePage from './pages/Emotions/LovePage';
+import ExamPage from './pages/Emotions/ExamPage';
+import FamilyPage from './pages/Emotions/FamilyPage';
+
+// Other Pages
+import StoriesPage from './pages/Stories/StoriesPage';
 import QAPage from './pages/QA/QAPage';
 import AboutPage from './pages/About/AboutPage';
 import NotFoundPage from './pages/NotFound/NotFoundPage';
@@ -32,7 +35,16 @@ function App() {
         {/* Public Routes */}
         <Route path="/" element={<MainLayout />}>
           <Route index element={<HomePage />} />
+          
+          {/* Emotions Routes */}
           <Route path="cam-xuc" element={<EmotionsPage />} />
+          <Route path="cam-xuc/stress" element={<StressPage />} />
+          <Route path="cam-xuc/co-don" element={<LonelyPage />} />
+          <Route path="cam-xuc/tinh-yeu-hoc-tro" element={<LovePage />} />
+          <Route path="cam-xuc/thi-cu-ap-luc" element={<ExamPage />} />
+          <Route path="cam-xuc/gia-dinh" element={<FamilyPage />} />
+          
+          {/* Other Routes */}
           <Route path="tam-su" element={<StoriesPage />} />
           <Route path="hoi-dap" element={<QAPage />} />
           <Route path="gioi-thieu" element={<AboutPage />} />

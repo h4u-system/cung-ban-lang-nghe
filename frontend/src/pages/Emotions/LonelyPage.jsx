@@ -1,3 +1,5 @@
+// frontend/src/pages/Emotions/FamilyPage.jsx
+
 import React from 'react';
 import { Link } from 'react-router-dom';
 import ChatInterface from '../../components/Chat/ChatInterface';
