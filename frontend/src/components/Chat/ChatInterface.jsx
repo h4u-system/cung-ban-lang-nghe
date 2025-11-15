@@ -1,5 +1,5 @@
 // frontend/src/components/Chat/ChatInterface.jsx
-
+// ✅ IMPROVED: Better error handling and loading states
 import React, { useState, useEffect } from 'react';
 import MessageList from './MessageList';
 import MessageInput from './MessageInput';
@@ -26,12 +26,11 @@ const ChatInterface = () => {
         setIsInitializing(true);
         const session = await sessionService.getOrCreateSession();
         setSessionId(session.sessionId);
-        
+
         // Add welcome message
         setMessages([{
           id: 'welcome',
           role: 'assistant',
-          //content: UI_MESSAGES.welcome || 'Xin chào! Mình là Banana của bạn. Bạn muốn chia sẻ điều gì?',
           content: UI_MESSAGES.welcome,
           timestamp: new Date().toISOString()
         }]);
@@ -68,6 +67,7 @@ const ChatInterface = () => {
       content: content,
       timestamp: new Date().toISOString()
     };
+
     setMessages(prev => [...prev, userMessage]);
 
     try {
@@ -76,8 +76,8 @@ const ChatInterface = () => {
       const response = await messageService.sendMessage(sessionId, content);
 
       // Update user message with actual ID from backend
-      setMessages(prev => prev.map(msg => 
-        msg.id === tempUserMessageId 
+      setMessages(prev => prev.map(msg =>
+        msg.id === tempUserMessageId
           ? { ...msg, id: response.user_message?.id || msg.id }
           : msg
       ));
@@ -99,10 +99,10 @@ const ChatInterface = () => {
         setShowCrisisAlert(true);
         setCrisisInfo(response.crisis_info || { trigger: 'server_side_detection' });
       }
+
     } catch (err) {
       setError('Không thể gửi tin nhắn. Vui lòng thử lại.');
       console.error('Send message error:', err);
-      
       // Remove user message if failed
       setMessages(prev => prev.filter(m => m.id !== tempUserMessageId));
     } finally {
@@ -119,6 +119,7 @@ const ChatInterface = () => {
     }
   }, [error]);
 
+  // Loading state
   if (isInitializing) {
     return (
       <div className="flex items-center justify-center h-[500px] bg-gradient-to-br from-primary-50 to-blue-50 rounded-2xl">
@@ -131,14 +132,14 @@ const ChatInterface = () => {
   }
 
   return (
-    <div className="flex flex-col h-[600px] bg-white rounded-2xl shadow-lg overflow-hidden border border-gray-200">
+    <div className="flex flex-col h-[600px] bg-white rounded-2xl shadow-lg overflow-hidden border-2 border-gray-200">
       {/* Error Banner */}
       {error && (
         <div className="bg-red-500 text-white px-4 py-3 text-sm text-center flex items-center justify-center gap-2 animate-slide-down">
-          <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <svg className="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
           </svg>
-          {error}
+          <span>{error}</span>
         </div>
       )}
 
@@ -146,20 +147,20 @@ const ChatInterface = () => {
       <MessageList messages={messages} isTyping={isTyping} />
 
       {/* Input */}
-      <MessageInput 
-        onSend={handleSendMessage} 
-        disabled={isSending || !sessionId || isInitializing} 
+      <MessageInput
+        onSend={handleSendMessage}
+        disabled={isSending || !sessionId || isInitializing}
         isSending={isSending}
       />
 
       {/* Crisis Alert Modal */}
       {showCrisisAlert && (
-        <CrisisAlert 
+        <CrisisAlert
           crisisInfo={crisisInfo}
           onClose={() => {
             setShowCrisisAlert(false);
             setCrisisInfo(null);
-          }} 
+          }}
         />
       )}
     </div>
