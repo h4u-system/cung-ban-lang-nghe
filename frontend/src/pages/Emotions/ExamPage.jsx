@@ -8,10 +8,21 @@ const ExamPage = () => {
   return (
     <div className="space-y-6">
       {/* Breadcrumb */}
-      <nav className="text-sm text-gray-600">
+      {/*<nav className="text-sm text-gray-600">
         <Link to="/camxuc" className="hover:text-primary-500">Chủ đề cảm xúc</Link>
         {' > '}
         <span className="font-semibold">Thi cử & Áp lực</span>
+      </nav> */}
+
+      <nav className="text-sm text-gray-600 flex items-center gap-2">
+        <Link 
+          to="/cam-xuc" 
+          className="hover:text-primary-500 hover:underline transition-all"
+        >
+          Chủ đề cảm xúc
+        </Link>
+        <span>›</span>
+        <span className="font-semibold text-gray-800">Thi cử & Áp lực</span>
       </nav>
 
       {/* Header */}
