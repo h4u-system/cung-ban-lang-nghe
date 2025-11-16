@@ -20,7 +20,7 @@ from app.admin.models import AdminUser
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
 # JWT settings
-SECRET_KEY = os.getenv("SECRET_KEY", "your-secret-key-change-in-production-h4u-2025")
+SECRET_KEY = os.getenv("SECRET_KEY", "cungbanlangnghe-render-production-2025-secret-key-min32")
 ALGORITHM = "HS256"
 ACCESS_TOKEN_EXPIRE_MINUTES = 480  # 8 hours
 
