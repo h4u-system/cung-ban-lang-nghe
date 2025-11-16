@@ -112,7 +112,7 @@ app.add_exception_handler(RateLimitExceeded, _rate_limit_exceeded_handler)
 # 1. CORS Middleware
 CORS_ORIGINS = os.getenv(
     "CORS_ORIGINS", 
-    "http://localhost:3000,http://localhost:5173,https://cung-ban-lang-nghe.pages.dev"
+    "https://cungbanlangnghe.vn, http://localhost:3000,http://localhost:5173,https://cung-ban-lang-nghe.pages.dev"
 ).split(",")
 
 app.add_middleware(
@@ -274,14 +274,21 @@ app.mount("/metrics", metrics_app)
 
 # Import and include API routers here
 # from app.api import sessions, messages, feedback
-from app.api.endpoints import sessions, messages
+from app.api.endpoints import sessions, messages, feedback
 # app.include_router(sessions.router, prefix="/api/v1/sessions", tags=["Sessions"])
 # app.include_router(messages.router, prefix="/api/v1/messages", tags=["Messages"])
 # app.include_router(feedback.router, prefix="/api/v1/feedback", tags=["Feedback"])
 
-app.include_router(admin_auth.router, prefix="/api/v1")
-app.include_router(admin_content.router, prefix="/api/v1")
-app.include_router(admin_analytics.router, prefix="/api/v1")
+#app.include_router(admin_auth.router, prefix="/api/v1")
+#app.include_router(admin_content.router, prefix="/api/v1")
+#app.include_router(admin_analytics.router, prefix="/api/v1")
+from app.admin.routes import auth as admin_auth
+from app.admin.routes import content as admin_content
+from app.admin.routes import analytics as admin_analytics
+    
+app.include_router(admin_auth.router, prefix="/api/v1", tags=["Admin Auth"])
+app.include_router(admin_content.router, prefix="/api/v1", tags=["Admin Content"])
+app.include_router(admin_analytics.router, prefix="/api/v1", tags=["Admin Analytics"])
 
 # Session endpoints
 app.include_router(
