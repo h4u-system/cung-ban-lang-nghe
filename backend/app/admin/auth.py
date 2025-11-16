@@ -11,6 +11,7 @@ from fastapi import Depends, HTTPException, status
 from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
 from sqlalchemy.orm import Session
 import os
+import hashlib
 
 from app.database import get_db
 from app.admin.models import AdminUser
@@ -26,14 +27,37 @@ ACCESS_TOKEN_EXPIRE_MINUTES = 480  # 8 hours
 security = HTTPBearer()
 
 
+def _prepare_password(password: str) -> bytes:
+    """
+    Prepare password for bcrypt (max 72 bytes)
+    Use SHA256 hash for long passwords to ensure consistent length
+    """
+    password_bytes = password.encode('utf-8')
+    
+    # If password > 72 bytes, hash it first
+    if len(password_bytes) > 72:
+        # Use SHA256 to reduce to fixed length
+        password_bytes = hashlib.sha256(password_bytes).hexdigest().encode('utf-8')
+    
+    return password_bytes
+
+
 def verify_password(plain_password: str, hashed_password: str) -> bool:
     """Verify password against hash"""
-    return pwd_context.verify(plain_password, hashed_password)
+    try:
+        # Prepare password (handle long passwords)
+        prepared_password = _prepare_password(plain_password)
+        return pwd_context.verify(prepared_password, hashed_password)
+    except Exception as e:
+        print(f"Password verification error: {e}")
+        return False
 
 
 def get_password_hash(password: str) -> str:
     """Hash password"""
-    return pwd_context.hash(password)
+    # Prepare password (handle long passwords)
+    prepared_password = _prepare_password(password)
+    return pwd_context.hash(prepared_password)
 
 
 def create_access_token(data: dict, expires_delta: Optional[timedelta] = None):
