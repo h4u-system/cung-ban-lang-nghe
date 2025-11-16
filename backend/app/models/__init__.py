@@ -16,8 +16,6 @@ from sqlalchemy.orm import relationship
 from sqlalchemy.sql import func
 import uuid
 
-from app.admin.models import AdminUser, ContentItem, AnalyticsEvent
-
 Base = declarative_base()
 
 # ============================================
@@ -362,6 +360,8 @@ def drop_db(engine):
 # EXPORT ALL MODELS
 # ============================================
 
+#from app.admin.models import AdminUser, ContentItem, AnalyticsEvent
+
 __all__ = [
     'Base',
     'Session',
@@ -374,9 +374,9 @@ __all__ = [
     'SchemaVersion',
     'get_or_create',
     'init_db',
-    'drop_db',
+    'drop_db'
 # Admin models
-    'AdminUser',
-    'ContentItem',
-    'AnalyticsEvent'
+    #'AdminUser',
+    #'ContentItem',
+    #'AnalyticsEvent'
 ]
