@@ -11,53 +11,40 @@ from fastapi import Depends, HTTPException, status
 from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
 from sqlalchemy.orm import Session
 import os
-import hashlib
 
 from app.database import get_db
 from app.admin.models import AdminUser
 
-# Password hashing
-pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
+# Password hashing - SIMPLE CONFIG
+pwd_context = CryptContext(
+    schemes=["bcrypt"],
+    deprecated="auto",
+    bcrypt__rounds=12
+)
 
 # JWT settings
-SECRET_KEY = os.getenv("SECRET_KEY", "cungbanlangnghe-render-production-2025-secret-key-min32")
+SECRET_KEY = os.getenv("SECRET_KEY", "your-secret-key-change-in-production-h4u-2025")
 ALGORITHM = "HS256"
-ACCESS_TOKEN_EXPIRE_MINUTES = 480  # 8 hours
+ACCESS_TOKEN_EXPIRE_MINUTES = 480
 
 security = HTTPBearer()
 
 
-def _prepare_password(password: str) -> bytes:
-    """
-    Prepare password for bcrypt (max 72 bytes)
-    Use SHA256 hash for long passwords to ensure consistent length
-    """
-    password_bytes = password.encode('utf-8')
-    
-    # If password > 72 bytes, hash it first
-    if len(password_bytes) > 72:
-        # Use SHA256 to reduce to fixed length
-        password_bytes = hashlib.sha256(password_bytes).hexdigest().encode('utf-8')
-    
-    return password_bytes
-
-
 def verify_password(plain_password: str, hashed_password: str) -> bool:
-    """Verify password against hash"""
+    """Verify password against hash - with truncation"""
     try:
-        # Prepare password (handle long passwords)
-        prepared_password = _prepare_password(plain_password)
-        return pwd_context.verify(prepared_password, hashed_password)
+        # Bcrypt only supports 72 bytes max
+        password_bytes = plain_password.encode('utf-8')[:72]
+        return pwd_context.verify(password_bytes, hashed_password)
     except Exception as e:
         print(f"Password verification error: {e}")
         return False
 
 
 def get_password_hash(password: str) -> str:
-    """Hash password"""
-    # Prepare password (handle long passwords)
-    prepared_password = _prepare_password(password)
-    return pwd_context.hash(prepared_password)
+    """Hash password - with truncation"""
+    password_bytes = password.encode('utf-8')[:72]
+    return pwd_context.hash(password_bytes)
 
 
 def create_access_token(data: dict, expires_delta: Optional[timedelta] = None):
