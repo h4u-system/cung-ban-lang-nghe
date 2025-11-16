@@ -1,6 +1,7 @@
 # ============================================
 # BACKEND REQUIREMENTS - RENDER.COM OPTIMIZED
 # Python 3.11 compatible
+# backend/requirements.txt
 # ============================================
 
 # Web Framework
@@ -17,8 +18,8 @@ alembic==1.14.0
 redis==5.2.1
 
 # Authentication & Security
-python-jose[cryptography]==3.3.0
-passlib[bcrypt]==1.7.4
+#python-jose[cryptography]==3.3.0
+#passlib[bcrypt]==1.7.4
 python-dotenv==1.0.1
 cryptography==44.0.0
 
@@ -43,3 +44,5 @@ slowapi==0.1.9
 # Admin & AI dependencies
 python-jose[cryptography]==3.3.0
 passlib[bcrypt]==1.7.4
+python-multipart==0.0.6
+httpx==0.27.0

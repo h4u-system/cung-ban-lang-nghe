@@ -16,7 +16,7 @@ from sqlalchemy.orm import relationship
 from sqlalchemy.sql import func
 import uuid
 
-#from app.admin.models import AdminUser, ContentItem, AnalyticsEvent
+from app.admin.models import AdminUser, ContentItem, AnalyticsEvent
 
 Base = declarative_base()
 
@@ -88,6 +88,9 @@ class Session(Base):
 # ============================================
 class Message(Base):
     __tablename__ = "messages"
+        
+    #Chat session model
+    __tablename__ = "sessions"  # ← Verify this matches with DB table name
     
     # Primary key
     id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
@@ -372,8 +375,8 @@ __all__ = [
     'get_or_create',
     'init_db',
     'drop_db',
-    # Admin models
-    #'AdminUser',
-    #'ContentItem',
-    #'AnalyticsEvent'
+# Admin models
+    'AdminUser',
+    'ContentItem',
+    'AnalyticsEvent'
 ]
