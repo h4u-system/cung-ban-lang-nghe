@@ -43,7 +43,7 @@ class AdminService {
   // Authentication
   async login(email, password) {
     try {
-      const response = await this.api.post('/api/v1/admin/auth/login', {
+      const response = await this.api.post('/admin/auth/login', {
         email,
         password,
       });
