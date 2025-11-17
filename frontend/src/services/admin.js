@@ -10,7 +10,7 @@ const API_BASE_URL = import.meta.env.VITE_API_URL || 'https://api.cungbanlangngh
 class AdminService {
   constructor() {
     this.api = axios.create({
-      baseURL: `${API_BASE_URL}/api/v1`,
+      baseURL: API_BASE_URL,
       headers: {
         'Content-Type': 'application/json',
       },
@@ -30,9 +30,10 @@ class AdminService {
       (response) => response,
       (error) => {
         if (error.response?.status === 401) {
-          // Unauthorized - clear tokens and redirect to login
           this.logout();
-          window.location.href = '/admin/login';
+          if (window.location.pathname !== '/admin/login') {
+            window.location.href = '/admin/login';
+          }
         }
         return Promise.reject(error);
       }
@@ -42,7 +43,7 @@ class AdminService {
   // Authentication
   async login(email, password) {
     try {
-      const response = await this.api.post('/admin/auth/login', {
+      const response = await this.api.post('/api/v1/admin/auth/login', {
         email,
         password,
       });
@@ -76,7 +77,7 @@ class AdminService {
   async getAnalytics(startDate, endDate) {
     try {
       const days = Math.ceil((new Date(endDate) - new Date(startDate)) / (1000 * 60 * 60 * 24));
-      const response = await this.api.get('/admin/analytics/dashboard', {
+      const response = await this.api.get('/api/v1/admin/analytics/dashboard', {
         params: { days },
       });
       return response.data;
@@ -88,7 +89,7 @@ class AdminService {
   // Messages Management
   async getMessages(page = 1, limit = 20, filters = {}) {
     try {
-      const response = await this.api.get('/admin/messages', {
+      const response = await this.api.get('/api/v1/admin/messages', {
         params: { page, limit, ...filters },
       });
       return response.data;
@@ -99,7 +100,7 @@ class AdminService {
 
   async getMessageById(messageId) {
     try {
-      const response = await this.api.get(`/admin/messages/${messageId}`);
+      const response = await this.api.get(`/api/v1/admin/messages/${messageId}`);
       return response.data;
     } catch (error) {
       throw new Error(error.response?.data?.detail || 'Không thể tải chi tiết tin nhắn');
@@ -108,7 +109,7 @@ class AdminService {
 
   async flagMessage(messageId, reason) {
     try {
-      const response = await this.api.post(`/admin/messages/${messageId}/flag`, {
+      const response = await this.api.post(`/api/v1/admin/messages/${messageId}/flag`, {
         reason,
       });
       return response.data;
@@ -120,7 +121,7 @@ class AdminService {
   // Content Management
   async getContent(type, page = 1, limit = 20) {
     try {
-      const response = await this.api.get('/admin/content', {
+      const response = await this.api.get('/api/v1/admin/content', {
         params: { type, page, limit },
       });
       return response.data;
@@ -131,7 +132,7 @@ class AdminService {
 
   async createContent(data) {
     try {
-      const response = await this.api.post('/admin/content', data);
+      const response = await this.api.post('/api/v1/admin/content', data);
       return response.data;
     } catch (error) {
       throw new Error(error.response?.data?.detail || 'Không thể tạo nội dung');
@@ -140,7 +141,7 @@ class AdminService {
 
   async updateContent(contentId, data) {
     try {
-      const response = await this.api.put(`/admin/content/${contentId}`, data);
+      const response = await this.api.put(`/api/v1/admin/content/${contentId}`, data);
       return response.data;
     } catch (error) {
       throw new Error(error.response?.data?.detail || 'Không thể cập nhật nội dung');
@@ -149,7 +150,7 @@ class AdminService {
 
   async deleteContent(contentId) {
     try {
-      const response = await this.api.delete(`/admin/content/${contentId}`);
+      const response = await this.api.delete(`/api/v1/admin/content/${contentId}`);
       return response.data;
     } catch (error) {
       throw new Error(error.response?.data?.detail || 'Không thể xóa nội dung');
