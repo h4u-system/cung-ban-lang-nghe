@@ -262,6 +262,11 @@ app.include_router(sessions.router, prefix="/api/v1/sessions", tags=["Sessions"]
 app.include_router(messages.router, prefix="/api/v1/messages", tags=["Messages"])
 app.include_router(feedback.router, prefix="/api/v1/feedback", tags=["Feedback"])
 
+
+from app.api.endpoints import stories, contact
+app.include_router(stories.router, prefix="/api/v1", tags=["Stories"])
+app.include_router(contact.router, prefix="/api/v1", tags=["Contact"])
+
 # ============================================
 # STARTUP MESSAGE
 # ============================================

@@ -1,6 +1,7 @@
+// frontend/src/pages/Stories/StoriesPage.jsx
 
-import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import publicApi from '../../services/publicApi';
 
 const StoriesPage = () => {
   const [showForm, setShowForm] = useState(false);
@@ -9,41 +10,54 @@ const StoriesPage = () => {
     content: '',
     category: 'stress'
   });
+  const [stories, setStories] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [submitting, setSubmitting] = useState(false);
 
-  // Mock stories data
-  const stories = [
-    {
-      id: 1,
-      title: "Vượt qua kỳ thi THPT",
-      category: "Thi cử",
-      excerpt: "Mình đã rất căng thẳng trước kỳ thi, nhưng nhờ những phương pháp thư giãn...",
-      date: "2025-10-30",
-      likes: 45
-    },
-    {
-      id: 2,
-      title: "Hòa giải với bố mẹ",
-      category: "Gia đình",
-      excerpt: "Sau nhiều lần cãi vã, mình đã học cách lắng nghe và thấu hiểu...",
-      date: "2025-10-29",
-      likes: 32
-    },
-    {
-      id: 3,
-      title: "Tìm lại niềm vui",
-      category: "Cô đơn",
-      excerpt: "Từ chỗ cảm thấy cô đơn, mình đã tìm thấy nhóm bạn cùng sở thích...",
-      date: "2025-10-28",
-      likes: 28
+  useEffect(() => {
+    loadStories();
+  }, []);
+
+  const loadStories = async () => {
+    try {
+      setLoading(true);
+      const data = await publicApi.getStories(null, 20, 0);
+      setStories(data.stories || []);
+    } catch (error) {
+      console.error('Failed to load stories:', error);
+    } finally {
+      setLoading(false);
     }
-  ];
+  };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log('Submit story:', formData);
-    alert('Cảm ơn bạn đã chia sẻ! Câu chuyện của bạn sẽ được kiểm duyệt trước khi hiển thị.');
-    setShowForm(false);
-    setFormData({ title: '', content: '', category: 'stress' });
+    setSubmitting(true);
+
+    try {
+      await publicApi.submitStory(formData);
+      alert('Cảm ơn bạn đã chia sẻ! Câu chuyện sẽ được kiểm duyệt trước khi hiển thị.');
+      setShowForm(false);
+      setFormData({ title: '', content: '', category: 'stress' });
+    } catch (error) {
+      alert(error.message);
+    } finally {
+      setSubmitting(false);
+    }
+  };
+
+  const handleLike = async (storyId) => {
+    try {
+      const result = await publicApi.likeStory(storyId);
+      // Update local state
+      setStories(stories.map(story => 
+        story.id === storyId 
+          ? { ...story, likes_count: result.likes_count }
+          : story
+      ));
+    } catch (error) {
+      console.error('Failed to like story:', error);
+    }
   };
 
   return (
@@ -77,9 +91,7 @@ const StoriesPage = () => {
           <h2 className="text-xl font-bold mb-4">Chia sẻ câu chuyện của bạn</h2>
           <form onSubmit={handleSubmit} className="space-y-4">
             <div>
-              <label className="block text-sm font-semibold mb-2">
-                Tiêu đề *
-              </label>
+              <label className="block text-sm font-semibold mb-2">Tiêu đề *</label>
               <input
                 type="text"
                 required
@@ -91,9 +103,7 @@ const StoriesPage = () => {
             </div>
 
             <div>
-              <label className="block text-sm font-semibold mb-2">
-                Chủ đề *
-              </label>
+              <label className="block text-sm font-semibold mb-2">Chủ đề *</label>
               <select
                 required
                 value={formData.category}
@@ -110,9 +120,7 @@ const StoriesPage = () => {
             </div>
 
             <div>
-              <label className="block text-sm font-semibold mb-2">
-                Câu chuyện của bạn *
-              </label>
+              <label className="block text-sm font-semibold mb-2">Câu chuyện của bạn *</label>
               <textarea
                 required
                 rows="8"
@@ -136,9 +144,10 @@ const StoriesPage = () => {
             <div className="flex space-x-3">
               <button
                 type="submit"
-                className="flex-1 bg-primary-500 hover:bg-primary-600 text-white py-3 rounded-lg font-semibold transition"
+                disabled={submitting}
+                className="flex-1 bg-primary-500 hover:bg-primary-600 text-white py-3 rounded-lg font-semibold transition disabled:opacity-50"
               >
-                Gửi câu chuyện
+                {submitting ? 'Đang gửi...' : 'Gửi câu chuyện'}
               </button>
               <button
                 type="button"
@@ -156,32 +165,49 @@ const StoriesPage = () => {
       {!showForm && (
         <div className="space-y-4">
           <h2 className="text-xl font-bold">Câu chuyện từ bạn bè</h2>
-          {stories.map((story) => (
-            <div key={story.id} className="bg-white rounded-lg shadow-sm p-6 hover:shadow-md transition">
-              <div className="flex items-start justify-between mb-3">
-                <div>
-                  <span className="inline-block bg-primary-100 text-primary-700 text-xs font-semibold px-3 py-1 rounded-full mb-2">
-                    {story.category}
+          
+          {loading ? (
+            <div className="text-center py-12">
+              <div className="animate-spin rounded-full h-12 w-12 border-4 border-primary-500 border-t-transparent mx-auto mb-4"></div>
+              <p className="text-gray-600">Đang tải câu chuyện...</p>
+            </div>
+          ) : stories.length === 0 ? (
+            <div className="bg-gray-50 rounded-lg p-12 text-center">
+              <div className="text-6xl mb-4">📭</div>
+              <h3 className="text-xl font-bold text-gray-800 mb-2">Chưa có câu chuyện nào</h3>
+              <p className="text-gray-600">Hãy là người đầu tiên chia sẻ!</p>
+            </div>
+          ) : (
+            stories.map((story) => (
+              <div key={story.id} className="bg-white rounded-lg shadow-sm p-6 hover:shadow-md transition">
+                <div className="flex items-start justify-between mb-3">
+                  <div>
+                    <span className="inline-block bg-primary-100 text-primary-700 text-xs font-semibold px-3 py-1 rounded-full mb-2">
+                      {story.category}
+                    </span>
+                    <h3 className="text-lg font-bold text-gray-800">
+                      {story.title}
+                    </h3>
+                  </div>
+                  <span className="text-sm text-gray-500">
+                    {new Date(story.created_at).toLocaleDateString('vi-VN')}
                   </span>
-                  <h3 className="text-lg font-bold text-gray-800">
-                    {story.title}
-                  </h3>
                 </div>
-                <span className="text-sm text-gray-500">{story.date}</span>
-              </div>
-              <p className="text-gray-600 mb-4">{story.excerpt}</p>
-              <div className="flex items-center justify-between">
-                <button className="text-primary-500 hover:text-primary-600 font-semibold text-sm">
-                  Đọc thêm →
-                </button>
-                <div className="flex items-center space-x-2 text-gray-500">
-                  <button className="hover:text-red-500 transition">
-                    ❤️ {story.likes}
+                <p className="text-gray-600 mb-4">{story.excerpt}</p>
+                <div className="flex items-center justify-between">
+                  <button className="text-primary-500 hover:text-primary-600 font-semibold text-sm">
+                    Đọc thêm →
+                  </button>
+                  <button
+                    onClick={() => handleLike(story.id)}
+                    className="flex items-center space-x-2 text-gray-500 hover:text-red-500 transition"
+                  >
+                    <span>❤️ {story.likes_count}</span>
                   </button>
                 </div>
               </div>
-            </div>
-          ))}
+            ))
+          )}
         </div>
       )}
     </div>

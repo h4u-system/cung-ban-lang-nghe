@@ -1,3 +1,5 @@
+// frontend/src/pages/QA/QAPage.jsx
+
 import React, { useState } from 'react';
 
 const QAPage = () => {

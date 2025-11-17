@@ -1,4 +1,7 @@
+// frontend/src/pages/Contact/ContactPage.jsx
+
 import React, { useState } from 'react';
+import publicApi from '../../services/publicApi';
 
 const ContactPage = () => {
   const [formData, setFormData] = useState({
@@ -8,15 +11,24 @@ const ContactPage = () => {
     message: ''
   });
   const [submitted, setSubmitted] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log('Contact form:', formData);
-    setSubmitted(true);
-    setTimeout(() => {
-      setSubmitted(false);
-      setFormData({ name: '', email: '', subject: 'feedback', message: '' });
-    }, 3000);
+    setSubmitting(true);
+
+    try {
+      await publicApi.submitContactForm(formData);
+      setSubmitted(true);
+      setTimeout(() => {
+        setSubmitted(false);
+        setFormData({ name: '', email: '', subject: 'feedback', message: '' });
+      }, 3000);
+    } catch (error) {
+      alert(error.message);
+    } finally {
+      setSubmitting(false);
+    }
   };
 
   return (
@@ -112,42 +124,22 @@ const ContactPage = () => {
 
             <button
               type="submit"
-              className="w-full bg-green-500 hover:bg-green-600 text-white py-3 rounded-lg font-semibold transition"
+              disabled={submitting}
+              className="w-full bg-green-500 hover:bg-green-600 text-white py-3 rounded-lg font-semibold transition disabled:opacity-50"
             >
-              Gửi tin nhắn
+              {submitting ? 'Đang gửi...' : 'Gửi tin nhắn'}
             </button>
           </form>
         )}
       </div>
 
+      {/* Rest of the page remains the same */}
       <div className="bg-purple-50 border border-purple-200 rounded-lg p-6">
         <h3 className="font-bold text-gray-800 mb-2">Trước khi liên hệ</h3>
         <p className="text-gray-700 mb-4">Có thể câu hỏi của bạn đã được trả lời trong phần Hỏi đáp</p>
         <a href="/hoi-dap" className="inline-block bg-purple-500 hover:bg-purple-600 text-white px-6 py-3 rounded-lg font-semibold transition">
           Xem câu hỏi thường gặp
         </a>
-      </div>
-
-      <div className="bg-white rounded-lg shadow-sm p-6">
-        <h2 className="text-xl font-bold mb-4">Kết nối với chúng mình</h2>
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-          <a href="https://facebook.com" target="_blank" rel="noopener noreferrer" className="bg-blue-50 hover:bg-blue-100 rounded-lg p-4 text-center transition">
-            <div className="text-3xl mb-2">📘</div>
-            <div className="text-sm font-semibold">Facebook</div>
-          </a>
-          <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" className="bg-pink-50 hover:bg-pink-100 rounded-lg p-4 text-center transition">
-            <div className="text-3xl mb-2">📷</div>
-            <div className="text-sm font-semibold">Instagram</div>
-          </a>
-          <a href="https://tiktok.com" target="_blank" rel="noopener noreferrer" className="bg-gray-50 hover:bg-gray-100 rounded-lg p-4 text-center transition">
-            <div className="text-3xl mb-2">🎵</div>
-            <div className="text-sm font-semibold">TikTok</div>
-          </a>
-          <a href="https://youtube.com" target="_blank" rel="noopener noreferrer" className="bg-red-50 hover:bg-red-100 rounded-lg p-4 text-center transition">
-            <div className="text-3xl mb-2">📹</div>
-            <div className="text-sm font-semibold">YouTube</div>
-          </a>
-        </div>
       </div>
     </div>
   );

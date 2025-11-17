@@ -17,6 +17,8 @@ from .feedback import Feedback
 from .system_health_metric import SystemHealthMetric
 from .training_data import TrainingData
 from .schema_version import SchemaVersion
+from .story import Story
+from .contact import ContactForm
 
 # Helper functions
 from .utils import get_or_create, init_db, drop_db
@@ -33,5 +35,7 @@ __all__ = [
     'SchemaVersion',
     'get_or_create',
     'init_db',
-    'drop_db'
+    'drop_db',
+    'Story',
+    'ContactForm'
 ]
