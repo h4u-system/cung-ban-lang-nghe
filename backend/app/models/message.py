@@ -16,11 +16,11 @@ import uuid
 from .base import Base
 
 class Message(Base):
-    __tablename__ = "messages"  # ← CHỈ CÓ 1 DÒNG NÀY!
+    __tablename__ = "messages"
     __table_args__ = (
         CheckConstraint("role IN ('user', 'assistant')", name='check_role'),
         Index('idx_session_messages', 'session_id', 'created_at'),
-        {'extend_existing': True}  # Safety net
+        {'extend_existing': True}
     )
     
     # Primary key
@@ -47,6 +47,12 @@ class Message(Base):
     
     # Crisis detection
     is_crisis_detected = Column(Boolean, default=False)
+    
+    # ✅ NEW: Admin moderation fields
+    flagged = Column(Boolean, default=False, index=True)
+    flag_reason = Column(String(200), nullable=True)
+    flagged_at = Column(DateTime(timezone=True), nullable=True)
+    flagged_by = Column(UUID(as_uuid=True), nullable=True)  # Reference to admin_users.id
     
     # Auto-delete
     expires_at = Column(

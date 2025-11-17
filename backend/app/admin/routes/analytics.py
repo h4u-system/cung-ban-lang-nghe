@@ -12,8 +12,8 @@ from app.database import get_db
 from app.admin.auth import get_current_admin
 from app.models import Session as ChatSession, Message
 
-router = APIRouter(prefix="/admin/analytics", tags=["Analytics"])
-
+#router = APIRouter(prefix="/admin/analytics", tags=["Analytics"])
+router = APIRouter(tags=["Analytics"])
 
 @router.get("/dashboard")
 async def get_dashboard_stats(

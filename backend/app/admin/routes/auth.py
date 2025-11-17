@@ -11,7 +11,8 @@ from app.database import get_db
 from app.admin.models import AdminUser
 from app.admin.auth import verify_password, create_access_token, get_password_hash
 
-router = APIRouter(prefix="/admin/auth", tags=["Admin Auth"])
+#router = APIRouter(prefix="/admin/auth", tags=["Admin Auth"])
+router = APIRouter(tags=["Admin Auth"])
 
 
 class LoginRequest(BaseModel):

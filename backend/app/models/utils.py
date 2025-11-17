@@ -1,3 +1,8 @@
+# ============================================
+# SQLALCHEMY MODELS: CÙNG BẠN LẮNG NGHE
+# File: backend/app/models/utils.py
+# ============================================
+
 def get_or_create(session, model, defaults=None, **kwargs):
     """Get existing instance or create new one"""
     instance = session.query(model).filter_by(**kwargs).first()

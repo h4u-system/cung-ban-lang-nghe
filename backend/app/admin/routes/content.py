@@ -12,7 +12,8 @@ from app.database import get_db
 from app.admin.models import ContentItem, AdminUser
 from app.admin.auth import get_current_admin, require_role
 
-router = APIRouter(prefix="/admin/content", tags=["Content Management"])
+#router = APIRouter(prefix="/admin/content", tags=["Content Management"])
+router = APIRouter(tags=["Content Management"])
 
 
 class ContentCreate(BaseModel):
