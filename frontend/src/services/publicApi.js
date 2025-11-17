@@ -23,7 +23,7 @@ class PublicApiService {
 
   async submitStory(storyData) {
     try {
-      const response = await this.api.post('/api/v1/stories', storyData);
+      const response = await this.api.post('/stories', storyData);
       return response.data;
     } catch (error) {
       throw new Error(error.response?.data?.detail || 'Không thể gửi câu chuyện');
@@ -35,7 +35,7 @@ class PublicApiService {
       const params = { limit, offset };
       if (category) params.category = category;
       
-      const response = await this.api.get('/api/v1/stories', { params });
+      const response = await this.api.get('/stories', { params });
       return response.data;
     } catch (error) {
       throw new Error(error.response?.data?.detail || 'Không thể tải câu chuyện');
@@ -44,7 +44,7 @@ class PublicApiService {
 
   async getStoryDetail(storyId) {
     try {
-      const response = await this.api.get(`/api/v1/stories/${storyId}`);
+      const response = await this.api.get(`/stories/${storyId}`);
       return response.data;
     } catch (error) {
       throw new Error(error.response?.data?.detail || 'Không thể tải chi tiết câu chuyện');
@@ -53,7 +53,7 @@ class PublicApiService {
 
   async likeStory(storyId) {
     try {
-      const response = await this.api.post(`/api/v1/stories/${storyId}/like`);
+      const response = await this.api.post(`/stories/${storyId}/like`);
       return response.data;
     } catch (error) {
       throw new Error(error.response?.data?.detail || 'Không thể like câu chuyện');
@@ -66,7 +66,7 @@ class PublicApiService {
 
   async submitContactForm(formData) {
     try {
-      const response = await this.api.post('/api/v1/contact', formData);
+      const response = await this.api.post('/contact', formData);
       return response.data;
     } catch (error) {
       throw new Error(error.response?.data?.detail || 'Không thể gửi tin nhắn');
@@ -79,7 +79,7 @@ class PublicApiService {
 
   async trackTopicView(topic) {
     try {
-      await this.api.post('/api/v1/analytics/topic-view', { topic });
+      await this.api.post('/analytics/topic-view', { topic });
     } catch (error) {
       // Silent fail - analytics shouldn't block user experience
       console.warn('Analytics tracking failed:', error);
