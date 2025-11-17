@@ -17,7 +17,7 @@ from app.admin.models import AdminUser
 
 # Password hashing - SIMPLE CONFIG
 pwd_context = CryptContext(
-    schemes=["bcrypt"],
+    schemes=["argon2", "bcrypt"],
     deprecated="auto",
     bcrypt__rounds=12
 )
