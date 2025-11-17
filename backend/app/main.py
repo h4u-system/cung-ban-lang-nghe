@@ -5,7 +5,6 @@
 
 import sys
 from pathlib import Path
-
 import os
 import logging
 from contextlib import asynccontextmanager
@@ -19,12 +18,6 @@ from slowapi.util import get_remote_address
 from slowapi.errors import RateLimitExceeded
 from prometheus_client import make_asgi_app
 import time
-
-from app.api.endpoints import sessions, messages, feedback
-
-from app.admin.routes import auth as admin_auth
-from app.admin.routes import content as admin_content
-from app.admin.routes import analytics as admin_analytics
 
 # Add backend directory to Python path
 backend_dir = Path(__file__).resolve().parent.parent
@@ -52,28 +45,22 @@ limiter = Limiter(key_func=get_remote_address)
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    """
-    Lifespan events for FastAPI application
-    Handles startup and shutdown tasks
-    """
+    """Lifespan events for FastAPI application"""
     # STARTUP
     logger.info("🚀 Starting Cùng Bạn Lắng Nghe API...")
     
-    # CREATE DATABASE TABLES (MANDATORY)
     try:
         init_database()
         logger.info("✅ Database tables initialized/checked successfully.")
     except Exception as e:
         logger.error(f"❌ Failed to initialize database tables: {e}")
 
-    # Check database connection
     health = check_database_health()
     if health['status'] == 'healthy':
         logger.info("✅ Database connection established")
     else:
         logger.error(f"❌ Database connection failed: {health.get('error', 'Unknown')}")
     
-    # Cleanup expired sessions on startup
     try:
         deleted_count = cleanup_expired_sessions()
         logger.info(f"🧹 Cleaned up {deleted_count} expired sessions")
@@ -101,7 +88,6 @@ app = FastAPI(
     lifespan=lifespan
 )
 
-# Add rate limiter to app state
 app.state.limiter = limiter
 app.add_exception_handler(RateLimitExceeded, _rate_limit_exceeded_handler)
 
@@ -109,28 +95,26 @@ app.add_exception_handler(RateLimitExceeded, _rate_limit_exceeded_handler)
 # MIDDLEWARE CONFIGURATION
 # ============================================
 
-# 1. CORS Middleware
+# CORS Middleware
 CORS_ORIGINS = os.getenv(
     "CORS_ORIGINS", 
-    "https://cungbanlangnghe.vn, http://localhost:3000,http://localhost:5173,https://cung-ban-lang-nghe.pages.dev"
+    "https://cungbanlangnghe.vn,http://localhost:3000,http://localhost:5173,https://cung-ban-lang-nghe.pages.dev"
 ).split(",")
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=CORS_ORIGINS,
+    allow_origins=[origin.strip() for origin in CORS_ORIGINS],
     allow_credentials=True,
-    allow_methods=["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+    allow_methods=["GET", "POST", "PUT", "DELETE", "OPTIONS", "HEAD"],
     allow_headers=["*"],
     expose_headers=["X-Request-ID", "X-Process-Time"]
 )
 
-# 2. Trusted Host Middleware (Security)
 app.add_middleware(
     TrustedHostMiddleware,
-    allowed_hosts=["*"]  # Configure properly in production
+    allowed_hosts=["*"]
 )
 
-# 3. Request ID & Timing Middleware
 @app.middleware("http")
 async def add_process_time_header(request: Request, call_next):
     """Add request ID and processing time to response headers"""
@@ -145,7 +129,6 @@ async def add_process_time_header(request: Request, call_next):
     
     return response
 
-# 4. Security Headers Middleware
 @app.middleware("http")
 async def add_security_headers(request: Request, call_next):
     """Add security headers to all responses"""
@@ -200,21 +183,21 @@ async def root():
         "description": "AI-powered mental health support for Vietnamese students",
         "status": "operational",
         "endpoints": {
-            "health": "/health",
+            "health": "/api/v1/health",
             "metrics": "/metrics",
             "docs": "/docs" if os.getenv("DEBUG") == "true" else "disabled",
         }
     }
 
 # ============================================
-# HEALTH CHECK ENDPOINTS
+# HEALTH CHECK ENDPOINTS (Support GET and HEAD)
 # ============================================
 
-@app.get("/api/v1/health", tags=["Health"])
+@app.api_route("/api/v1/health", methods=["GET", "HEAD"], tags=["Health"])
 @limiter.limit("60/minute")
 async def health_check(request: Request):
     """
-    Health check endpoint
+    Health check endpoint - Supports GET and HEAD
     Returns application and database health status
     """
     db_health = check_database_health()
@@ -238,18 +221,12 @@ async def health_check(request: Request):
 
 @app.get("/health/live", tags=["Health"])
 async def liveness_probe():
-    """
-    Liveness probe for Kubernetes/Docker
-    Returns 200 if application is running
-    """
+    """Liveness probe for Kubernetes/Docker"""
     return {"status": "alive"}
 
 @app.get("/health/ready", tags=["Health"])
 async def readiness_probe():
-    """
-    Readiness probe for Kubernetes/Docker
-    Returns 200 if application is ready to serve requests
-    """
+    """Readiness probe for Kubernetes/Docker"""
     db_health = check_database_health()
     
     if db_health['status'] == 'healthy':
@@ -264,7 +241,6 @@ async def readiness_probe():
 # METRICS ENDPOINT (Prometheus)
 # ============================================
 
-# Mount Prometheus metrics
 metrics_app = make_asgi_app()
 app.mount("/metrics", metrics_app)
 
@@ -272,44 +248,21 @@ app.mount("/metrics", metrics_app)
 # API ROUTERS
 # ============================================
 
-# Import and include API routers here
-# from app.api import sessions, messages, feedback
+# Import routers
 from app.api.endpoints import sessions, messages, feedback
-# app.include_router(sessions.router, prefix="/api/v1/sessions", tags=["Sessions"])
-# app.include_router(messages.router, prefix="/api/v1/messages", tags=["Messages"])
-# app.include_router(feedback.router, prefix="/api/v1/feedback", tags=["Feedback"])
-
-#app.include_router(admin_auth.router, prefix="/api/v1")
-#app.include_router(admin_content.router, prefix="/api/v1")
-#app.include_router(admin_analytics.router, prefix="/api/v1")
 from app.admin.routes import auth as admin_auth
 from app.admin.routes import content as admin_content
 from app.admin.routes import analytics as admin_analytics
-    
+
+# Admin routes
 app.include_router(admin_auth.router, prefix="/api/v1", tags=["Admin Auth"])
 app.include_router(admin_content.router, prefix="/api/v1", tags=["Admin Content"])
 app.include_router(admin_analytics.router, prefix="/api/v1", tags=["Admin Analytics"])
 
-# Session endpoints
-app.include_router(
-    sessions.router,
-    prefix="/api/v1/sessions",
-    tags=["Sessions"]
-)
-
-# Message endpoints
-app.include_router(
-    messages.router,
-    prefix="/api/v1/messages",
-    tags=["Messages"]
-)
-
-# Feedback endpoints
-app.include_router(
-    feedback.router,
-    prefix="/api/v1/feedback",
-    tags=["Feedback"]
-)
+# Main API routes
+app.include_router(sessions.router, prefix="/api/v1/sessions", tags=["Sessions"])
+app.include_router(messages.router, prefix="/api/v1/messages", tags=["Messages"])
+app.include_router(feedback.router, prefix="/api/v1/feedback", tags=["Feedback"])
 
 # ============================================
 # STARTUP MESSAGE
@@ -338,4 +291,4 @@ if __name__ == "__main__":
         port=int(os.getenv("API_PORT", "8000")),
         reload=os.getenv("DEBUG", "false").lower() == "true",
         log_level="info"
-    )# Force redeploy
+    )

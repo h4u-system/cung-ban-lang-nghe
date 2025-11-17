@@ -18,15 +18,13 @@ alembic==1.14.0
 redis==5.2.1
 
 # Authentication & Security
-#python-jose[cryptography]==3.3.0
-#passlib[bcrypt]==1.7.4
 passlib==1.7.4
 argon2-cffi==23.1.0
-#bcrypt==4.0.1  # Specific compatible version
+python-jose[cryptography]==3.3.0
 python-dotenv==1.0.1
 cryptography==44.0.0
 
-# AI/ML (Lightweight - OpenAI API only)
+# AI/ML
 openai==1.57.4
 
 # HTTP Clients
@@ -43,6 +41,3 @@ python-json-logger==3.2.1
 
 # Rate Limiting
 slowapi==0.1.9
-
-# Admin & AI dependencies
-python-jose[cryptography]==3.3.0

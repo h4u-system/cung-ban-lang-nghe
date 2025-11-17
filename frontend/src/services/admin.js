@@ -1,4 +1,7 @@
-// frontend/src/services/admin.js
+// ============================================
+// ADMIN SERVICE
+// File: frontend/src/services/admin.js
+// ============================================
 
 import axios from 'axios';
 
@@ -21,6 +24,19 @@ class AdminService {
       }
       return config;
     });
+
+    // Handle response errors
+    this.api.interceptors.response.use(
+      (response) => response,
+      (error) => {
+        if (error.response?.status === 401) {
+          // Unauthorized - clear tokens and redirect to login
+          this.logout();
+          window.location.href = '/admin/login';
+        }
+        return Promise.reject(error);
+      }
+    );
   }
 
   // Authentication
@@ -59,8 +75,9 @@ class AdminService {
   // Analytics
   async getAnalytics(startDate, endDate) {
     try {
-      const response = await this.api.get('/admin/analytics', {
-        params: { start_date: startDate, end_date: endDate },
+      const days = Math.ceil((new Date(endDate) - new Date(startDate)) / (1000 * 60 * 60 * 24));
+      const response = await this.api.get('/admin/analytics/dashboard', {
+        params: { days },
       });
       return response.data;
     } catch (error) {
