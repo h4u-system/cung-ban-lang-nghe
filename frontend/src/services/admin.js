@@ -119,41 +119,52 @@ class AdminService {
   }
 
   // Content Management
-  async getContent(type, page = 1, limit = 20) {
+  async getPendingStories(page = 1, limit = 20) {
     try {
-      const response = await this.api.get('/admin/content', {
-        params: { type, page, limit },
+      const response = await this.api.get('/admin/stories/pending', {
+        params: { page, limit },
       });
       return response.data;
     } catch (error) {
-      throw new Error(error.response?.data?.detail || 'Không thể tải nội dung');
+      throw new Error(error.response?.data?.detail || 'Không thể tải câu chuyện');
     }
   }
 
-  async createContent(data) {
+  async approveStory(storyId) {
     try {
-      const response = await this.api.post('/admin/content', data);
+      const response = await this.api.post(`/admin/stories/${storyId}/approve`);
       return response.data;
     } catch (error) {
-      throw new Error(error.response?.data?.detail || 'Không thể tạo nội dung');
+      throw new Error(error.response?.data?.detail || 'Không thể duyệt câu chuyện');
     }
   }
 
-  async updateContent(contentId, data) {
+  async rejectStory(storyId) {
     try {
-      const response = await this.api.put(`/admin/content/${contentId}`, data);
+      const response = await this.api.post(`/admin/stories/${storyId}/reject`);
       return response.data;
     } catch (error) {
-      throw new Error(error.response?.data?.detail || 'Không thể cập nhật nội dung');
+      throw new Error(error.response?.data?.detail || 'Không thể từ chối câu chuyện');
     }
   }
 
-  async deleteContent(contentId) {
+  async getContactForms(page = 1, limit = 20) {
     try {
-      const response = await this.api.delete(`/admin/content/${contentId}`);
+      const response = await this.api.get('/admin/contact', {
+        params: { page, limit },
+      });
       return response.data;
     } catch (error) {
-      throw new Error(error.response?.data?.detail || 'Không thể xóa nội dung');
+      throw new Error(error.response?.data?.detail || 'Không thể tải tin nhắn liên hệ');
+    }
+  }
+
+  async markContactRead(contactId) {
+    try {
+      const response = await this.api.post(`/admin/contact/${contactId}/read`);
+      return response.data;
+    } catch (error) {
+      throw new Error(error.response?.data?.detail || 'Không thể đánh dấu đã đọc');
     }
   }
 }

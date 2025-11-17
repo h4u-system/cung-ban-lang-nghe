@@ -1,9 +1,11 @@
 // frontend/src/pages/Admin/DashboardPage.jsx
 
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import adminService from '../../services/admin';
 
 const DashboardPage = () => {
+  const navigate = useNavigate();
   const [stats, setStats] = useState(null);
   const [loading, setLoading] = useState(true);
   const [dateRange, setDateRange] = useState('7d');
@@ -135,7 +137,9 @@ const DashboardPage = () => {
             <div className="text-2xl mb-2">📊</div>
             <div className="font-semibold text-gray-800">Xem báo cáo</div>
           </button>
-          <button className="bg-gradient-to-br from-green-50 to-green-100 hover:from-green-100 hover:to-green-200 p-4 rounded-xl transition-all text-left">
+          <button 
+            onClick={() => navigate('/admin/content')}
+            className="bg-gradient-to-br from-green-50 to-green-100 hover:from-green-100 hover:to-green-200 p-4 rounded-xl transition-all text-left">
             <div className="text-2xl mb-2">✅</div>
             <div className="font-semibold text-gray-800">Duyệt nội dung</div>
           </button>

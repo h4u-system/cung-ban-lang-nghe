@@ -27,6 +27,7 @@ import DashboardPage from './pages/Admin/DashboardPage';
 import MessagesPage from './pages/Admin/MessagesPage';
 import AnalyticsPage from './pages/Admin/AnalyticsPage';
 import SettingsPage from './pages/Admin/SettingsPage';
+import ContentPage from './pages/Admin/ContentPage';
 
 function App() {
   return (
@@ -69,6 +70,7 @@ function App() {
           <Route path="messages" element={<MessagesPage />} />
           <Route path="analytics" element={<AnalyticsPage />} />
           <Route path="settings" element={<SettingsPage />} />
+          <Route path="content" element={<ContentPage />} />
         </Route>
       </Routes>
     </BrowserRouter>
