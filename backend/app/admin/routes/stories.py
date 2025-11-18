@@ -13,7 +13,7 @@ from app.database import get_db
 from app.admin.auth import get_current_admin
 from app.admin.models import AdminUser
 from app.models.story import Story
-from backend.app.utils.encryption import decrypt_message
+from app.utils.encryption import decrypt_message
 
 router = APIRouter()
 
