@@ -1,6 +1,6 @@
 # ============================================
 # SQLALCHEMY MODELS: CÙNG BẠN LẮNG NGHE
-# File: backend/app/models/base.py
+# File: backend/app/models/session.py
 # ============================================
 
 from datetime import datetime, timedelta, timezone

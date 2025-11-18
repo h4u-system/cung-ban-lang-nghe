@@ -1,216 +1,294 @@
 # ============================================
-# STORIES API ENDPOINTS (PRODUCTION)
-# File: backend/app/api/endpoints/stories.py
+# SESSION API ENDPOINTS
+# File: backend/app/api/endpoints/sessions.py
 # ============================================
 
-from fastapi import APIRouter, Depends, HTTPException
-from sqlalchemy.orm import Session
-from sqlalchemy import desc
-from pydantic import BaseModel
-from typing import Optional
-from datetime import datetime
 import logging
-import os
-import base64
+from datetime import datetime
+from typing import Optional
+from uuid import UUID
+
+from fastapi import APIRouter, Depends, HTTPException, status
+from sqlalchemy.orm import Session
+from pydantic import BaseModel
 
 from app.database import get_db
-from app.models.story import Story
-from app.utils.encryption import encrypt_message, decrypt_message, ENCRYPTION_KEY
+from app.models.session import Session as SessionModel
+from app.utils.session_manager import generate_session_token, hash_user_agent
 
-from cryptography.hazmat.primitives.ciphers import Cipher, algorithms, modes
-from cryptography.hazmat.backends import default_backend
-from cryptography.hazmat.primitives import padding
+logger = logging.getLogger(__name__)
 
 router = APIRouter()
-logger = logging.getLogger(__name__)
+
+
+# ============================================
+# PYDANTIC SCHEMAS
+# ============================================
+
+class SessionCreateRequest(BaseModel):
+    """Schema for creating a new session"""
+    user_agent: Optional[str] = None
+    language_preference: str = "vi"
+    
+    model_config = {
+        "json_schema_extra": {
+            "example": {
+                "user_agent": "Mozilla/5.0...",
+                "language_preference": "vi"
+            }
+        }
+    }
+
+
+class SessionResponse(BaseModel):
+    """Schema for session response"""
+    session_token: str
+    expires_at: datetime
+    language_preference: str
+    is_crisis_mode: bool
+    
+    model_config = {
+        "from_attributes": True,
+        "json_schema_extra": {
+            "example": {
+                "session_token": "anon_abc123...",
+                "expires_at": "2025-12-18T10:30:00Z",
+                "language_preference": "vi",
+                "is_crisis_mode": False
+            }
+        }
+    }
+
+
+class SessionStatusResponse(BaseModel):
+    """Schema for session status check"""
+    is_valid: bool
+    is_expired: bool
+    is_active: bool
+    is_crisis_mode: bool
+    created_at: datetime
+    last_activity: datetime
+    expires_at: datetime
+    message_count: int
+
 
 # ============================================
 # HELPER FUNCTIONS
 # ============================================
 
-def encrypt_with_shared_iv(plaintext: str, iv_bytes: bytes) -> str:
-    """Encrypt text with specific IV (for title and content)"""
-    cipher = Cipher(
-        algorithms.AES(ENCRYPTION_KEY),
-        modes.CBC(iv_bytes),
-        backend=default_backend()
-    )
-    encryptor = cipher.encryptor()
+def get_session_by_token(db: Session, session_token: str) -> SessionModel:
+    """
+    Get session by token and validate
     
-    padder = padding.PKCS7(128).padder()
-    padded_data = padder.update(plaintext.encode('utf-8')) + padder.finalize()
-    
-    ciphertext = encryptor.update(padded_data) + encryptor.finalize()
-    
-    return base64.b64encode(ciphertext).decode('utf-8')
-
-# ============================================
-# SCHEMAS
-# ============================================
-
-class StoryCreate(BaseModel):
-    title: str
-    content: str
-    category: str
-
-class StoryResponse(BaseModel):
-    id: str
-    title: str
-    content: str
-    category: str
-    likes_count: int
-    created_at: datetime
-
-# ============================================
-# ENDPOINTS
-# ============================================
-
-@router.post("/stories")
-async def submit_story(
-    story_data: StoryCreate,
-    db: Session = Depends(get_db)
-):
-    """Submit a new anonymous story"""
-    
-    # Validate category
-    valid_categories = ['stress', 'lonely', 'love', 'exam', 'family', 'other']
-    if story_data.category not in valid_categories:
-        raise HTTPException(status_code=400, detail="Invalid category")
-    
-    try:
-        # Generate 1 shared IV for both title and content
-        shared_iv_bytes = os.urandom(16)
-        shared_iv_b64 = base64.b64encode(shared_iv_bytes).decode('utf-8')
+    Args:
+        db: Database session
+        session_token: Session token
         
-        # Encrypt both with same IV
-        title_encrypted = encrypt_with_shared_iv(story_data.title, shared_iv_bytes)
-        content_encrypted = encrypt_with_shared_iv(story_data.content, shared_iv_bytes)
+    Returns:
+        SessionModel instance
         
-        story = Story(
-            title_encrypted=title_encrypted,
-            content_encrypted=content_encrypted,
-            encryption_iv=shared_iv_b64,
-            category=story_data.category,
-            is_approved=False,
-            is_published=False
-        )
-        
-        db.add(story)
-        db.commit()
-        db.refresh(story)
-        
-        logger.info(f"Story submitted: {story.id}")
-        
-        return {
-            "success": True,
-            "message": "Câu chuyện của bạn đã được gửi! Sẽ được kiểm duyệt và hiển thị sớm.",
-            "story_id": str(story.id)
-        }
-    
-    except Exception as e:
-        logger.error(f"Failed to save story: {e}")
-        raise HTTPException(status_code=500, detail="Failed to save story")
-
-
-@router.get("/stories")
-async def get_published_stories(
-    category: Optional[str] = None,
-    limit: int = 20,
-    offset: int = 0,
-    db: Session = Depends(get_db)
-):
-    """Get published stories"""
-    
-    query = db.query(Story).filter(
-        Story.is_published == True,
-        Story.flagged == False
-    )
-    
-    if category:
-        query = query.filter(Story.category == category)
-    
-    query = query.order_by(desc(Story.published_at))
-    
-    total = query.count()
-    stories = query.offset(offset).limit(limit).all()
-    
-    result_stories = []
-    for story in stories:
-        try:
-            title = decrypt_message(story.title_encrypted, story.encryption_iv)
-            content = decrypt_message(story.content_encrypted, story.encryption_iv)
-            
-            # Truncate for list view
-            excerpt = content[:200] + "..." if len(content) > 200 else content
-            
-            result_stories.append({
-                "id": str(story.id),
-                "title": title,
-                "excerpt": excerpt,
-                "category": story.category,
-                "likes_count": story.likes_count,
-                "created_at": story.created_at.isoformat()
-            })
-        except Exception as e:
-            logger.warning(f"Failed to decrypt story {story.id}: {e}")
-            continue
-    
-    return {
-        "stories": result_stories,
-        "total": total,
-        "limit": limit,
-        "offset": offset
-    }
-
-
-@router.get("/stories/{story_id}")
-async def get_story_detail(
-    story_id: str,
-    db: Session = Depends(get_db)
-):
-    """Get full story content"""
-    
-    story = db.query(Story).filter(
-        Story.id == story_id,
-        Story.is_published == True,
-        Story.flagged == False
+    Raises:
+        HTTPException: If session not found or invalid
+    """
+    session = db.query(SessionModel).filter(
+        SessionModel.session_token == session_token
     ).first()
     
-    if not story:
-        raise HTTPException(status_code=404, detail="Story not found")
+    if not session:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail={
+                "error": "Session Not Found",
+                "message": "Session không tồn tại hoặc đã hết hạn",
+                "session_token": session_token[:8] + "..."
+            }
+        )
     
-    try:
-        title = decrypt_message(story.title_encrypted, story.encryption_iv)
-        content = decrypt_message(story.content_encrypted, story.encryption_iv)
-        
-        return {
-            "id": str(story.id),
-            "title": title,
-            "content": content,
-            "category": story.category,
-            "likes_count": story.likes_count,
-            "created_at": story.created_at.isoformat()
-        }
-    except Exception as e:
-        logger.error(f"Failed to decrypt story {story_id}: {e}")
-        raise HTTPException(status_code=500, detail="Failed to load story")
+    # Check if expired
+    if session.is_expired():
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail={
+                "error": "Session Expired",
+                "message": "Session đã hết hạn. Vui lòng tạo session mới.",
+                "expired_at": session.expires_at.isoformat()
+            }
+        )
+    
+    # Check if deleted
+    if session.deleted_at is not None:
+        raise HTTPException(
+            status_code=status.HTTP_410_GONE,
+            detail={
+                "error": "Session Deleted",
+                "message": "Session đã bị xóa",
+                "deleted_at": session.deleted_at.isoformat()
+            }
+        )
+    
+    return session
 
 
-@router.post("/stories/{story_id}/like")
-async def like_story(
-    story_id: str,
+# ============================================
+# SESSION ENDPOINTS
+# ============================================
+
+@router.post(
+    "/",
+    response_model=SessionResponse,
+    status_code=status.HTTP_201_CREATED,
+    summary="Create New Session",
+    description="Create a new anonymous session for chatting"
+)
+async def create_session(
+    session_data: SessionCreateRequest,
     db: Session = Depends(get_db)
 ):
-    """Like a story (increment counter)"""
+    """
+    Create a new anonymous session
     
-    story = db.query(Story).filter(Story.id == story_id).first()
-    if not story:
-        raise HTTPException(status_code=404, detail="Story not found")
+    - **user_agent**: Optional browser user agent (will be hashed)
+    - **language_preference**: Preferred language (default: 'vi')
     
-    story.likes_count += 1
+    Returns a session token that should be used for all subsequent requests.
+    Session tokens are anonymous and don't require any personal information.
+    """
+    # Generate session token
+    session_token = generate_session_token()
+    
+    # Hash user agent if provided (for analytics, not tracking)
+    user_agent_hash = None
+    if session_data.user_agent:
+        user_agent_hash = hash_user_agent(session_data.user_agent)
+    
+    # Create session
+    new_session = SessionModel(
+        session_token=session_token,
+        user_agent_hash=user_agent_hash,
+        language_preference=session_data.language_preference
+    )
+    
+    db.add(new_session)
+    db.commit()
+    db.refresh(new_session)
+    
+    logger.info(f"New session created: {new_session.id}")
+    
+    return SessionResponse(
+        session_token=new_session.session_token,
+        expires_at=new_session.expires_at,
+        language_preference=new_session.language_preference,
+        is_crisis_mode=new_session.is_crisis_mode
+    )
+
+
+@router.get(
+    "/status",
+    response_model=SessionStatusResponse,
+    summary="Check Session Status",
+    description="Check if a session is valid and get its status"
+)
+async def check_session_status(
+    session_token: str,
+    db: Session = Depends(get_db)
+):
+    """
+    Check session status
+    
+    - **session_token**: Session token to check
+    
+    Returns detailed session status including validity, expiration, and activity.
+    """
+    session = get_session_by_token(db, session_token)
+    
+    # Count messages
+    from app.models.message import Message
+    message_count = db.query(Message).filter(
+        Message.session_id == session.id
+    ).count()
+    
+    return SessionStatusResponse(
+        is_valid=True,
+        is_expired=session.is_expired(),
+        is_active=session.is_active,
+        is_crisis_mode=session.is_crisis_mode,
+        created_at=session.created_at,
+        last_activity=session.last_activity,
+        expires_at=session.expires_at,
+        message_count=message_count
+    )
+
+
+@router.post(
+    "/refresh",
+    response_model=SessionResponse,
+    summary="Refresh Session",
+    description="Refresh session to extend expiration time"
+)
+async def refresh_session(
+    session_token: str,
+    db: Session = Depends(get_db)
+):
+    """
+    Refresh session to extend expiration
+    
+    - **session_token**: Session token to refresh
+    
+    Extends the session expiration by 30 days from now.
+    """
+    session = get_session_by_token(db, session_token)
+    
+    # Update expiration and activity
+    from datetime import timedelta
+    session.expires_at = datetime.utcnow() + timedelta(days=30)
+    session.touch()
+    
+    db.commit()
+    db.refresh(session)
+    
+    logger.info(f"Session refreshed: {session.id}")
+    
+    return SessionResponse(
+        session_token=session.session_token,
+        expires_at=session.expires_at,
+        language_preference=session.language_preference,
+        is_crisis_mode=session.is_crisis_mode
+    )
+
+
+@router.delete(
+    "/",
+    status_code=status.HTTP_204_NO_CONTENT,
+    summary="Delete Session",
+    description="Soft delete a session and all its data"
+)
+async def delete_session(
+    session_token: str,
+    db: Session = Depends(get_db)
+):
+    """
+    Delete session (soft delete)
+    
+    - **session_token**: Session token to delete
+    
+    This will mark the session as deleted and make it inaccessible.
+    All associated messages will also be inaccessible.
+    """
+    session = get_session_by_token(db, session_token)
+    
+    # Soft delete
+    session.deleted_at = datetime.utcnow()
+    session.is_active = False
+    
     db.commit()
     
-    return {
-        "success": True,
-        "likes_count": story.likes_count
-    }
+    logger.info(f"Session deleted: {session.id}")
+    
+    return None  # 204 No Content
+
+
+# ============================================
+# EXPORT
+# ============================================
+
+__all__ = ['router', 'get_session_by_token']
