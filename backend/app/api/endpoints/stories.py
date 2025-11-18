@@ -1,5 +1,5 @@
 # ============================================
-# STORIES API ENDPOINTS
+# STORIES API ENDPOINTS (WITH DEBUG)
 # File: backend/app/api/endpoints/stories.py
 # ============================================
 
@@ -9,13 +9,14 @@ from sqlalchemy import desc
 from pydantic import BaseModel
 from typing import Optional
 from datetime import datetime
+import logging
 
 from app.database import get_db
 from app.models.story import Story
-from app.utils.encryption import encrypt_message, decrypt_message
-
+from app.utils.encryption import encrypt_message, decrypt_message, ENCRYPTION_KEY
 
 router = APIRouter()
+logger = logging.getLogger(__name__)
 
 # ============================================
 # SCHEMAS
@@ -35,6 +36,38 @@ class StoryResponse(BaseModel):
     created_at: datetime
 
 # ============================================
+# TEST ENDPOINT
+# ============================================
+
+@router.get("/test-encryption")
+async def test_encryption():
+    """Test encryption roundtrip - FOR DEBUGGING"""
+    
+    test_message = "Tôi cảm thấy áp lực khi học tập và thi cử"
+    
+    try:
+        # Encrypt
+        encrypted, iv = encrypt_message(test_message)
+        
+        # Decrypt
+        decrypted = decrypt_message(encrypted, iv)
+        
+        return {
+            "test_message": test_message,
+            "encrypted_preview": encrypted[:50] + "..." if len(encrypted) > 50 else encrypted,
+            "iv": iv,
+            "decrypted": decrypted,
+            "success": test_message == decrypted,
+            "key_length": len(ENCRYPTION_KEY),
+            "key_preview": ENCRYPTION_KEY[:4].decode() + "****" + ENCRYPTION_KEY[-4:].decode()
+        }
+    except Exception as e:
+        return {
+            "success": False,
+            "error": str(e)
+        }
+
+# ============================================
 # ENDPOINTS
 # ============================================
 
@@ -50,29 +83,43 @@ async def submit_story(
     if story_data.category not in valid_categories:
         raise HTTPException(status_code=400, detail="Invalid category")
     
-    # Encrypt title and content
-    title_encrypted, title_iv = encrypt_message(story_data.title)
-    content_encrypted, content_iv = encrypt_message(story_data.content)
+    # ✅ DEBUG LOG
+    logger.info(f"🔐 Encrypting story with key length: {len(ENCRYPTION_KEY)}")
+    logger.info(f"📝 Story title preview: {story_data.title[:20]}...")
     
-    # Use same IV for simplicity (or generate separate)
-    story = Story(
-        title_encrypted=title_encrypted,
-        content_encrypted=content_encrypted,
-        encryption_iv=title_iv,  # Using title's IV for both
-        category=story_data.category,
-        is_approved=False,  # Needs admin approval
-        is_published=False
-    )
+    try:
+        # Encrypt title and content
+        title_encrypted, title_iv = encrypt_message(story_data.title)
+        content_encrypted, content_iv = encrypt_message(story_data.content)
+        
+        logger.info(f"✅ Story encrypted successfully")
+        logger.info(f"📦 Encrypted data lengths: title={len(title_encrypted)}, content={len(content_encrypted)}")
+        
+        # Use same IV for both (or generate separate - your choice)
+        story = Story(
+            title_encrypted=title_encrypted,
+            content_encrypted=content_encrypted,
+            encryption_iv=title_iv,  # Using title's IV for both
+            category=story_data.category,
+            is_approved=False,
+            is_published=False
+        )
+        
+        db.add(story)
+        db.commit()
+        db.refresh(story)
+        
+        logger.info(f"✅ Story saved to database: {story.id}")
+        
+        return {
+            "success": True,
+            "message": "Câu chuyện của bạn đã được gửi! Sẽ được kiểm duyệt và hiển thị sớm.",
+            "story_id": str(story.id)
+        }
     
-    db.add(story)
-    db.commit()
-    db.refresh(story)
-    
-    return {
-        "success": True,
-        "message": "Câu chuyện của bạn đã được gửi! Sẽ được kiểm duyệt và hiển thị sớm.",
-        "story_id": str(story.id)
-    }
+    except Exception as e:
+        logger.error(f"❌ Failed to encrypt/save story: {e}")
+        raise HTTPException(status_code=500, detail=f"Failed to save story: {str(e)}")
 
 
 @router.get("/stories")
@@ -116,7 +163,8 @@ async def get_published_stories(
                 "created_at": story.created_at.isoformat()
             })
         except Exception as e:
-            continue  # Skip if decryption fails
+            logger.warning(f"⚠️  Failed to decrypt published story {story.id}: {e}")
+            continue  # Skip corrupted stories
     
     return {
         "stories": result_stories,
