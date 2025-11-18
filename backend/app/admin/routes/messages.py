@@ -15,7 +15,7 @@ from app.admin.auth import get_current_admin
 from app.admin.models import AdminUser
 from app.models.message import Message
 from app.models.session import Session as ChatSession
-from app.utils.encryption import decrypt_message
+from backend.app.utils.encryption_bk import decrypt_message
 
 router = APIRouter()
 

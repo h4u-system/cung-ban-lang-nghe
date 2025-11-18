@@ -1,24 +1,21 @@
 # ============================================
-# ENCRYPTION & SECURITY UTILITIES (DEBUG VERSION)
+# ENCRYPTION & SECURITY UTILITIES
 # File: backend/app/utils/encryption.py
 # ============================================
 
 import os
 import base64
-import logging
 from cryptography.hazmat.primitives.ciphers import Cipher, algorithms, modes
 from cryptography.hazmat.backends import default_backend
 from cryptography.hazmat.primitives import padding
 
-logger = logging.getLogger(__name__)
 
 # ============================================
 # ENCRYPTION CONFIGURATION
 # ============================================
 
 # Get encryption key from environment (32 bytes for AES-256)
-ENCRYPTION_KEY_RAW = os.getenv("ENCRYPTION_KEY", "dev-key-32-bytes-for-testing!")
-ENCRYPTION_KEY = ENCRYPTION_KEY_RAW.encode()
+ENCRYPTION_KEY = os.getenv("ENCRYPTION_KEY", "dev-key-32-bytes-for-testing!").encode()
 
 # Ensure key is exactly 32 bytes
 if len(ENCRYPTION_KEY) < 32:
@@ -26,20 +23,17 @@ if len(ENCRYPTION_KEY) < 32:
 elif len(ENCRYPTION_KEY) > 32:
     ENCRYPTION_KEY = ENCRYPTION_KEY[:32]
 
-# ✅ DEBUG LOGS (remove after verification)
-logger.info(f"🔐 ENCRYPTION_KEY source: {'ENV_VAR' if os.getenv('ENCRYPTION_KEY') else 'DEFAULT'}")
-logger.info(f"🔐 ENCRYPTION_KEY length: {len(ENCRYPTION_KEY)} bytes")
-if len(ENCRYPTION_KEY_RAW) >= 8:
-    logger.info(f"🔐 Key preview: {ENCRYPTION_KEY_RAW[:4]}****{ENCRYPTION_KEY_RAW[-4:]}")
-
 
 # ============================================
 # ENCRYPTION FUNCTIONS
 # ============================================
 
 def generate_iv() -> str:
-    """Generate random Initialization Vector (IV) for AES"""
-    iv = os.urandom(16)
+    """
+    Generate random Initialization Vector (IV) for AES
+    Returns base64-encoded string
+    """
+    iv = os.urandom(16)  # AES block size is 16 bytes
     return base64.b64encode(iv).decode('utf-8')
 
 
@@ -91,9 +85,6 @@ def decrypt_message(ciphertext: str, iv: str) -> str:
         
     Returns:
         Decrypted plaintext string
-        
-    Raises:
-        ValueError: If decryption fails
     """
     if not ciphertext or not iv:
         return ""
@@ -130,23 +121,21 @@ def decrypt_message(ciphertext: str, iv: str) -> str:
 
 def test_encryption():
     """Test encryption/decryption roundtrip"""
-    test_message = "Tôi cảm thấy buồn và lo lắng về kỳ thi"
-    
-    logger.info("🧪 Testing encryption...")
+    test_message = "Tôi cảm thấy buồn và lo lắng"
     
     # Encrypt
     encrypted, iv = encrypt_message(test_message)
-    logger.info(f"✅ Original: {test_message}")
-    logger.info(f"✅ Encrypted: {encrypted[:50]}...")
-    logger.info(f"✅ IV: {iv}")
+    print(f"Original: {test_message}")
+    print(f"Encrypted: {encrypted[:50]}...")
+    print(f"IV: {iv}")
     
     # Decrypt
     decrypted = decrypt_message(encrypted, iv)
-    logger.info(f"✅ Decrypted: {decrypted}")
+    print(f"Decrypted: {decrypted}")
     
     # Verify
-    assert test_message == decrypted, "❌ Encryption/Decryption failed!"
-    logger.info("✅ Encryption test PASSED!")
+    assert test_message == decrypted, "Encryption/Decryption failed!"
+    print("✅ Encryption test passed!")
 
 
 if __name__ == "__main__":

@@ -10,7 +10,7 @@ from typing import Optional
 
 from app.database import get_db
 from app.models.contact import ContactForm
-from app.utils.encryption import encrypt_message
+from backend.app.utils.encryption_bk import encrypt_message
 
 router = APIRouter()
 
