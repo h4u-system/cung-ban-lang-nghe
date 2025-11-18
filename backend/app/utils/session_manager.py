@@ -12,9 +12,10 @@ def generate_session_token() -> str:
     Generate a cryptographically secure session token
     
     Returns:
-        String token with prefix 'anon_' + 32 random hex characters
+        String token with prefix 'anon_' + 56 random hex characters (total = 61 chars)
     """
-    random_bytes = secrets.token_bytes(32)
+    # ✅ FIX: Use 28 bytes → 56 hex chars (total with prefix = 61 < 64)
+    random_bytes = secrets.token_bytes(28)  # Changed from 32 to 28
     token = random_bytes.hex()
     return f"anon_{token}"
 
