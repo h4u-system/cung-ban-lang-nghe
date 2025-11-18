@@ -10,10 +10,11 @@ from uuid import UUID
 
 from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.orm import Session
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 
 from app.database import get_db
 from app.models.session import Session as SessionModel
+from app.models.message import Message
 from app.utils.session_manager import generate_session_token, hash_user_agent
 
 logger = logging.getLogger(__name__)
@@ -28,7 +29,8 @@ router = APIRouter()
 class SessionCreateRequest(BaseModel):
     """Schema for creating a new session"""
     user_agent: Optional[str] = None
-    language_preference: str = "vi"
+    #language_preference: str = "vi"
+    language_preference: str = Field(default="vi")
     
     model_config = {
         "json_schema_extra": {
@@ -202,7 +204,6 @@ async def check_session_status(
     session = get_session_by_token(db, session_token)
     
     # Count messages
-    from app.models.message import Message
     message_count = db.query(Message).filter(
         Message.session_id == session.id
     ).count()
