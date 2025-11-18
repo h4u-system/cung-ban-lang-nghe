@@ -4,7 +4,7 @@
 # ============================================
 
 import logging
-from datetime import datetime
+from datetime import datetime, timedelta
 from typing import Optional
 from uuid import UUID
 
@@ -28,8 +28,7 @@ router = APIRouter()
 
 class SessionCreateRequest(BaseModel):
     """Schema for creating a new session"""
-    user_agent: Optional[str] = None
-    #language_preference: str = "vi"
+    user_agent: Optional[str] = Field(default=None)
     language_preference: str = Field(default="vi")
     
     model_config = {
@@ -136,14 +135,14 @@ def get_session_by_token(db: Session, session_token: str) -> SessionModel:
 # ============================================
 
 @router.post(
-    "/",
+    "",  # ✅ FIX: No trailing slash - FastAPI will auto-handle both /sessions and /sessions/
     response_model=SessionResponse,
     status_code=status.HTTP_201_CREATED,
     summary="Create New Session",
     description="Create a new anonymous session for chatting"
 )
 async def create_session(
-    session_data: SessionCreateRequest,
+    session_data: SessionCreateRequest = SessionCreateRequest(),  # ✅ FIX: Default value for empty body
     db: Session = Depends(get_db)
 ):
     """
@@ -184,8 +183,45 @@ async def create_session(
     )
 
 
+# ✅ NEW: GET endpoint to validate session by token
 @router.get(
-    "/status",
+    "/{session_token}",
+    response_model=SessionStatusResponse,
+    summary="Get Session by Token",
+    description="Validate and get session details by token"
+)
+async def get_session(
+    session_token: str,
+    db: Session = Depends(get_db)
+):
+    """
+    Get session details by token
+    
+    - **session_token**: Session token to validate
+    
+    Returns session details if valid, otherwise 404/401/410 error.
+    """
+    session = get_session_by_token(db, session_token)
+    
+    # Count messages
+    message_count = db.query(Message).filter(
+        Message.session_id == session.id
+    ).count()
+    
+    return SessionStatusResponse(
+        is_valid=True,
+        is_expired=session.is_expired(),
+        is_active=session.is_active,
+        is_crisis_mode=session.is_crisis_mode,
+        created_at=session.created_at,
+        last_activity=session.last_activity,
+        expires_at=session.expires_at,
+        message_count=message_count
+    )
+
+
+@router.get(
+    "/status",  # ⚠️  This will be /sessions/status (OK)
     response_model=SessionStatusResponse,
     summary="Check Session Status",
     description="Check if a session is valid and get its status"
@@ -195,9 +231,9 @@ async def check_session_status(
     db: Session = Depends(get_db)
 ):
     """
-    Check session status
+    Check session status via query parameter
     
-    - **session_token**: Session token to check
+    - **session_token**: Session token to check (query param)
     
     Returns detailed session status including validity, expiration, and activity.
     """
@@ -240,7 +276,6 @@ async def refresh_session(
     session = get_session_by_token(db, session_token)
     
     # Update expiration and activity
-    from datetime import timedelta
     session.expires_at = datetime.utcnow() + timedelta(days=30)
     session.touch()
     
@@ -258,7 +293,7 @@ async def refresh_session(
 
 
 @router.delete(
-    "/",
+    "",  # ✅ FIX: No trailing slash
     status_code=status.HTTP_204_NO_CONTENT,
     summary="Delete Session",
     description="Soft delete a session and all its data"

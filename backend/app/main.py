@@ -249,23 +249,18 @@ app.mount("/metrics", metrics_app)
 # ============================================
 
 # Import public API routers
-from app.api.endpoints import sessions, messages, feedback
-
-# ✅ FIXED: Import admin router (not individual routes)
+from app.api.endpoints import sessions, messages, feedback, stories, contact
 from app.admin import router as admin_router
-
-# ✅ NEW: Register admin router ONCE with all sub-routes
-app.include_router(admin_router)
 
 # Main API routes
 app.include_router(sessions.router, prefix="/api/v1/sessions", tags=["Sessions"])
 app.include_router(messages.router, prefix="/api/v1/messages", tags=["Messages"])
 app.include_router(feedback.router, prefix="/api/v1/feedback", tags=["Feedback"])
-
-
-from app.api.endpoints import stories, contact
 app.include_router(stories.router, prefix="/api/v1", tags=["Stories"])
 app.include_router(contact.router, prefix="/api/v1", tags=["Contact"])
+
+# Admin routes
+app.include_router(admin_router)
 
 # ============================================
 # STARTUP MESSAGE
