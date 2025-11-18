@@ -129,11 +129,15 @@ const DashboardPage = () => {
           Thao tác nhanh
         </h2>
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-          <button className="bg-gradient-to-br from-blue-50 to-blue-100 hover:from-blue-100 hover:to-blue-200 p-4 rounded-xl transition-all text-left">
+          <button 
+            onClick={() => navigate('/admin/messages')}
+            className="bg-gradient-to-br from-blue-50 to-blue-100 hover:from-blue-100 hover:to-blue-200 p-4 rounded-xl transition-all text-left">
             <div className="text-2xl mb-2">👀</div>
             <div className="font-semibold text-gray-800">Xem tin nhắn mới</div>
           </button>
-          <button className="bg-gradient-to-br from-purple-50 to-purple-100 hover:from-purple-100 hover:to-purple-200 p-4 rounded-xl transition-all text-left">
+          <button 
+            onClick={() => navigate('/admin/analytics')}
+            className="bg-gradient-to-br from-purple-50 to-purple-100 hover:from-purple-100 hover:to-purple-200 p-4 rounded-xl transition-all text-left">
             <div className="text-2xl mb-2">📊</div>
             <div className="font-semibold text-gray-800">Xem báo cáo</div>
           </button>

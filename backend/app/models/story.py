@@ -31,6 +31,9 @@ class Story(Base):
     flagged = Column(Boolean, default=False)
     flag_reason = Column(String(200))
     
+    # 🆕 Admin tracking
+    approved_by = Column(String(255))  # Admin user ID who approved
+    
     # Engagement
     likes_count = Column(Integer, default=0)
     

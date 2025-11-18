@@ -31,6 +31,9 @@ class ContactForm(Base):
     is_read = Column(Boolean, default=False)
     is_replied = Column(Boolean, default=False)
     
+    # 🆕 Admin tracking
+    read_by = Column(String(255))  # Admin user ID who read
+    
     # Timestamps
     created_at = Column(DateTime(timezone=True), server_default=func.now())
     read_at = Column(DateTime(timezone=True))
