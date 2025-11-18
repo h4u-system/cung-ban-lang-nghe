@@ -21,10 +21,10 @@ from app.schemas.message import (
     MessageListResponse,
     MessageDeleteResponse
 )
-from backend.app.utils.encryption_bk import encrypt_message, decrypt_message
+# ✅ CORRECT IMPORT
+from app.utils.encryption import encrypt_message, decrypt_message
 from app.utils.crisis_detection import detect_crisis_in_message, get_emergency_info
 from app.api.endpoints.sessions import get_session_by_token
-
 from app.utils.ai_engine import GroqAI
 
 logger = logging.getLogger(__name__)

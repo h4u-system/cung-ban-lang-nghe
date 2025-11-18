@@ -15,7 +15,7 @@ from sqlalchemy import func
 from app.database import get_db
 from app.models import Feedback as FeedbackModel, Session as SessionModel
 from app.api.endpoints.sessions import get_session_by_token
-from backend.app.utils.encryption_bk import encrypt_message
+from backend.app.utils.encryption import encrypt_message
 
 logger = logging.getLogger(__name__)
 

@@ -12,7 +12,7 @@ from datetime import datetime
 
 from app.database import get_db
 from app.models.story import Story
-from backend.app.utils.encryption_bk import encrypt_message, decrypt_message
+from backend.app.utils.encryption import encrypt_message, decrypt_message
 
 router = APIRouter()
 
