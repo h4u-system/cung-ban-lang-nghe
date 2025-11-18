@@ -167,6 +167,16 @@ class AdminService {
       throw new Error(error.response?.data?.detail || 'Không thể đánh dấu đã đọc');
     }
   }
+
+  // ADD DELETE METHOD
+  async deleteStory(storyId) {
+    try {
+      const response = await this.api.delete(`/admin/stories/${storyId}`);
+      return response.data;
+    } catch (error) {
+      throw new Error(error.response?.data?.detail || 'Không thể xóa story');
+    }
+  }
 }
 
 export default new AdminService();

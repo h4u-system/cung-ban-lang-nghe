@@ -45,20 +45,34 @@ const ContentPage = () => {
   const handleApproveStory = async (storyId) => {
     try {
       await adminService.approveStory(storyId);
-      alert('Đã duyệt câu chuyện!');
+      alert('✅ Đã duyệt câu chuyện và xuất bản!');
       loadStories();
     } catch (error) {
-      alert(error.message);
+      alert('❌ Lỗi: ' + error.message);
     }
   };
 
   const handleRejectStory = async (storyId) => {
+    if (!confirm('Từ chối câu chuyện này?')) return;
+    
     try {
       await adminService.rejectStory(storyId);
-      alert('Đã từ chối câu chuyện!');
+      alert('✅ Đã từ chối câu chuyện!');
       loadStories();
     } catch (error) {
-      alert(error.message);
+      alert('❌ Lỗi: ' + error.message);
+    }
+  };
+
+  const handleDeleteStory = async (storyId) => {
+    if (!confirm('⚠️ XÓA VĨNH VIỄN câu chuyện này? Không thể khôi phục!')) return;
+    
+    try {
+      await adminService.deleteStory(storyId);
+      alert('✅ Đã xóa story corrupted!');
+      loadStories();
+    } catch (error) {
+      alert('❌ Lỗi: ' + error.message);
     }
   };
 
@@ -126,10 +140,37 @@ const ContentPage = () => {
                 </div>
               ) : (
                 stories.map((story) => (
-                  <div key={story.id} className="bg-white rounded-2xl p-6 shadow-lg">
+                  <div 
+                    key={story.id} 
+                    className={`bg-white rounded-2xl p-6 shadow-lg ${
+                      story.decryption_failed ? 'border-2 border-orange-500' : ''
+                    }`}
+                  >
+                    {/* ✅ Warning banner for corrupted stories */}
+                    {story.decryption_failed && (
+                      <div className="bg-orange-100 border-l-4 border-orange-500 p-4 mb-4 rounded-r-lg">
+                        <div className="flex items-start">
+                          <span className="text-2xl mr-3">⚠️</span>
+                          <div>
+                            <p className="text-orange-800 font-semibold mb-1">
+                              Cảnh báo: Không thể giải mã nội dung
+                            </p>
+                            <p className="text-orange-700 text-sm">
+                              Encryption key có thể đã thay đổi hoặc dữ liệu bị corrupt. 
+                              Bạn nên xóa vĩnh viễn story này.
+                            </p>
+                          </div>
+                        </div>
+                      </div>
+                    )}
+
                     <div className="flex justify-between items-start mb-4">
                       <div>
-                        <span className="inline-block bg-blue-100 text-blue-700 px-3 py-1 rounded-full text-xs font-bold mb-2">
+                        <span className={`inline-block px-3 py-1 rounded-full text-xs font-bold mb-2 ${
+                          story.decryption_failed 
+                            ? 'bg-orange-100 text-orange-700' 
+                            : 'bg-blue-100 text-blue-700'
+                        }`}>
                           {story.category}
                         </span>
                         <h3 className="text-xl font-bold text-gray-800">{story.title}</h3>
@@ -144,18 +185,30 @@ const ContentPage = () => {
                     </p>
 
                     <div className="flex gap-3">
-                      <button
-                        onClick={() => handleApproveStory(story.id)}
-                        className="flex-1 bg-green-500 hover:bg-green-600 text-white py-3 rounded-xl font-semibold transition shadow-lg"
-                      >
-                        ✅ Duyệt & Xuất bản
-                      </button>
-                      <button
-                        onClick={() => handleRejectStory(story.id)}
-                        className="flex-1 bg-red-500 hover:bg-red-600 text-white py-3 rounded-xl font-semibold transition shadow-lg"
-                      >
-                        ❌ Từ chối
-                      </button>
+                      {!story.decryption_failed ? (
+                        <>
+                          <button
+                            onClick={() => handleApproveStory(story.id)}
+                            className="flex-1 bg-green-500 hover:bg-green-600 text-white py-3 rounded-xl font-semibold transition shadow-lg"
+                          >
+                            ✅ Duyệt & Xuất bản
+                          </button>
+                          <button
+                            onClick={() => handleRejectStory(story.id)}
+                            className="flex-1 bg-red-500 hover:bg-red-600 text-white py-3 rounded-xl font-semibold transition shadow-lg"
+                          >
+                            ❌ Từ chối
+                          </button>
+                        </>
+                      ) : (
+                        <button
+                          onClick={() => handleDeleteStory(story.id)}
+                          className="flex-1 bg-orange-500 hover:bg-orange-600 text-white py-3 rounded-xl font-semibold transition shadow-lg flex items-center justify-center gap-2"
+                        >
+                          <span>🗑️</span>
+                          <span>Xóa vĩnh viễn (corrupted data)</span>
+                        </button>
+                      )}
                     </div>
                   </div>
                 ))

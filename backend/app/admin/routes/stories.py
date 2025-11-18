@@ -45,10 +45,13 @@ async def get_pending_stories(
     total = stories_query.count()
     stories = stories_query.offset(skip).limit(limit).all()
     
-    # Decrypt and format
+    # Decrypt and format (with fallback for corrupted data)
     result_stories = []
+    corrupted_count = 0
+    
     for story in stories:
         try:
+            # Try to decrypt
             title = decrypt_message(story.title_encrypted, story.encryption_iv)
             content = decrypt_message(story.content_encrypted, story.encryption_iv)
             
@@ -58,17 +61,39 @@ async def get_pending_stories(
                 "content": content,
                 "category": story.category,
                 "created_at": story.created_at.isoformat() if story.created_at else None,
-                "status": "pending"
+                "status": "pending",
+                "decryption_failed": False
             })
+            
         except Exception as e:
-            print(f"Failed to decrypt story {story.id}: {e}")
-            continue
+            # If decryption fails, still show metadata with warning
+            print(f"⚠️  Failed to decrypt story {story.id}: {e}")
+            corrupted_count += 1
+            
+            result_stories.append({
+                "id": str(story.id),
+                "title": f"⚠️ [Lỗi decrypt] Story {str(story.id)[:8]}...",
+                "content": (
+                    f"⚠️ **Không thể giải mã nội dung**\n\n"
+                    f"Có thể do encryption key thay đổi hoặc dữ liệu bị corrupt.\n\n"
+                    f"**Thông tin:**\n"
+                    f"- Category: {story.category}\n"
+                    f"- Created: {story.created_at.strftime('%Y-%m-%d %H:%M:%S') if story.created_at else 'N/A'}\n"
+                    f"- Story ID: {story.id}\n\n"
+                    f"**Hành động:** Bạn có thể xóa vĩnh viễn story này."
+                ),
+                "category": story.category,
+                "created_at": story.created_at.isoformat() if story.created_at else None,
+                "status": "pending",
+                "decryption_failed": True  # ✅ Flag for frontend
+            })
     
     return {
         "stories": result_stories,
         "total": total,
         "page": page,
-        "limit": limit
+        "limit": limit,
+        "corrupted_count": corrupted_count
     }
 
 
@@ -91,6 +116,16 @@ async def approve_story(
     
     if story.is_approved:
         raise HTTPException(status_code=400, detail="Story already approved")
+    
+    # ✅ Verify decryption before approving
+    try:
+        decrypt_message(story.title_encrypted, story.encryption_iv)
+        decrypt_message(story.content_encrypted, story.encryption_iv)
+    except Exception as e:
+        raise HTTPException(
+            status_code=400,
+            detail=f"Cannot approve story with corrupted encryption: {str(e)}"
+        )
     
     # Approve and publish
     story.is_approved = True
@@ -137,5 +172,32 @@ async def reject_story(
     return {
         "success": True,
         "message": "Story rejected successfully",
+        "story_id": story_id
+    }
+
+
+@router.delete("/{story_id}")
+async def delete_corrupted_story(
+    story_id: str,
+    admin: AdminUser = Depends(get_current_admin),
+    db: Session = Depends(get_db)
+):
+    """
+    ✅ NEW: Delete permanently corrupted stories
+    
+    Final URL: /api/v1/admin/stories/{story_id}
+    """
+    
+    story = db.query(Story).filter(Story.id == story_id).first()
+    
+    if not story:
+        raise HTTPException(status_code=404, detail="Story not found")
+    
+    db.delete(story)
+    db.commit()
+    
+    return {
+        "success": True,
+        "message": "Story deleted permanently",
         "story_id": story_id
     }
