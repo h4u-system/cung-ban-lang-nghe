@@ -1,5 +1,5 @@
 # ============================================
-# ENCRYPTION & SECURITY UTILITIES (DEBUG VERSION)
+# ENCRYPTION & SECURITY UTILITIES (PRODUCTION)
 # File: backend/app/utils/encryption.py
 # ============================================
 
@@ -26,11 +26,8 @@ if len(ENCRYPTION_KEY) < 32:
 elif len(ENCRYPTION_KEY) > 32:
     ENCRYPTION_KEY = ENCRYPTION_KEY[:32]
 
-# ✅ DEBUG LOGS (remove after verification)
-logger.info(f"🔐 ENCRYPTION_KEY source: {'ENV_VAR' if os.getenv('ENCRYPTION_KEY') else 'DEFAULT'}")
-logger.info(f"🔐 ENCRYPTION_KEY length: {len(ENCRYPTION_KEY)} bytes")
-if len(ENCRYPTION_KEY_RAW) >= 8:
-    logger.info(f"🔐 Key preview: {ENCRYPTION_KEY_RAW[:4]}****{ENCRYPTION_KEY_RAW[-4:]}")
+# ✅ PRODUCTION LOG (minimal, no sensitive data)
+logger.info(f"🔐 Encryption initialized: {len(ENCRYPTION_KEY)} bytes, source={'ENV' if os.getenv('ENCRYPTION_KEY') else 'DEFAULT'}")
 
 
 # ============================================
@@ -125,40 +122,12 @@ def decrypt_message(ciphertext: str, iv: str) -> str:
 
 
 # ============================================
-# TESTING FUNCTIONS
-# ============================================
-
-def test_encryption():
-    """Test encryption/decryption roundtrip"""
-    test_message = "Tôi cảm thấy buồn và lo lắng về kỳ thi"
-    
-    logger.info("🧪 Testing encryption...")
-    
-    # Encrypt
-    encrypted, iv = encrypt_message(test_message)
-    logger.info(f"✅ Original: {test_message}")
-    logger.info(f"✅ Encrypted: {encrypted[:50]}...")
-    logger.info(f"✅ IV: {iv}")
-    
-    # Decrypt
-    decrypted = decrypt_message(encrypted, iv)
-    logger.info(f"✅ Decrypted: {decrypted}")
-    
-    # Verify
-    assert test_message == decrypted, "❌ Encryption/Decryption failed!"
-    logger.info("✅ Encryption test PASSED!")
-
-
-if __name__ == "__main__":
-    test_encryption()
-
-
-# ============================================
 # EXPORT
 # ============================================
 
 __all__ = [
     'encrypt_message',
     'decrypt_message',
-    'generate_iv'
+    'generate_iv',
+    'ENCRYPTION_KEY'  # Export for encrypt_with_shared_iv
 ]
