@@ -1,5 +1,8 @@
-// frontend/src/components/Chat/ChatInterface.jsx
-import React, { useState, useEffect } from 'react';
+// ***************************************************************
+// File: frontend/src/components/Chat/ChatInterface.jsx
+// ***************************************************************
+
+import React, { useState, useEffect, useRef } from 'react';
 import MessageList from './MessageList';
 import MessageInput from './MessageInput';
 import CrisisAlert from '../Crisis/CrisisAlert';
@@ -17,6 +20,8 @@ const ChatInterface = () => {
   const [crisisInfo, setCrisisInfo] = useState(null);
   const [error, setError] = useState(null);
   const [isInitializing, setIsInitializing] = useState(true);
+  
+  const messagesEndRef = useRef(null);
 
   useEffect(() => {
     const initSession = async () => {
@@ -41,6 +46,13 @@ const ChatInterface = () => {
 
     initSession();
   }, []);
+
+  // ✅ FIX: Auto scroll to bottom when new messages arrive
+  useEffect(() => {
+    if (messagesEndRef.current) {
+      messagesEndRef.current.scrollIntoView({ behavior: 'smooth' });
+    }
+  }, [messages, isTyping]);
 
   const handleSendMessage = async (content) => {
     if (!sessionId || isSending) return;
@@ -120,8 +132,9 @@ const ChatInterface = () => {
 
   return (
     <div className="flex flex-col h-[600px] bg-white rounded-2xl shadow-lg overflow-hidden border-2 border-gray-200">
+      {/* ✅ FIX: Error banner stays at top but doesn't overlap */}
       {error && (
-        <div className="bg-red-500 text-white px-4 py-3 text-sm text-center flex items-center justify-center gap-2 animate-slide-down">
+        <div className="bg-red-500 text-white px-4 py-3 text-sm text-center flex items-center justify-center gap-2 flex-shrink-0">
           <svg className="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
           </svg>
@@ -129,13 +142,20 @@ const ChatInterface = () => {
         </div>
       )}
 
-      <MessageList messages={messages} isTyping={isTyping} />
+      {/* ✅ FIX: Messages area with proper flex */}
+      <div className="flex-1 overflow-y-auto">
+        <MessageList messages={messages} isTyping={isTyping} />
+        <div ref={messagesEndRef} />
+      </div>
 
-      <MessageInput
-        onSend={handleSendMessage}
-        disabled={isSending || !sessionId || isInitializing}
-        isSending={isSending}
-      />
+      {/* ✅ FIX: Input stays at bottom, no overlap */}
+      <div className="flex-shrink-0">
+        <MessageInput
+          onSend={handleSendMessage}
+          disabled={isSending || !sessionId || isInitializing}
+          isSending={isSending}
+        />
+      </div>
 
       {showCrisisAlert && (
         <CrisisAlert
