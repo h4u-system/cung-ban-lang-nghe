@@ -18,10 +18,10 @@ import FamilyPage from './pages/Emotions/FamilyPage';
 
 // Other Pages
 import StoriesPage from './pages/Stories/StoriesPage';
-import StoryDetailPage from './pages/Stories/StoryDetailPage';  // ✅ NEW
+import StoryDetailPage from './pages/Stories/StoryDetailPage';
 import QAPage from './pages/QA/QAPage';
 import AboutPage from './pages/About/AboutPage';
-import ContactPage from './pages/Contact/ContactPage';  // ✅ ADDED
+import ContactPage from './pages/Contact/ContactPage'; 
 import NotFoundPage from './pages/NotFound/NotFoundPage';
 
 // Admin Components
@@ -50,14 +50,14 @@ function App() {
           <Route path="cam-xuc/thi-cu-ap-luc" element={<ExamPage />} />
           <Route path="cam-xuc/gia-dinh" element={<FamilyPage />} />
           
-          {/* Stories Routes - ✅ FIXED */}
+          {/* Stories Routes */}
           <Route path="tam-su" element={<StoriesPage />} />
           <Route path="tam-su/:storyId" element={<StoryDetailPage />} />
           
           {/* Other Routes */}
           <Route path="hoi-dap" element={<QAPage />} />
           <Route path="gioi-thieu" element={<AboutPage />} />
-          <Route path="lien-he" element={<ContactPage />} />  {/* ✅ FIXED */}
+          <Route path="lien-he" element={<ContactPage />} /> 
           
           {/* 404 */}
           <Route path="404" element={<NotFoundPage />} />
