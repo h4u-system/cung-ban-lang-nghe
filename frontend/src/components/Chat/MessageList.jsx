@@ -1,4 +1,5 @@
 // frontend/src/components/Chat/MessageList.jsx
+
 import React, { useEffect, useRef } from 'react';
 import MessageBubble from './MessageBubble';
 import TypingIndicator from './TypingIndicator';
@@ -13,7 +14,10 @@ const MessageList = ({ messages, isTyping }) => {
   };
 
   useEffect(() => {
-    if (messages.length > prevMessageCountRef.current) {
+    // Logic cuộn được chỉnh sửa:
+    // CHỈ cuộn khi có tin nhắn MỚI được thêm VÀ tổng số tin nhắn lớn hơn 1
+    // (Lần đầu tiên tải tin nhắn chào mừng (messages.length=1) sẽ bị bỏ qua)
+    if (messages.length > prevMessageCountRef.current && messages.length > 1) {
       scrollToBottom();
     }
     prevMessageCountRef.current = messages.length;
