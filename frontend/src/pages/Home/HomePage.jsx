@@ -12,9 +12,19 @@ const HomePage = () => {
   const location = useLocation();
   const chatSectionRef = useRef(null);
 
-  // ✅ FIX: Auto-scroll to chat section on page load
+  // ✅ SỬA ĐỔI: Chặn cuộn tự động khi vào trang chủ lần đầu
   useEffect(() => {
-    // Scroll to chat on initial load or when returning from other pages
+    // Điều kiện để KHÔNG cuộn: 
+    // 1. Là trang chủ ('/')
+    // 2. KHÔNG có hash (#), ví dụ: #chat-section
+    // 3. Key là 'default' (chỉ định lần tải trang ban đầu)
+    if (location.pathname === '/' && location.hash === '' && location.key === 'default') {
+      // Vô hiệu hóa cuộn tự động khi truy cập trang chủ lần đầu
+      return; 
+    }
+
+    // --- CODE CUỘN CŨ (Được giữ lại cho các trường hợp chuyển hướng nội bộ) ---
+    // Scroll to chat on internal navigation or when a specific hash is present
     if (chatSectionRef.current) {
       const timer = setTimeout(() => {
         chatSectionRef.current.scrollIntoView({ 
@@ -24,7 +34,10 @@ const HomePage = () => {
       }, 300); // Small delay for smooth UX
       return () => clearTimeout(timer);
     }
-  }, [location.pathname]);
+    // --- KẾT THÚC CODE CUỘN CŨ ---
+    
+    // Thêm dependencies để React theo dõi sự thay đổi của location
+  }, [location.pathname, location.hash, location.key]); 
 
   const quickAccess = [
     {
