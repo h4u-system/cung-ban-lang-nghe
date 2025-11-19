@@ -1,4 +1,7 @@
-// frontend/src/components/Chat/MessageInput.jsx
+// *************************************************************
+// File: frontend/src/components/Chat/MessageInput.jsx
+// *************************************************************
+
 import React, { useState, useRef, useEffect } from 'react';
 
 const MESSAGE_MAX_LENGTH = 2000;
@@ -7,12 +10,23 @@ const MessageInput = ({ onSend, disabled, isSending }) => {
   const [message, setMessage] = useState('');
   const textareaRef = useRef(null);
 
+  // 1. Tự động điều chỉnh chiều cao của textarea
   useEffect(() => {
     if (textareaRef.current) {
       textareaRef.current.style.height = 'auto';
+      // Giới hạn chiều cao tối đa là 120px
       textareaRef.current.style.height = Math.min(textareaRef.current.scrollHeight, 120) + 'px';
     }
   }, [message]);
+  
+  // 2. Tự động focus khi component được khởi tạo (tùy chọn)
+  // Logic này giúp người dùng có thể gõ ngay khi trang load xong
+  useEffect(() => {
+    // Chỉ focus khi không bị disabled (tức là đã khởi tạo xong)
+    if (textareaRef.current && !disabled) { 
+      textareaRef.current.focus();
+    }
+  }, [disabled]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -23,6 +37,9 @@ const MessageInput = ({ onSend, disabled, isSending }) => {
       setMessage('');
       if (textareaRef.current) {
         textareaRef.current.style.height = 'auto';
+        // ✅ FIX: Tự động focus lại input sau khi gửi tin nhắn 
+        // để khắc phục việc ô nhập liệu bị che khuất
+        textareaRef.current.focus(); 
       }
     }
   };
