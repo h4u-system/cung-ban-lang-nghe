@@ -42,6 +42,7 @@ class PublicApiService {
     }
   }
 
+  // ✅ ADD: Get story detail method
   async getStoryDetail(storyId) {
     try {
       const response = await this.api.get(`/stories/${storyId}`);

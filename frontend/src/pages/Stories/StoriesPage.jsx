@@ -1,6 +1,7 @@
 // frontend/src/pages/Stories/StoriesPage.jsx
 
 import React, { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';  // ✅ ADDED
 import publicApi from '../../services/publicApi';
 
 const StoriesPage = () => {
@@ -49,7 +50,6 @@ const StoriesPage = () => {
   const handleLike = async (storyId) => {
     try {
       const result = await publicApi.likeStory(storyId);
-      // Update local state
       setStories(stories.map(story => 
         story.id === storyId 
           ? { ...story, likes_count: result.likes_count }
@@ -195,9 +195,13 @@ const StoriesPage = () => {
                 </div>
                 <p className="text-gray-600 mb-4">{story.excerpt}</p>
                 <div className="flex items-center justify-between">
-                  <button className="text-primary-500 hover:text-primary-600 font-semibold text-sm">
+                  {/* ✅ FIX: Use Link with proper to prop */}
+                  <Link
+                    to={`/tam-su/${story.id}`}
+                    className="text-primary-500 hover:text-primary-600 font-semibold text-sm hover:underline transition"
+                  >
                     Đọc thêm →
-                  </button>
+                  </Link>
                   <button
                     onClick={() => handleLike(story.id)}
                     className="flex items-center space-x-2 text-gray-500 hover:text-red-500 transition"
