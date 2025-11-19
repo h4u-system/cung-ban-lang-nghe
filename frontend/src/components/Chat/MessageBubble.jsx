@@ -1,4 +1,7 @@
-// frontend/src/components/Chat/MessageBubble.jsx
+// **********************************************************
+// File: frontend/src/components/Chat/MessageBubble.jsx
+// **********************************************************
+
 import React from 'react';
 
 const MessageBubble = ({ message, isUser }) => {

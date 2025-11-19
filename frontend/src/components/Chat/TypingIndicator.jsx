@@ -1,4 +1,6 @@
-// frontend/src/components/Chat/TypingIndicator.jsx
+// ****************************************************************
+// File: frontend/src/components/Chat/TypingIndicator.jsx
+// ****************************************************************
 
 import React from 'react';
 

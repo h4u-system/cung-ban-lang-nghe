@@ -2,6 +2,7 @@
 // File: frontend/src/components/Chat/MessageInput.jsx
 // *************************************************************
 
+
 import React, { useState, useRef, useEffect } from 'react';
 
 const MESSAGE_MAX_LENGTH = 2000;
@@ -19,8 +20,7 @@ const MessageInput = ({ onSend, disabled, isSending }) => {
     }
   }, [message]);
   
-  // 2. Tự động focus khi component được khởi tạo (tùy chọn)
-  // Logic này giúp người dùng có thể gõ ngay khi trang load xong
+  // 2. Tự động focus khi component được khởi tạo
   useEffect(() => {
     // Chỉ focus khi không bị disabled (tức là đã khởi tạo xong)
     if (textareaRef.current && !disabled) { 
@@ -37,8 +37,7 @@ const MessageInput = ({ onSend, disabled, isSending }) => {
       setMessage('');
       if (textareaRef.current) {
         textareaRef.current.style.height = 'auto';
-        // ✅ FIX: Tự động focus lại input sau khi gửi tin nhắn 
-        // để khắc phục việc ô nhập liệu bị che khuất
+        // ✅ Dòng này chịu trách nhiệm focus lại sau khi gửi
         textareaRef.current.focus(); 
       }
     }

@@ -2,6 +2,7 @@
 // File: frontend/src/components/Chat/ChatInterface.jsx
 // ***************************************************************
 
+
 import React, { useState, useEffect, useRef } from 'react';
 import MessageList from './MessageList';
 import MessageInput from './MessageInput';
@@ -21,8 +22,10 @@ const ChatInterface = () => {
   const [error, setError] = useState(null);
   const [isInitializing, setIsInitializing] = useState(true);
   
-  // Ref để cuộn đến cuối danh sách tin nhắn
+  // Ref cũ (messagesEndRef) vẫn giữ nguyên vị trí, nhưng không dùng để cuộn chính
   const messagesEndRef = useRef(null); 
+  // ✅ Ref MỚI: Dùng để tham chiếu đến khu vực Input để cuộn đến đó
+  const inputContainerRef = useRef(null); 
   
   // Biến để theo dõi tin nhắn chào mừng đã được tải hay chưa
   const initialLoadRef = useRef(true); 
@@ -51,17 +54,20 @@ const ChatInterface = () => {
     initSession();
   }, []);
 
-  // ✅ LOGIC MỚI: Cuộn trang chỉ khi messages.length > 1 hoặc khi isTyping thay đổi
+  // ✅ LOGIC CUỘN KHẮC PHỤC LỖI INPUT BỊ CHE KHUẤT
+  // Cuộn đến VỊ TRÍ INPUT (inputContainerRef) thay vì cuối tin nhắn (messagesEndRef)
   useEffect(() => {
-    // Chặn cuộn trong lần tải tin nhắn chào mừng đầu tiên (messages.length = 1)
     if (initialLoadRef.current && messages.length === 1) {
         initialLoadRef.current = false;
         return;
     }
 
-    // Cuộn khi có tin nhắn mới hoặc khi AI bắt đầu/kết thúc gõ
-    if (messagesEndRef.current) {
-        messagesEndRef.current.scrollIntoView({ behavior: 'smooth', block: 'end' });
+    // Cuộn để Input nằm ở cuối khung hình, đảm bảo Input hiển thị
+    if (inputContainerRef.current) {
+        inputContainerRef.current.scrollIntoView({ 
+            behavior: 'smooth', 
+            block: 'end' 
+        });
     }
   }, [messages, isTyping]);
 
@@ -86,11 +92,10 @@ const ChatInterface = () => {
       timestamp: new Date().toISOString()
     };
 
-    // 1. Thêm tin nhắn người dùng (sẽ kích hoạt cuộn)
     setMessages(prev => [...prev, userMessage]); 
 
     try {
-      setIsTyping(true); // AI bắt đầu gõ (sẽ kích hoạt cuộn)
+      setIsTyping(true); 
       const response = await messageService.sendMessage(sessionId, content);
 
       setMessages(prev => prev.map(msg =>
@@ -108,7 +113,6 @@ const ChatInterface = () => {
         processing_time_ms: response.ai_message?.processing_time_ms
       };
 
-      // 2. Thêm tin nhắn AI (sẽ kích hoạt cuộn lần cuối)
       setMessages(prev => [...prev, aiMessage]); 
 
       if (response.crisis_detected || response.crisis_info) {
@@ -156,14 +160,15 @@ const ChatInterface = () => {
         </div>
       )}
 
-      {/* Vùng tin nhắn có thanh cuộn: Thêm ref={messagesEndRef} ở đây */}
+      {/* Vùng tin nhắn có thanh cuộn */}
       <div className="flex-1 overflow-y-auto px-4 py-6">
         <MessageList messages={messages} isTyping={isTyping} />
-        {/* Đặt ref tại cuối nội dung cuộn để cuộn đến đây */}
+        {/* Giữ ref này nếu cần nhưng không phải là điểm cuộn chính */}
         <div ref={messagesEndRef} /> 
       </div>
 
-      <div className="flex-shrink-0">
+      {/* ✅ Vùng Input: Đặt ref vào div này */}
+      <div className="flex-shrink-0" ref={inputContainerRef}>
         <MessageInput
           onSend={handleSendMessage}
           disabled={isSending || !sessionId || isInitializing}
