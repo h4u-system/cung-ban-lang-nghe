@@ -147,7 +147,9 @@ const DashboardPage = () => {
             <div className="text-2xl mb-2">✅</div>
             <div className="font-semibold text-gray-800">Duyệt nội dung</div>
           </button>
-          <button className="bg-gradient-to-br from-orange-50 to-orange-100 hover:from-orange-100 hover:to-orange-200 p-4 rounded-xl transition-all text-left">
+          <button 
+            onClick={() => navigate('/admin/settings')}
+            className="bg-gradient-to-br from-orange-50 to-orange-100 hover:from-orange-100 hover:to-orange-200 p-4 rounded-xl transition-all text-left">
             <div className="text-2xl mb-2">⚙️</div>
             <div className="font-semibold text-gray-800">Cài đặt</div>
           </button>
