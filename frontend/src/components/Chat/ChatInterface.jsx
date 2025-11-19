@@ -2,7 +2,6 @@
 // File: frontend/src/components/Chat/ChatInterface.jsx
 // ***************************************************************
 
-
 import React, { useState, useEffect, useRef } from 'react';
 import MessageList from './MessageList';
 import MessageInput from './MessageInput';
@@ -22,9 +21,9 @@ const ChatInterface = () => {
   const [error, setError] = useState(null);
   const [isInitializing, setIsInitializing] = useState(true);
   
-  // Ref cũ (messagesEndRef) vẫn giữ nguyên vị trí, nhưng không dùng để cuộn chính
+  // Ref để cuộn đến cuối danh sách tin nhắn (ĐIỂM CUỘN CHÍNH)
   const messagesEndRef = useRef(null); 
-  // ✅ Ref MỚI: Dùng để tham chiếu đến khu vực Input để cuộn đến đó
+  // Giữ lại ref này nhưng không dùng cho logic cuộn để tránh lỗi cuộn quá mức
   const inputContainerRef = useRef(null); 
   
   // Biến để theo dõi tin nhắn chào mừng đã được tải hay chưa
@@ -54,17 +53,19 @@ const ChatInterface = () => {
     initSession();
   }, []);
 
-  // ✅ LOGIC CUỘN KHẮC PHỤC LỖI INPUT BỊ CHE KHUẤT
-  // Cuộn đến VỊ TRÍ INPUT (inputContainerRef) thay vì cuối tin nhắn (messagesEndRef)
+  // ✅ LOGIC CUỘN KHẮC PHỤC LỖI KHÔNG TỰ CUỘN ĐẾN TIN NHẮN MỚI NHẤT
   useEffect(() => {
     if (initialLoadRef.current && messages.length === 1) {
         initialLoadRef.current = false;
         return;
     }
 
-    // Cuộn để Input nằm ở cuối khung hình, đảm bảo Input hiển thị
-    if (inputContainerRef.current) {
-        inputContainerRef.current.scrollIntoView({ 
+    // Cuộn đến cuối VÙNG TIN NHẮN (messagesEndRef)
+    if (messagesEndRef.current) {
+        // block: 'nearest' hoặc 'end' đều có thể dùng, 'nearest' cố gắng cuộn ít nhất
+        // để đưa phần tử vào tầm nhìn, 'end' đặt phần tử ở cuối container.
+        // Dùng 'end' đảm bảo tin nhắn cuối cùng luôn ở sát input.
+        messagesEndRef.current.scrollIntoView({ 
             behavior: 'smooth', 
             block: 'end' 
         });
@@ -163,11 +164,11 @@ const ChatInterface = () => {
       {/* Vùng tin nhắn có thanh cuộn */}
       <div className="flex-1 overflow-y-auto px-4 py-6">
         <MessageList messages={messages} isTyping={isTyping} />
-        {/* Giữ ref này nếu cần nhưng không phải là điểm cuộn chính */}
+        {/* Đặt ref tại cuối nội dung cuộn để cuộn đến đây */}
         <div ref={messagesEndRef} /> 
       </div>
 
-      {/* ✅ Vùng Input: Đặt ref vào div này */}
+      {/* Vùng Input: Giữ ref inputContainerRef nhưng không dùng cho logic cuộn */}
       <div className="flex-shrink-0" ref={inputContainerRef}>
         <MessageInput
           onSend={handleSendMessage}
