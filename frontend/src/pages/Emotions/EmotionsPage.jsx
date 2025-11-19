@@ -1,4 +1,7 @@
-// frontend/src/pages/Emotions/EmotionsPage.jsx
+// ***************************************************************
+// File: frontend/src/pages/Emotions/EmotionsPage.jsx
+// Unified card design
+// ***************************************************************
 
 import React from 'react';
 import { Link } from 'react-router-dom';
@@ -48,31 +51,31 @@ const emotionTopics = [
 
 const EmotionsPage = () => {
   return (
-    <div className="space-y-8">
-      {/* Header */}
-      <div className="text-center bg-gradient-to-r from-blue-500 to-purple-600 rounded-3xl p-10 text-white">
-        <div className="text-6xl mb-4">💙</div>
-        <h1 className="text-4xl font-bold mb-3">
+    <div className="space-y-10">
+      {/* Header - Unified Design */}
+      <div className="text-center bg-gradient-to-br from-blue-600 via-blue-700 to-indigo-800 rounded-3xl p-10 md:p-14 text-white shadow-2xl">
+        <div className="text-6xl md:text-7xl mb-6 animate-bounce">💙</div>
+        <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-4 leading-tight">
           Chủ đề cảm xúc
         </h1>
-        <p className="text-blue-100 text-lg max-w-2xl mx-auto">
-          Chọn chủ đề bạn quan tâm để tìm hiểu và được hỗ trợ
+        <p className="text-blue-100 text-lg md:text-xl max-w-3xl mx-auto leading-relaxed">
+          Chọn chủ đề bạn quan tâm để tìm hiểu và nhận được hỗ trợ tâm lý
         </p>
       </div>
 
-      {/* Emotion Cards Grid */}
+      {/* Emotion Cards Grid - Consistent Spacing */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {emotionTopics.map((topic) => (
           <Link
             key={topic.id}
             to={topic.path}
-            className="group bg-white rounded-2xl p-8 transition-all duration-300 shadow-lg hover:shadow-2xl hover:-translate-y-2 border-2 border-gray-100 hover:border-transparent overflow-hidden relative"
+            className="group bg-white rounded-2xl p-8 transition-all duration-300 shadow-xl hover:shadow-2xl hover:-translate-y-2 border-2 border-gray-100 hover:border-transparent overflow-hidden relative"
           >
             {/* Gradient Background on Hover */}
             <div className={`absolute inset-0 bg-gradient-to-br ${topic.color} opacity-0 group-hover:opacity-10 transition-opacity duration-300`}></div>
             
             <div className="relative">
-              <div className={`w-20 h-20 mx-auto mb-4 rounded-2xl bg-gradient-to-br ${topic.color} flex items-center justify-center text-4xl shadow-lg group-hover:scale-110 transition-transform duration-300`}>
+              <div className={`w-20 h-20 mx-auto mb-5 rounded-2xl bg-gradient-to-br ${topic.color} flex items-center justify-center text-5xl shadow-xl group-hover:scale-110 group-hover:rotate-3 transition-transform duration-300`}>
                 {topic.icon}
               </div>
               <h3 className="text-xl font-bold text-gray-800 mb-3 text-center">
@@ -86,16 +89,17 @@ const EmotionsPage = () => {
         ))}
       </div>
 
-      {/* CTA */}
-      <div className="bg-gradient-to-r from-blue-50 to-purple-50 rounded-2xl p-8 text-center border-2 border-blue-100">
-        <p className="text-gray-700 text-lg mb-4 font-medium">
+      {/* CTA Section - Unified Design */}
+      <div className="bg-gradient-to-br from-blue-50 to-purple-50 rounded-3xl p-8 md:p-10 text-center border-2 border-blue-200 shadow-xl">
+        <p className="text-gray-700 text-lg md:text-xl mb-6 font-medium">
           Không tìm thấy chủ đề phù hợp?
         </p>
         <Link
           to="/"
-          className="inline-block bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white px-8 py-4 rounded-xl font-semibold transition-all shadow-lg hover:shadow-xl hover:scale-105"
+          className="inline-flex items-center gap-3 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white px-8 py-4 rounded-xl font-bold text-lg transition-all shadow-xl hover:shadow-2xl hover:scale-105 active:scale-95"
         >
-          💬 Chat với Banana ngay
+          <span>💬</span>
+          <span>Chat với Banana ngay</span>
         </Link>
       </div>
     </div>

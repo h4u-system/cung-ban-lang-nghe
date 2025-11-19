@@ -1,4 +1,7 @@
-// frontend/src/pages/Emotions/FamilyPage.jsx
+// **********************************************************  
+// File: frontend/src/pages/Emotions/FamilyPage.jsx
+// Unified Design
+// **********************************************************
 
 import React from 'react';
 import { Link } from 'react-router-dom';
@@ -6,255 +9,326 @@ import ChatInterface from '../../components/Chat/ChatInterface';
 
 const FamilyPage = () => {
   return (
-    <div className="space-y-6">
+    <div className="space-y-10 max-w-5xl mx-auto">
       {/* Breadcrumb */}
-      {/* <nav className="text-sm text-gray-600">
-        <Link to="/camxuc" className="hover:text-primary-500">Chủ đề cảm xúc</Link>
-        {' > '}
-        <span className="font-semibold">Gia đình</span>
-      </nav> */}
-
       <nav className="text-sm text-gray-600 flex items-center gap-2">
-        <Link 
-          to="/cam-xuc" 
-          className="hover:text-primary-500 hover:underline transition-all"
-        >
+        <Link to="/cam-xuc" className="hover:text-primary-500 hover:underline transition">
           Chủ đề cảm xúc
         </Link>
         <span>›</span>
-        <span className="font-semibold text-gray-800">Tình yêu học trò</span>
+        <span className="font-semibold text-gray-800">Gia đình</span>
       </nav>
 
-      {/* Header */}
-      <div className="bg-green-50 rounded-lg p-6">
-        <div className="flex items-center space-x-3 mb-3">
-          <span className="text-4xl">🏠</span>
-          <h1 className="text-2xl font-bold text-gray-800">
-            Quan hệ gia đình
-          </h1>
-        </div>
-        <p className="text-gray-700">
+      {/* Header - Unified Design */}
+      <div className="bg-gradient-to-br from-green-500 via-emerald-600 to-teal-700 rounded-3xl p-10 md:p-14 text-white text-center shadow-2xl">
+        <div className="text-7xl mb-5 animate-bounce">🏠</div>
+        <h1 className="text-4xl md:text-5xl font-bold mb-4 leading-tight">
+          Quan hệ gia đình
+        </h1>
+        <p className="text-green-100 text-lg md:text-xl max-w-2xl mx-auto leading-relaxed">
           Mâu thuẫn với bố mẹ? Không hiểu nhau? Hãy cùng mình tìm cách cải thiện nhé!
         </p>
       </div>
 
       {/* Understanding Family Conflicts */}
-      <div className="bg-white rounded-lg shadow-sm p-6">
-        <h2 className="text-lg font-semibold mb-4">💭 Tại sao hay xung đột gia đình?</h2>
-        <div className="space-y-3 text-gray-700">
+      <div className="bg-white rounded-3xl shadow-xl p-8 md:p-10 border-2 border-gray-200">
+        <h2 className="text-3xl font-bold mb-6 flex items-center gap-3 text-gray-800">
+          <span className="text-4xl">💭</span>
+          Tại sao hay xung đột gia đình?
+        </h2>
+        <div className="space-y-5 text-gray-700 text-base leading-relaxed">
           <p>
-            Tuổi teen là giai đoạn <span className="font-semibold">muốn tự do, độc lập</span> 
+            Tuổi teen là giai đoạn <span className="font-semibold text-gray-800">muốn tự do, độc lập</span> 
             {' '}nhưng bố mẹ vẫn muốn bảo vệ. Đây là điều bình thường!
           </p>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
-            <div className="bg-blue-50 rounded-lg p-4">
-              <h3 className="font-semibold text-blue-700 mb-2">👦 Góc nhìn của con</h3>
-              <ul className="text-sm space-y-1">
-                <li>• "Bố mẹ không hiểu mình"</li>
-                <li>• "Quản quá nhiều, không có tự do"</li>
-                <li>• "So sánh mình với con người ta"</li>
-                <li>• "Chỉ quan tâm điểm số"</li>
+          <div className="grid md:grid-cols-2 gap-6 mt-6">
+            <div className="bg-gradient-to-br from-blue-50 to-indigo-50 rounded-2xl p-6 border-2 border-blue-200 shadow-md">
+              <h3 className="font-bold text-blue-700 mb-4 flex items-center gap-2 text-xl">
+                <span className="text-3xl">👦</span>
+                Góc nhìn của con
+              </h3>
+              <ul className="space-y-2 text-sm">
+                <li className="flex items-start gap-2">
+                  <span className="text-blue-600 mt-0.5">•</span>
+                  <span>"Bố mẹ không hiểu mình"</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <span className="text-blue-600 mt-0.5">•</span>
+                  <span>"Quản quá nhiều, không có tự do"</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <span className="text-blue-600 mt-0.5">•</span>
+                  <span>"So sánh mình với con người ta"</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <span className="text-blue-600 mt-0.5">•</span>
+                  <span>"Chỉ quan tâm điểm số"</span>
+                </li>
               </ul>
             </div>
-            <div className="bg-orange-50 rounded-lg p-4">
-              <h3 className="font-semibold text-orange-700 mb-2">👨‍👩‍👦 Góc nhìn của bố mẹ</h3>
-              <ul className="text-sm space-y-1">
-                <li>• "Con không nghe lời"</li>
-                <li>• "Lo cho tương lai của con"</li>
-                <li>• "Muốn con tốt hơn mình"</li>
-                <li>• "Áp lực công việc, kinh tế"</li>
+            <div className="bg-gradient-to-br from-orange-50 to-amber-50 rounded-2xl p-6 border-2 border-orange-200 shadow-md">
+              <h3 className="font-bold text-orange-700 mb-4 flex items-center gap-2 text-xl">
+                <span className="text-3xl">👨‍👩‍👦</span>
+                Góc nhìn của bố mẹ
+              </h3>
+              <ul className="space-y-2 text-sm">
+                <li className="flex items-start gap-2">
+                  <span className="text-orange-600 mt-0.5">•</span>
+                  <span>"Con không nghe lời"</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <span className="text-orange-600 mt-0.5">•</span>
+                  <span>"Lo cho tương lai của con"</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <span className="text-orange-600 mt-0.5">•</span>
+                  <span>"Muốn con tốt hơn mình"</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <span className="text-orange-600 mt-0.5">•</span>
+                  <span>"Áp lực công việc, kinh tế"</span>
+                </li>
               </ul>
             </div>
           </div>
-          <p className="text-sm italic bg-gray-50 p-3 rounded">
-            💡 <strong>Chìa khóa:</strong> Cả hai đều yêu thương nhau, chỉ là cách thể hiện khác nhau.
+          <p className="text-sm italic bg-gray-50 p-4 rounded-xl border-2 border-gray-200">
+            <span className="text-2xl mr-2">💡</span>
+            <strong>Chìa khóa:</strong> Cả hai đều yêu thương nhau, chỉ là cách thể hiện khác nhau.
           </p>
         </div>
       </div>
 
       {/* Common Situations */}
-      <div className="bg-white rounded-lg shadow-sm p-6">
-        <h2 className="text-lg font-semibold mb-4">🗣️ Tình huống thường gặp & Cách giải quyết</h2>
+      <div className="bg-white rounded-3xl shadow-xl p-8 md:p-10 border-2 border-gray-200">
+        <h2 className="text-3xl font-bold mb-6 flex items-center gap-3 text-gray-800">
+          <span className="text-4xl">🗣️</span>
+          Tình huống thường gặp & Cách giải quyết
+        </h2>
         <div className="space-y-4">
-          {/* Situation 1 */}
-          <details className="bg-gray-50 rounded-lg p-4 cursor-pointer">
-            <summary className="font-semibold">
-              😤 Bố mẹ cấm dùng điện thoại/game
-            </summary>
-            <div className="mt-3 text-sm text-gray-700 space-y-2">
-              <p className="font-semibold">💡 Cách giải quyết:</p>
-              <p>✓ <strong>Hiểu lý do:</strong> Bố mẹ lo bạn nghiện, ảnh hưởng học tập</p>
-              <p>✓ <strong>Thỏa thuận:</strong> Đề xuất khung giờ cụ thể (VD: 1 tiếng sau khi làm bài)</p>
-              <p>✓ <strong>Chứng minh:</strong> Học tốt, làm việc nhà đầy đủ</p>
-              <p>✓ <strong>Thỏa hiệp:</strong> Cuối tuần được chơi lâu hơn nếu hoàn thành mục tiêu</p>
-            </div>
-          </details>
-
-          {/* Situation 2 */}
-          <details className="bg-gray-50 rounded-lg p-4 cursor-pointer">
-            <summary className="font-semibold">
-              😔 Bố mẹ so sánh với người khác
-            </summary>
-            <div className="mt-3 text-sm text-gray-700 space-y-2">
-              <p className="font-semibold">💡 Cách giải quyết:</p>
-              <p>✓ <strong>Bình tĩnh nói chuyện:</strong> "Con biết bố mẹ muốn con tốt, nhưng con cảm thấy buồn khi bị so sánh"</p>
-              <p>✓ <strong>Giải thích cảm xúc:</strong> "Con đang cố gắng hết sức rồi"</p>
-              <p>✓ <strong>Đề xuất:</strong> "Bố mẹ có thể khen con khi con tiến bộ được không?"</p>
-              <p>✓ <strong>Hiểu bố mẹ:</strong> Họ cũng bị người khác so sánh, nên vô tình lặp lại</p>
-            </div>
-          </details>
-
-          {/* Situation 3 */}
-          <details className="bg-gray-50 rounded-lg p-4 cursor-pointer">
-            <summary className="font-semibold">
-              🤐 Không dám nói chuyện với bố mẹ
-            </summary>
-            <div className="mt-3 text-sm text-gray-700 space-y-2">
-              <p className="font-semibold">💡 Cách giải quyết:</p>
-              <p>✓ <strong>Bắt đầu nhỏ:</strong> Chia sẻ những chuyện vui trước (hài, sở thích)</p>
-              <p>✓ <strong>Chọn thời điểm:</strong> Khi bố mẹ thư giãn, không bận việc</p>
-              <p>✓ <strong>Viết thư:</strong> Nếu khó nói trực tiếp, viết ra cảm xúc</p>
-              <p>✓ <strong>Nhờ người thứ 3:</strong> Ông bà, cô chú, thầy cô làm cầu nối</p>
-            </div>
-          </details>
-
-          {/* Situation 4 */}
-          <details className="bg-gray-50 rounded-lg p-4 cursor-pointer">
-            <summary className="font-semibold">
-              😭 Bố mẹ ly hôn/cãi nhau thường xuyên
-            </summary>
-            <div className="mt-3 text-sm text-gray-700 space-y-2">
-              <p className="font-semibold">💡 Cách đối phó:</p>
-              <p>✓ <strong>Không phải lỗi của con:</strong> Vấn đề của người lớn, con không có lỗi</p>
-              <p>✓ <strong>Tìm người hỗ trợ:</strong> Ông bà, thầy cô, bạn thân</p>
-              <p>✓ <strong>Chăm sóc bản thân:</strong> Tập trung học tập, sở thích</p>
-              <p>✓ <strong>Nói rõ cảm xúc:</strong> "Con buồn khi thấy bố mẹ cãi nhau"</p>
-              <p>✓ <strong>Tìm chuyên gia:</strong> Nếu quá nặng nề, cần tư vấn tâm lý</p>
-            </div>
-          </details>
-
-          {/* Situation 5 */}
-          <details className="bg-gray-50 rounded-lg p-4 cursor-pointer">
-            <summary className="font-semibold">
-              👶 Bị ưu ái anh chị em khác
-            </summary>
-            <div className="mt-3 text-sm text-gray-700 space-y-2">
-              <p className="font-semibold">💡 Cách giải quyết:</p>
-              <p>✓ <strong>Nói thẳng:</strong> "Con cảm thấy bố mẹ thiên vị em/anh"</p>
-              <p>✓ <strong>Đưa ví dụ cụ thể:</strong> Không nói chung chung, nêu tình huống</p>
-              <p>✓ <strong>Yêu cầu công bằng:</strong> "Con cũng muốn được bố mẹ khen khi làm tốt"</p>
-              <p>✓ <strong>Hiểu hoàn cảnh:</strong> Em nhỏ cần chăm sóc nhiều, anh/chị có áp lực riêng</p>
-            </div>
-          </details>
+          {[
+            {
+              icon: '😤',
+              title: 'Bố mẹ cấm dùng điện thoại/game',
+              solutions: [
+                'Hiểu lý do: Bố mẹ lo bạn nghiện, ảnh hưởng học tập',
+                'Thỏa thuận: Đề xuất khung giờ cụ thể (VD: 1 tiếng sau khi làm bài)',
+                'Chứng minh: Học tốt, làm việc nhà đầy đủ',
+                'Thỏa hiệp: Cuối tuần được chơi lâu hơn nếu hoàn thành mục tiêu'
+              ],
+              color: 'from-red-500 to-orange-500'
+            },
+            {
+              icon: '😔',
+              title: 'Bố mẹ so sánh với người khác',
+              solutions: [
+                'Bình tĩnh nói chuyện: "Con biết bố mẹ muốn con tốt, nhưng con cảm thấy buồn khi bị so sánh"',
+                'Giải thích cảm xúc: "Con đang cố gắng hết sức rồi"',
+                'Đề xuất: "Bố mẹ có thể khen con khi con tiến bộ được không?"',
+                'Hiểu bố mẹ: Họ cũng bị người khác so sánh, nên vô tình lặp lại'
+              ],
+              color: 'from-blue-500 to-indigo-500'
+            },
+            {
+              icon: '🤐',
+              title: 'Không dám nói chuyện với bố mẹ',
+              solutions: [
+                'Bắt đầu nhỏ: Chia sẻ những chuyện vui trước (hài, sở thích)',
+                'Chọn thời điểm: Khi bố mẹ thư giãn, không bận việc',
+                'Viết thư: Nếu khó nói trực tiếp, viết ra cảm xúc',
+                'Nhờ người thứ 3: Ông bà, cô chú, thầy cô làm cầu nối'
+              ],
+              color: 'from-purple-500 to-pink-500'
+            },
+            {
+              icon: '😭',
+              title: 'Bố mẹ ly hôn/cãi nhau thường xuyên',
+              solutions: [
+                'Không phải lỗi của con: Vấn đề của người lớn, con không có lỗi',
+                'Tìm người hỗ trợ: Ông bà, thầy cô, bạn thân',
+                'Chăm sóc bản thân: Tập trung học tập, sở thích',
+                'Nói rõ cảm xúc: "Con buồn khi thấy bố mẹ cãi nhau"',
+                'Tìm chuyên gia: Nếu quá nặng nề, cần tư vấn tâm lý'
+              ],
+              color: 'from-red-500 to-red-600'
+            },
+            {
+              icon: '👶',
+              title: 'Bị ưu ái anh chị em khác',
+              solutions: [
+                'Nói thẳng: "Con cảm thấy bố mẹ thiên vị em/anh"',
+                'Đưa ví dụ cụ thể: Không nói chung chung, nêu tình huống',
+                'Yêu cầu công bằng: "Con cũng muốn được bố mẹ khen khi làm tốt"',
+                'Hiểu hoàn cảnh: Em nhỏ cần chăm sóc nhiều, anh/chị có áp lực riêng'
+              ],
+              color: 'from-green-500 to-emerald-500'
+            },
+          ].map((situation, index) => (
+            <details key={index} className="bg-gradient-to-br from-gray-50 to-blue-50 rounded-2xl border-2 border-gray-200 hover:border-green-300 transition-all cursor-pointer group">
+              <summary className="p-6 font-bold text-lg text-gray-800 flex items-center gap-3">
+                <span className="text-3xl">{situation.icon}</span>
+                <span>{situation.title}</span>
+                <svg className="w-5 h-5 ml-auto transform group-open:rotate-180 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                </svg>
+              </summary>
+              <div className="px-6 pb-6 space-y-3">
+                <div className={`h-1 w-20 rounded-full bg-gradient-to-r ${situation.color} mb-4`}></div>
+                <p className="font-semibold text-gray-800 mb-3">💡 Cách giải quyết:</p>
+                {situation.solutions.map((solution, solIndex) => (
+                  <div key={solIndex} className="flex items-start gap-3 bg-white rounded-xl p-4 shadow-sm">
+                    <span className="text-green-600 font-bold mt-0.5">✓</span>
+                    <p className="text-sm text-gray-700 leading-relaxed">{solution}</p>
+                  </div>
+                ))}
+              </div>
+            </details>
+          ))}
         </div>
       </div>
 
       {/* Communication Tips */}
-      <div className="bg-green-50 rounded-lg p-6">
-        <h2 className="text-lg font-semibold mb-4">💬 Kỹ năng giao tiếp với bố mẹ</h2>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <div className="bg-white rounded-lg p-4">
-            <div className="text-2xl mb-2">✅</div>
-            <h3 className="font-semibold text-green-700 mb-2">NÊN</h3>
-            <ul className="text-sm space-y-1">
-              <li>• Chọn thời điểm phù hợp để nói chuyện</li>
-              <li>• Dùng "con cảm thấy..." thay vì "bố mẹ luôn..."</li>
-              <li>• Lắng nghe quan điểm của bố mẹ</li>
-              <li>• Giữ bình tĩnh, không la hét</li>
-              <li>• Đề xuất giải pháp cụ thể</li>
+      <div className="bg-gradient-to-br from-green-50 to-emerald-50 rounded-3xl p-8 md:p-10 border-2 border-green-200 shadow-xl">
+        <h2 className="text-3xl font-bold mb-6 flex items-center gap-3 text-green-800">
+          <span className="text-4xl">💬</span>
+          Kỹ năng giao tiếp với bố mẹ
+        </h2>
+        <div className="grid md:grid-cols-2 gap-6">
+          <div className="bg-white rounded-2xl p-6 shadow-lg border-2 border-green-200">
+            <div className="text-4xl mb-3">✅</div>
+            <h3 className="font-bold text-green-700 mb-4 text-xl">NÊN</h3>
+            <ul className="space-y-2 text-sm text-gray-700">
+              <li className="flex items-start gap-2">
+                <span className="text-green-600 mt-0.5">•</span>
+                <span>Chọn thời điểm phù hợp để nói chuyện</span>
+              </li>
+              <li className="flex items-start gap-2">
+                <span className="text-green-600 mt-0.5">•</span>
+                <span>Dùng "con cảm thấy..." thay vì "bố mẹ luôn..."</span>
+              </li>
+              <li className="flex items-start gap-2">
+                <span className="text-green-600 mt-0.5">•</span>
+                <span>Lắng nghe quan điểm của bố mẹ</span>
+              </li>
+              <li className="flex items-start gap-2">
+                <span className="text-green-600 mt-0.5">•</span>
+                <span>Giữ bình tĩnh, không la hét</span>
+              </li>
+              <li className="flex items-start gap-2">
+                <span className="text-green-600 mt-0.5">•</span>
+                <span>Đề xuất giải pháp cụ thể</span>
+              </li>
             </ul>
           </div>
-          <div className="bg-white rounded-lg p-4">
-            <div className="text-2xl mb-2">❌</div>
-            <h3 className="font-semibold text-red-700 mb-2">KHÔNG NÊN</h3>
-            <ul className="text-sm space-y-1">
-              <li>• Cãi lại khi bố mẹ đang giận</li>
-              <li>• Nói "bố mẹ không hiểu gì cả"</li>
-              <li>• Đóng sầm cửa, im lặng dài ngày</li>
-              <li>• So sánh "bố mẹ bạn A cho..."</li>
-              <li>• Đổ lỗi hoàn toàn cho bố mẹ</li>
+          <div className="bg-white rounded-2xl p-6 shadow-lg border-2 border-red-200">
+            <div className="text-4xl mb-3">❌</div>
+            <h3 className="font-bold text-red-700 mb-4 text-xl">KHÔNG NÊN</h3>
+            <ul className="space-y-2 text-sm text-gray-700">
+              <li className="flex items-start gap-2">
+                <span className="text-red-600 mt-0.5">•</span>
+                <span>Cãi lại khi bố mẹ đang giận</span>
+              </li>
+              <li className="flex items-start gap-2">
+                <span className="text-red-600 mt-0.5">•</span>
+                <span>Nói "bố mẹ không hiểu gì cả"</span>
+              </li>
+              <li className="flex items-start gap-2">
+                <span className="text-red-600 mt-0.5">•</span>
+                <span>Đóng sầm cửa, im lặng dài ngày</span>
+              </li>
+              <li className="flex items-start gap-2">
+                <span className="text-red-600 mt-0.5">•</span>
+                <span>So sánh "bố mẹ bạn A cho..."</span>
+              </li>
+              <li className="flex items-start gap-2">
+                <span className="text-red-600 mt-0.5">•</span>
+                <span>Đổ lỗi hoàn toàn cho bố mẹ</span>
+              </li>
             </ul>
           </div>
         </div>
       </div>
 
       {/* Building Better Relationship */}
-      <div className="bg-white rounded-lg shadow-sm p-6">
-        <h2 className="text-lg font-semibold mb-4">❤️ Cải thiện quan hệ gia đình</h2>
-        <div className="space-y-3">
-          <div className="flex items-start space-x-3 bg-gray-50 rounded p-3">
-            <span className="text-2xl">🍽️</span>
-            <div>
-              <h3 className="font-semibold">Ăn cơm cùng nhau</h3>
-              <p className="text-sm text-gray-600">Dành 15-30 phút mỗi ngày để trò chuyện tự nhiên</p>
+      <div className="bg-white rounded-3xl shadow-xl p-8 md:p-10 border-2 border-gray-200">
+        <h2 className="text-3xl font-bold mb-6 flex items-center gap-3 text-gray-800">
+          <span className="text-4xl">❤️</span>
+          Cải thiện quan hệ gia đình
+        </h2>
+        <div className="space-y-4">
+          {[
+            { icon: '🍽️', title: 'Ăn cơm cùng nhau', desc: 'Dành 15-30 phút mỗi ngày để trò chuyện tự nhiên' },
+            { icon: '🤝', title: 'Giúp việc nhà', desc: 'Chủ động rửa bát, quét nhà - Bố mẹ sẽ thấy con trưởng thành' },
+            { icon: '🎁', title: 'Những điều nhỏ', desc: 'Gửi tin nhắn "Bố mẹ ơi về nhớ ăn cơm nhé", nói lời cảm ơn' },
+            { icon: '📱', title: 'Chia sẻ cuộc sống', desc: 'Kể chuyện ở trường, show ảnh bạn bè - Bố mẹ muốn hiểu con hơn' },
+          ].map((item, index) => (
+            <div key={index} className="flex items-start gap-4 bg-gradient-to-br from-green-50 to-emerald-50 rounded-xl p-5 border-2 border-green-200 hover:shadow-md transition-all">
+              <span className="text-4xl flex-shrink-0">{item.icon}</span>
+              <div>
+                <h3 className="font-bold text-gray-800 mb-1 text-lg">{item.title}</h3>
+                <p className="text-sm text-gray-600 leading-relaxed">{item.desc}</p>
+              </div>
             </div>
-          </div>
-          <div className="flex items-start space-x-3 bg-gray-50 rounded p-3">
-            <span className="text-2xl">🤝</span>
-            <div>
-              <h3 className="font-semibold">Giúp việc nhà</h3>
-              <p className="text-sm text-gray-600">Chủ động rửa bát, quét nhà - Bố mẹ sẽ thấy con trưởng thành</p>
-            </div>
-          </div>
-          <div className="flex items-start space-x-3 bg-gray-50 rounded p-3">
-            <span className="text-2xl">🎁</span>
-            <div>
-              <h3 className="font-semibold">Những điều nhỏ</h3>
-              <p className="text-sm text-gray-600">Gửi tin nhắn "Bố mẹ ơi về nhớ ăn cơm nhé", nói lời cảm ơn</p>
-            </div>
-          </div>
-          <div className="flex items-start space-x-3 bg-gray-50 rounded p-3">
-            <span className="text-2xl">📱</span>
-            <div>
-              <h3 className="font-semibold">Chia sẻ cuộc sống</h3>
-              <p className="text-sm text-gray-600">Kể chuyện ở trường, show ảnh bạn bè - Bố mẹ muốn hiểu con hơn</p>
-            </div>
-          </div>
+          ))}
         </div>
       </div>
 
       {/* When to Seek Help */}
-      <div className="bg-red-50 border-l-4 border-red-400 rounded p-4">
-        <div className="flex items-start space-x-3">
-          <span className="text-2xl">🚨</span>
+      <div className="bg-gradient-to-br from-red-50 to-orange-50 border-l-4 border-red-500 rounded-r-2xl p-6 shadow-lg">
+        <div className="flex items-start gap-4">
+          <span className="text-4xl flex-shrink-0">🚨</span>
           <div>
-            <p className="font-semibold text-gray-800 mb-2">
+            <p className="font-bold text-gray-800 mb-3 text-lg">
               Khi nào cần tìm người lớn giúp đỡ:
             </p>
-            <ul className="text-sm text-gray-700 space-y-1">
-              <li>❌ Bị bạo lực gia đình (đánh đập, chửi bới thường xuyên)</li>
-              <li>❌ Bị bỏ bê, không được chăm sóc</li>
-              <li>❌ Bố mẹ nghiện rượu/ma túy</li>
-              <li>❌ Bị xâm hại tình dục</li>
-              <li>❌ Bị ép làm điều trái pháp luật</li>
+            <ul className="text-sm text-gray-700 space-y-2">
+              <li className="flex items-start gap-2">
+                <span className="text-red-600 font-bold">❌</span>
+                <span>Bị bạo lực gia đình (đánh đập, chửi bới thường xuyên)</span>
+              </li>
+              <li className="flex items-start gap-2">
+                <span className="text-red-600 font-bold">❌</span>
+                <span>Bị bỏ bê, không được chăm sóc</span>
+              </li>
+              <li className="flex items-start gap-2">
+                <span className="text-red-600 font-bold">❌</span>
+                <span>Bố mẹ nghiện rượu/ma túy</span>
+              </li>
+              <li className="flex items-start gap-2">
+                <span className="text-red-600 font-bold">❌</span>
+                <span>Bị xâm hại tình dục</span>
+              </li>
+              <li className="flex items-start gap-2">
+                <span className="text-red-600 font-bold">❌</span>
+                <span>Bị ép làm điều trái pháp luật</span>
+              </li>
             </ul>
-            <p className="text-sm font-semibold mt-3 text-red-600">
-              → Gọi ngay 111 (Tổng đài Bảo vệ trẻ em) hoặc nói với thầy cô!
+            <p className="mt-4 font-bold text-red-600 text-base">
+              → Gọi ngay <a href="tel:111" className="underline hover:text-red-700">111</a> (Tổng đài Bảo vệ trẻ em) hoặc nói với thầy cô!
             </p>
           </div>
         </div>
       </div>
 
       {/* Positive Note */}
-      <div className="bg-green-50 border border-green-200 rounded-lg p-4">
-        <div className="flex items-start space-x-3">
-          <span className="text-2xl">💚</span>
-          <div>
-            <p className="font-semibold text-gray-800 mb-1">
-              Nhớ rằng: Bố mẹ cũng đang học cách làm cha mẹ
-            </p>
-            <p className="text-sm text-gray-700">
-              Họ không hoàn hảo, nhưng họ yêu thương con. Mâu thuẫn là bình thường, 
-              quan trọng là cách giải quyết. Hãy kiên nhẫn và cho nhau cơ hội để hiểu hơn. 
-              Cùng nhau cải thiện, gia đình sẽ hạnh phúc hơn! 🏠❤️
-            </p>
-          </div>
-        </div>
+      <div className="bg-gradient-to-r from-green-500 to-emerald-600 rounded-3xl p-8 text-white text-center shadow-2xl">
+        <div className="text-5xl mb-4">💚</div>
+        <h3 className="text-2xl font-bold mb-3">Bố mẹ cũng đang học cách làm cha mẹ</h3>
+        <p className="text-green-100 text-lg max-w-2xl mx-auto leading-relaxed">
+          Họ không hoàn hảo, nhưng họ yêu thương con. Mâu thuẫn là bình thường, 
+          quan trọng là cách giải quyết. Hãy kiên nhẫn và cho nhau cơ hội để hiểu hơn. 
+          Cùng nhau cải thiện, gia đình sẽ hạnh phúc hơn! 🏠❤️
+        </p>
       </div>
 
-      {/* Chat AI */}
-      <div className="bg-white rounded-lg shadow-sm p-6">
-        <h2 className="text-lg font-semibold mb-4">💬 Chat với AI về gia đình</h2>
+      {/* Chat AI Section */}
+      <div className="bg-white rounded-3xl shadow-2xl border-2 border-gray-200 overflow-hidden">
+        <div className="bg-gradient-to-r from-green-500 to-emerald-600 p-6 text-white">
+          <h2 className="text-2xl font-bold flex items-center gap-3">
+            <span className="text-3xl">💬</span>
+            Chat với Banana về gia đình
+          </h2>
+          <p className="text-green-100 mt-2">Chia sẻ về quan hệ gia đình, Banana sẽ lắng nghe và tư vấn</p>
+        </div>
         <ChatInterface />
       </div>
     </div>
