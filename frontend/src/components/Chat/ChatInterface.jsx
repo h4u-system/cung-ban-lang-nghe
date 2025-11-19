@@ -21,7 +21,11 @@ const ChatInterface = () => {
   const [error, setError] = useState(null);
   const [isInitializing, setIsInitializing] = useState(true);
   
-  const messagesEndRef = useRef(null);
+  // Ref để cuộn đến cuối danh sách tin nhắn
+  const messagesEndRef = useRef(null); 
+  
+  // Biến để theo dõi tin nhắn chào mừng đã được tải hay chưa
+  const initialLoadRef = useRef(true); 
 
   useEffect(() => {
     const initSession = async () => {
@@ -47,12 +51,20 @@ const ChatInterface = () => {
     initSession();
   }, []);
 
-  // ✅ FIX: Auto scroll to bottom when new messages arrive
+  // ✅ LOGIC MỚI: Cuộn trang chỉ khi messages.length > 1 hoặc khi isTyping thay đổi
   useEffect(() => {
+    // Chặn cuộn trong lần tải tin nhắn chào mừng đầu tiên (messages.length = 1)
+    if (initialLoadRef.current && messages.length === 1) {
+        initialLoadRef.current = false;
+        return;
+    }
+
+    // Cuộn khi có tin nhắn mới hoặc khi AI bắt đầu/kết thúc gõ
     if (messagesEndRef.current) {
-      messagesEndRef.current.scrollIntoView({ behavior: 'smooth' });
+        messagesEndRef.current.scrollIntoView({ behavior: 'smooth', block: 'end' });
     }
   }, [messages, isTyping]);
+
 
   const handleSendMessage = async (content) => {
     if (!sessionId || isSending) return;
@@ -74,10 +86,11 @@ const ChatInterface = () => {
       timestamp: new Date().toISOString()
     };
 
-    setMessages(prev => [...prev, userMessage]);
+    // 1. Thêm tin nhắn người dùng (sẽ kích hoạt cuộn)
+    setMessages(prev => [...prev, userMessage]); 
 
     try {
-      setIsTyping(true);
+      setIsTyping(true); // AI bắt đầu gõ (sẽ kích hoạt cuộn)
       const response = await messageService.sendMessage(sessionId, content);
 
       setMessages(prev => prev.map(msg =>
@@ -95,7 +108,8 @@ const ChatInterface = () => {
         processing_time_ms: response.ai_message?.processing_time_ms
       };
 
-      setMessages(prev => [...prev, aiMessage]);
+      // 2. Thêm tin nhắn AI (sẽ kích hoạt cuộn lần cuối)
+      setMessages(prev => [...prev, aiMessage]); 
 
       if (response.crisis_detected || response.crisis_info) {
         setShowCrisisAlert(true);
@@ -132,7 +146,7 @@ const ChatInterface = () => {
 
   return (
     <div className="flex flex-col h-[600px] bg-white rounded-2xl shadow-lg overflow-hidden border-2 border-gray-200">
-      {/* ✅ FIX: Error banner stays at top but doesn't overlap */}
+      
       {error && (
         <div className="bg-red-500 text-white px-4 py-3 text-sm text-center flex items-center justify-center gap-2 flex-shrink-0">
           <svg className="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -142,13 +156,13 @@ const ChatInterface = () => {
         </div>
       )}
 
-      {/* ✅ FIX: Messages area with proper flex */}
-      <div className="flex-1 overflow-y-auto">
+      {/* Vùng tin nhắn có thanh cuộn: Thêm ref={messagesEndRef} ở đây */}
+      <div className="flex-1 overflow-y-auto px-4 py-6">
         <MessageList messages={messages} isTyping={isTyping} />
-        <div ref={messagesEndRef} />
+        {/* Đặt ref tại cuối nội dung cuộn để cuộn đến đây */}
+        <div ref={messagesEndRef} /> 
       </div>
 
-      {/* ✅ FIX: Input stays at bottom, no overlap */}
       <div className="flex-shrink-0">
         <MessageInput
           onSend={handleSendMessage}

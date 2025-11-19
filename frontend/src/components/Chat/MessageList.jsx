@@ -1,41 +1,34 @@
-// frontend/src/components/Chat/MessageList.jsx
+// ****************************************************************
+// File: frontend/src/components/Chat/MessageList.jsx
+// ****************************************************************
 
 import React, { useEffect, useRef } from 'react';
 import MessageBubble from './MessageBubble';
 import TypingIndicator from './TypingIndicator';
 
 const MessageList = ({ messages, isTyping }) => {
-  const messagesEndRef = useRef(null);
-  const containerRef = useRef(null);
-  const prevMessageCountRef = useRef(0);
+  // messagesEndRef không cần thiết ở đây nữa
+  // containerRef vẫn có thể giữ nếu bạn muốn dùng cho mục đích khác
 
-  const scrollToBottom = () => {
-    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
-  };
-
-  useEffect(() => {
-    // Logic cuộn được chỉnh sửa:
-    // CHỈ cuộn khi có tin nhắn MỚI được thêm VÀ tổng số tin nhắn lớn hơn 1
-    // (Lần đầu tiên tải tin nhắn chào mừng (messages.length=1) sẽ bị bỏ qua)
-    if (messages.length > prevMessageCountRef.current && messages.length > 1) {
-      scrollToBottom();
-    }
-    prevMessageCountRef.current = messages.length;
-  }, [messages]);
-
-  useEffect(() => {
-    if (isTyping) {
-      scrollToBottom();
-    }
-  }, [isTyping]);
-
+  // --- XÓA CÁC BIẾN REF VÀ LOGIC CUỘN KHỎI ĐÂY ---
+  // const messagesEndRef = useRef(null); 
+  // const containerRef = useRef(null);
+  // const prevMessageCountRef = useRef(0);
+  
+  // const scrollToBottom = () => { ... } // XÓA
+  
+  // useEffect cuộn theo messages // XÓA
+  // useEffect cuộn theo isTyping // XÓA
+  // --- END OF DELETED LOGIC ---
+  
   return (
     <div
-      ref={containerRef}
+      // Xóa ref={containerRef} (nếu không dùng)
       className="flex-1 overflow-y-auto px-4 py-6 bg-gradient-to-b from-gray-50 to-white"
       style={{ scrollbarWidth: 'thin' }}
     >
       {messages.length === 0 ? (
+        // ... (phần Messages.length === 0 giữ nguyên)
         <div className="flex items-center justify-center h-full">
           <div className="text-center text-gray-500 space-y-4 max-w-md px-4">
             <div className="text-6xl animate-bounce">💙</div>
@@ -52,7 +45,7 @@ const MessageList = ({ messages, isTyping }) => {
                 <li>• Tâm sự về người ấy của bạn</li>
               </ul>
             </div>
-            <p className="text-xs text-gray-500">
+            <p className="text-xs text-xs text-gray-500">
               🔒 <span className="font-semibold">Hoàn toàn ẩn danh</span> • Không lưu thông tin cá nhân
             </p>
           </div>
@@ -67,7 +60,8 @@ const MessageList = ({ messages, isTyping }) => {
             />
           ))}
           {isTyping && <TypingIndicator />}
-          <div ref={messagesEndRef} />
+          {/* XÓA: <div ref={messagesEndRef} /> */}
+          {/* messagesEndRef sẽ được đặt ở ChatInterface.jsx */}
         </div>
       )}
     </div>
