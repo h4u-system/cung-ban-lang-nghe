@@ -21,12 +21,11 @@ const ChatInterface = () => {
   const [error, setError] = useState(null);
   const [isInitializing, setIsInitializing] = useState(true);
   
-  // Ref để cuộn đến cuối danh sách tin nhắn (ĐIỂM CUỘN CHÍNH)
+  // Ref để cuộn đến cuối danh sách tin nhắn nội bộ (Vấn đề 3)
   const messagesEndRef = useRef(null); 
-  // Giữ lại ref này nhưng không dùng cho logic cuộn để tránh lỗi cuộn quá mức
+  // Ref để tham chiếu đến khu vực Input (Dùng cho cuộn trang web Vấn đề 2)
   const inputContainerRef = useRef(null); 
   
-  // Biến để theo dõi tin nhắn chào mừng đã được tải hay chưa
   const initialLoadRef = useRef(true); 
 
   useEffect(() => {
@@ -53,7 +52,7 @@ const ChatInterface = () => {
     initSession();
   }, []);
 
-  // ✅ LOGIC CUỘN KHẮC PHỤC LỖI KHÔNG TỰ CUỘN ĐẾN TIN NHẮN MỚI NHẤT
+  // ✅ LOGIC CUỘN NỘI BỘ (Vấn đề 3): Cuộn đến tin nhắn mới nhất
   useEffect(() => {
     if (initialLoadRef.current && messages.length === 1) {
         initialLoadRef.current = false;
@@ -62,9 +61,8 @@ const ChatInterface = () => {
 
     // Cuộn đến cuối VÙNG TIN NHẮN (messagesEndRef)
     if (messagesEndRef.current) {
-        // block: 'nearest' hoặc 'end' đều có thể dùng, 'nearest' cố gắng cuộn ít nhất
-        // để đưa phần tử vào tầm nhìn, 'end' đặt phần tử ở cuối container.
-        // Dùng 'end' đảm bảo tin nhắn cuối cùng luôn ở sát input.
+        // block: 'end' đảm bảo tin nhắn cuối cùng luôn được hiển thị, 
+        // sát với khu vực Input.
         messagesEndRef.current.scrollIntoView({ 
             behavior: 'smooth', 
             block: 'end' 
@@ -150,7 +148,10 @@ const ChatInterface = () => {
   }
 
   return (
-    <div className="flex flex-col h-[600px] bg-white rounded-2xl shadow-lg overflow-hidden border-2 border-gray-200">
+    // ✅ THÊM ID CHO VIỆC CUỘN TỪ NÚT "BẮT ĐẦU TRÒ CHUYỆN"
+    // Nếu nút "Bắt đầu trò chuyện" của bạn là một link có href="#chat-box", 
+    // thì việc đặt id="chat-box" cho div này sẽ đảm bảo trình duyệt cuộn đúng.
+    <div id="chat-box" className="flex flex-col h-[600px] bg-white rounded-2xl shadow-lg overflow-hidden border-2 border-gray-200">
       
       {error && (
         <div className="bg-red-500 text-white px-4 py-3 text-sm text-center flex items-center justify-center gap-2 flex-shrink-0">
@@ -168,7 +169,7 @@ const ChatInterface = () => {
         <div ref={messagesEndRef} /> 
       </div>
 
-      {/* Vùng Input: Giữ ref inputContainerRef nhưng không dùng cho logic cuộn */}
+      {/* Vùng Input: Giữ ref inputContainerRef cho mục đích tham chiếu vị trí */}
       <div className="flex-shrink-0" ref={inputContainerRef}>
         <MessageInput
           onSend={handleSendMessage}

@@ -19,14 +19,7 @@ const MessageInput = ({ onSend, disabled, isSending }) => {
     }
   }, [message]);
   
-  // ✅ ĐÃ XÓA logic TỰ ĐỘNG FOCUS LÚC KHỞI TẠO để ngăn lỗi cuộn trang web
-  /*
-  useEffect(() => {
-    if (textareaRef.current && !disabled) { 
-      textareaRef.current.focus();
-    }
-  }, [disabled]);
-  */
+  // ✅ Logic TỰ ĐỘNG FOCUS LÚC KHỞI TẠO ĐÃ ĐƯỢC XÓA TRONG CÁC LẦN SỬA TRƯỚC.
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -37,8 +30,8 @@ const MessageInput = ({ onSend, disabled, isSending }) => {
       setMessage('');
       if (textareaRef.current) {
         textareaRef.current.style.height = 'auto';
-        // ✅ Dòng này vẫn được giữ lại để TỰ ĐỘNG FOCUS sau khi gửi tin nhắn 
-        // và giúp cuộn khung chat lên đúng vị trí (kết hợp với logic cuộn mới trong ChatInterface)
+        // ✅ Dòng này được giữ lại để TỰ ĐỘNG FOCUS sau khi gửi tin nhắn 
+        // (Đây là chìa khóa để input area không bị che khuất sau khi gửi tin)
         textareaRef.current.focus(); 
       }
     }
