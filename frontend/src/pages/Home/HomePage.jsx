@@ -3,6 +3,7 @@
 // Unified design
 // *************************************************
 
+
 import React, { useEffect, useRef } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import ChatInterface from '../../components/Chat/ChatInterface';
@@ -12,32 +13,30 @@ const HomePage = () => {
   const location = useLocation();
   const chatSectionRef = useRef(null);
 
-  // ✅ SỬA ĐỔI: Chặn cuộn tự động khi vào trang chủ lần đầu
+  // ✅ FIX: Chặn cuộn tự động khi vào trang chủ lần đầu
   useEffect(() => {
-    // Điều kiện để KHÔNG cuộn: 
-    // 1. Là trang chủ ('/')
-    // 2. KHÔNG có hash (#), ví dụ: #chat-section
-    // 3. Key là 'default' (chỉ định lần tải trang ban đầu)
-    if (location.pathname === '/' && location.hash === '' && location.key === 'default') {
-      // Vô hiệu hóa cuộn tự động khi truy cập trang chủ lần đầu
-      return; 
+    // ĐIỀU KIỆN CHẶN CUỘN:
+    // 1. Đang ở trang chủ ('/')
+    // 2. KHÔNG có hash trong URL (không phải từ link nội bộ)
+    // 3. Key === 'default' (lần tải trang đầu tiên)
+    if (location.pathname === '/' && !location.hash && location.key === 'default') {
+      // Không làm gì cả - để người dùng ở vị trí đầu trang
+      return;
     }
 
-    // --- CODE CUỘN CŨ (Được giữ lại cho các trường hợp chuyển hướng nội bộ) ---
-    // Scroll to chat on internal navigation or when a specific hash is present
-    if (chatSectionRef.current) {
+    // Chỉ cuộn khi:
+    // - Có hash #chat-section
+    // - HOẶC navigate từ nút "Bắt đầu trò chuyện"
+    if (chatSectionRef.current && (location.hash === '#chat-section' || location.state?.scrollToChat)) {
       const timer = setTimeout(() => {
         chatSectionRef.current.scrollIntoView({ 
-          behavior: 'smooth', 
-          block: 'start' 
+          behavior: 'smooth',
+          block: 'start'
         });
-      }, 300); // Small delay for smooth UX
+      }, 300);
       return () => clearTimeout(timer);
     }
-    // --- KẾT THÚC CODE CUỘN CŨ ---
-    
-    // Thêm dependencies để React theo dõi sự thay đổi của location
-  }, [location.pathname, location.hash, location.key]); 
+  }, [location.pathname, location.hash, location.key, location.state]);
 
   const quickAccess = [
     {
@@ -169,7 +168,7 @@ const HomePage = () => {
       </section>
 
       {/* Chat Section - Main Focus */}
-      <section ref={chatSectionRef} className="scroll-mt-8">
+      <section ref={chatSectionRef} id="chat-section" className="scroll-mt-8">
         <div className="flex items-center gap-3 mb-6">
           <span className="text-4xl">💬</span>
           <div>

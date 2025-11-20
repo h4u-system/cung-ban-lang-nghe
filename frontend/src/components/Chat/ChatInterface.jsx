@@ -21,12 +21,12 @@ const ChatInterface = () => {
   const [error, setError] = useState(null);
   const [isInitializing, setIsInitializing] = useState(true);
   
-  // Ref để cuộn đến cuối danh sách tin nhắn nội bộ (Vấn đề 3)
-  const messagesEndRef = useRef(null); 
-  // Ref để tham chiếu đến khu vực Input (Dùng cho cuộn trang web Vấn đề 2)
-  const inputContainerRef = useRef(null); 
+  // ✅ REF CHO VIỆC CUỘN - Cuộn tới input area
+  const inputContainerRef = useRef(null);
+  const chatContainerRef = useRef(null);
   
-  const initialLoadRef = useRef(true); 
+  // ✅ Track để bỏ qua cuộn cho welcome message
+  const initialLoadRef = useRef(true);
 
   useEffect(() => {
     const initSession = async () => {
@@ -52,24 +52,30 @@ const ChatInterface = () => {
     initSession();
   }, []);
 
-  // ✅ LOGIC CUỘN NỘI BỘ (Vấn đề 3): Cuộn đến tin nhắn mới nhất
+  // ✅ Cuộn tới input area để đảm bảo luôn visible
   useEffect(() => {
+    // Bỏ qua welcome message (lần render đầu)
     if (initialLoadRef.current && messages.length === 1) {
-        initialLoadRef.current = false;
-        return;
+      initialLoadRef.current = false;
+      return;
     }
 
-    // Cuộn đến cuối VÙNG TIN NHẮN (messagesEndRef)
-    if (messagesEndRef.current) {
-        // block: 'end' đảm bảo tin nhắn cuối cùng luôn được hiển thị, 
-        // sát với khu vực Input.
-        messagesEndRef.current.scrollIntoView({ 
-            behavior: 'smooth', 
-            block: 'end' 
-        });
+    // Cuộn tới input area sau khi có tin nhắn mới hoặc typing
+    if (messages.length > 1 || isTyping) {
+      // Delay nhỏ để đảm bảo DOM đã render xong
+      const scrollTimer = setTimeout(() => {
+        if (inputContainerRef.current) {
+          inputContainerRef.current.scrollIntoView({ 
+            behavior: 'smooth',
+            block: 'end', // Đưa input area về cuối viewport
+            inline: 'nearest'
+          });
+        }
+      }, 100); // 100ms delay nhẹ cho mượt
+
+      return () => clearTimeout(scrollTimer);
     }
   }, [messages, isTyping]);
-
 
   const handleSendMessage = async (content) => {
     if (!sessionId || isSending) return;
@@ -148,10 +154,11 @@ const ChatInterface = () => {
   }
 
   return (
-    // ✅ THÊM ID CHO VIỆC CUỘN TỪ NÚT "BẮT ĐẦU TRÒ CHUYỆN"
-    // Nếu nút "Bắt đầu trò chuyện" của bạn là một link có href="#chat-box", 
-    // thì việc đặt id="chat-box" cho div này sẽ đảm bảo trình duyệt cuộn đúng.
-    <div id="chat-box" className="flex flex-col h-[600px] bg-white rounded-2xl shadow-lg overflow-hidden border-2 border-gray-200">
+    <div 
+      id="chat-box" 
+      ref={chatContainerRef}
+      className="flex flex-col h-[600px] bg-white rounded-2xl shadow-lg overflow-hidden border-2 border-gray-200 chat-container"
+    >
       
       {error && (
         <div className="bg-red-500 text-white px-4 py-3 text-sm text-center flex items-center justify-center gap-2 flex-shrink-0">
@@ -163,13 +170,11 @@ const ChatInterface = () => {
       )}
 
       {/* Vùng tin nhắn có thanh cuộn */}
-      <div className="flex-1 overflow-y-auto px-4 py-6">
+      <div className="flex-1 overflow-y-auto">
         <MessageList messages={messages} isTyping={isTyping} />
-        {/* Đặt ref tại cuối nội dung cuộn để cuộn đến đây */}
-        <div ref={messagesEndRef} /> 
       </div>
 
-      {/* Vùng Input: Giữ ref inputContainerRef cho mục đích tham chiếu vị trí */}
+      {/* ✅ Vùng Input: Đặt ref ở đây để cuộn tới */}
       <div className="flex-shrink-0" ref={inputContainerRef}>
         <MessageInput
           onSend={handleSendMessage}

@@ -2,34 +2,18 @@
 // File: frontend/src/components/Chat/MessageList.jsx
 // ****************************************************************
 
-import React, { useEffect, useRef } from 'react';
+import React from 'react';
 import MessageBubble from './MessageBubble';
 import TypingIndicator from './TypingIndicator';
 
 const MessageList = ({ messages, isTyping }) => {
-  // messagesEndRef không cần thiết ở đây nữa
-  // containerRef vẫn có thể giữ nếu bạn muốn dùng cho mục đích khác
-
-  // --- XÓA CÁC BIẾN REF VÀ LOGIC CUỘN KHỎI ĐÂY ---
-  // const messagesEndRef = useRef(null); 
-  // const containerRef = useRef(null);
-  // const prevMessageCountRef = useRef(0);
-  
-  // const scrollToBottom = () => { ... } // XÓA
-  
-  // useEffect cuộn theo messages // XÓA
-  // useEffect cuộn theo isTyping // XÓA
-  // --- END OF DELETED LOGIC ---
-  
   return (
     <div
-      // Xóa ref={containerRef} (nếu không dùng)
-      className="flex-1 overflow-y-auto px-4 py-6 bg-gradient-to-b from-gray-50 to-white"
+      className="px-4 py-6 bg-gradient-to-b from-gray-50 to-white"
       style={{ scrollbarWidth: 'thin' }}
     >
       {messages.length === 0 ? (
-        // ... (phần Messages.length === 0 giữ nguyên)
-        <div className="flex items-center justify-center h-full">
+        <div className="flex items-center justify-center min-h-[400px]">
           <div className="text-center text-gray-500 space-y-4 max-w-md px-4">
             <div className="text-6xl animate-bounce">💙</div>
             <h3 className="text-xl font-bold text-gray-700">Xin chào bạn!</h3>
@@ -45,7 +29,7 @@ const MessageList = ({ messages, isTyping }) => {
                 <li>• Tâm sự về người ấy của bạn</li>
               </ul>
             </div>
-            <p className="text-xs text-xs text-gray-500">
+            <p className="text-xs text-gray-500">
               🔒 <span className="font-semibold">Hoàn toàn ẩn danh</span> • Không lưu thông tin cá nhân
             </p>
           </div>
@@ -60,8 +44,6 @@ const MessageList = ({ messages, isTyping }) => {
             />
           ))}
           {isTyping && <TypingIndicator />}
-          {/* XÓA: <div ref={messagesEndRef} /> */}
-          {/* messagesEndRef sẽ được đặt ở ChatInterface.jsx */}
         </div>
       )}
     </div>

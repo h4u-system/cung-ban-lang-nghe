@@ -2,6 +2,7 @@
 // File: frontend/src/components/Chat/MessageInput.jsx
 // *************************************************************
 
+
 import React, { useState, useRef, useEffect } from 'react';
 
 const MESSAGE_MAX_LENGTH = 2000;
@@ -10,16 +11,13 @@ const MessageInput = ({ onSend, disabled, isSending }) => {
   const [message, setMessage] = useState('');
   const textareaRef = useRef(null);
 
-  // 1. Tự động điều chỉnh chiều cao của textarea (GIỮ NGUYÊN)
+  // Auto-adjust textarea height
   useEffect(() => {
     if (textareaRef.current) {
       textareaRef.current.style.height = 'auto';
-      // Giới hạn chiều cao tối đa là 120px
       textareaRef.current.style.height = Math.min(textareaRef.current.scrollHeight, 120) + 'px';
     }
   }, [message]);
-  
-  // ✅ Logic TỰ ĐỘNG FOCUS LÚC KHỞI TẠO ĐÃ ĐƯỢC XÓA TRONG CÁC LẦN SỬA TRƯỚC.
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -30,9 +28,8 @@ const MessageInput = ({ onSend, disabled, isSending }) => {
       setMessage('');
       if (textareaRef.current) {
         textareaRef.current.style.height = 'auto';
-        // ✅ Dòng này được giữ lại để TỰ ĐỘNG FOCUS sau khi gửi tin nhắn 
-        // (Đây là chìa khóa để input area không bị che khuất sau khi gửi tin)
-        textareaRef.current.focus(); 
+        // ✅ Auto-focus after sending (keeps input visible)
+        textareaRef.current.focus();
       }
     }
   };
@@ -49,7 +46,7 @@ const MessageInput = ({ onSend, disabled, isSending }) => {
   const isOverLimit = remainingChars < 0;
 
   return (
-    <div className="border-t-2 border-gray-200 bg-gray-50 p-4">
+    <div className="border-t-2 border-gray-200 bg-gray-50 p-4 chat-input">
       <form onSubmit={handleSubmit}>
         <div className="flex items-end gap-3">
           <div className="flex-1">
