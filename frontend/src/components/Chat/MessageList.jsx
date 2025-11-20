@@ -6,7 +6,7 @@ import React from 'react';
 import MessageBubble from './MessageBubble';
 import TypingIndicator from './TypingIndicator';
 
-const MessageList = ({ messages, isTyping }) => {
+const MessageList = ({ messages, isTyping, messagesEndRef }) => {
   return (
     <div
       className="px-4 py-6 bg-gradient-to-b from-gray-50 to-white"
@@ -44,6 +44,9 @@ const MessageList = ({ messages, isTyping }) => {
             />
           ))}
           {isTyping && <TypingIndicator />}
+          
+          {/* ✅ QUAN TRỌNG: Đặt ref tại cuối danh sách để cuộn tới */}
+          <div ref={messagesEndRef} />
         </div>
       )}
     </div>
