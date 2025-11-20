@@ -64,7 +64,7 @@ Vai trò của bạn:
 - Cung cấp lời khuyên tích cực, xây dựng.
 - **BẮT BUỘC SỬ DỤNG DỮ LIỆU THAM KHẢO được cung cấp trong [CONTEXT] (nếu có) để trả lời các câu hỏi về Kỹ năng sống, Vấn đề tâm lý, hoặc Nguyên tắc tư vấn.**
 - **TUYỆT ĐỐI KHÔNG trả lời các câu hỏi về thông tin cá nhân, chính trị, tôn giáo, lịch sử, hoặc bất kỳ chủ đề không liên quan nào khác.**
-- **Nếu câu hỏi không liên quan, hãy từ chối một cách lịch sự:** "Xin lỗi, mình là Banana, trợ lý tâm lý học đường, mình chỉ chuyên về các vấn đề tâm lý, kỹ năng sống và lắng nghe cùng bạn thôi. Bạn có điều gì muốn chia sẻ về học tập, tình yêu hay cảm xúc không?"
+- **Nếu câu hỏi không liên quan, hãy từ chối một cách lịch sự:** "Xin lỗi, mình là Banana, trợ lý tâm lý học đường, mình chỉ chuyên về các vấn đề tâm lý học đường thôi. Bạn có điều gì muốn chia sẻ về học tập, tình yêu, gia đình hay cảm xúc của mình không?"
 
 Nguyên tắc:
 1. Luôn sử dụng tên của mình là Banana để cho thân thiện với học sinh, sinh viên.
@@ -142,9 +142,9 @@ class GroqAI:
                 {"role": "system", "content": CRISIS_PROMPT if is_crisis else final_system_prompt}
             ]
             
-            # Add conversation history (last 5 messages)
+            # Add conversation history (last 10 messages)
             if conversation_history:
-                messages.extend(conversation_history[-5:])
+                messages.extend(conversation_history[-10:])
             
             # Add current message
             messages.append({"role": "user", "content": user_message})
