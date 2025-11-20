@@ -20,7 +20,7 @@ GROQ_MODEL = "llama-3.3-70b-versatile"
 # 1. DỮ LIỆU CỐ ĐỊNH & RULE-BASED RETRIEVAL LOGIC
 # ============================================
 
-# Dữ liệu cố định (Không phải kiến thức 6000 token, chỉ thông tin hành chính)
+# Dữ liệu cố định (Thông tin hành chính)
 ESSENTIAL_CONTEXT = """
 DỮ LIỆU CỐ ĐỊNH VỀ DỊCH VỤ BANANA:
 - Tên dịch vụ/trợ lý: Banana
@@ -29,52 +29,59 @@ DỮ LIỆU CỐ ĐỊNH VỀ DỊCH VỤ BANANA:
 """
 
 def rule_based_retrieve_context(user_message: str) -> str:
-    """Truy xuất ngữ cảnh dựa trên từ khóa đơn giản từ KNOWLEDGE_BASE."""
+    """
+    Truy xuất ngữ cảnh dựa trên từ khóa đơn giản từ KNOWLEDGE_BASE.
+    Logic được tối ưu để trả về nội dung chuyên môn và trọng tâm nhất.
+    """
     message_lower = user_message.lower()
     
-    # 1. Kiểm tra từ khóa KNS & Phân loại
-    if any(keyword in message_lower for keyword in ["kỹ năng sống", "kns", "phân loại", "tự nhận thức", "kiểm soát cảm xúc", "tư duy"]):
-        # Trả về cả Khái niệm và Phân loại nếu người dùng hỏi chung chung
-        return KNOWLEDGE_BASE["KNS_KHAI_NIEM"] + KNOWLEDGE_BASE["KNS_PHAN_LOAI"]
+    # 0. KIỂM TRA KHẨN CẤP (Ưu tiên: Tự tử, tuyệt vọng, nguy hiểm)
+    # Nếu phát hiện khủng hoảng, chèn nguyên tắc tư vấn khẩn cấp (E.2) để AI tuân thủ.
+    if any(keyword in message_lower for keyword in ["tự tử", "tuyệt vọng", "chết", "chấm dứt", "khủng hoảng", "đau khổ quá", "đăng xuất", "check out"]):
+        return KNOWLEDGE_BASE["NEN_TANG_TU_VAN"] 
+
+    # 1. Kiểm tra TƯ VẤN & QUY TRÌNH (Nguyên tắc tham vấn/lắng nghe)
+    if any(keyword in message_lower for keyword in ["tham vấn", "tư vấn", "lắng nghe thấu hiểu", "nguyên tắc tư vấn", "tham vấn học đường", "giải quyết vấn đề"]):
+        return KNOWLEDGE_BASE["NEN_TANG_TU_VAN"]
     
-    # 2. Kiểm tra từ khóa Lứa tuổi/Học tập
-    if any(keyword in message_lower for keyword in ["tiểu học", "thcs", "thpt", "sinh viên", "định hướng nghề nghiệp", "chọn nghề"]):
-        return KNOWLEDGE_BASE["KNS_LUA_TUOI"]
-    
-    # 3. Kiểm tra từ khóa Vấn đề/Căng thẳng/Xung đột
-    if any(keyword in message_lower for keyword in ["căng thẳng", "stress", "mâu thuẫn", "bạo lực", "sống ảo", "ứng phó"]):
+    # 2. Kiểm tra VẤN ĐỀ VÀ ỨNG PHÓ (Stress, bạo lực, rủi ro)
+    if any(keyword in message_lower for keyword in ["stress", "căng thẳng", "mâu thuẫn", "bạo lực", "nguồn gốc căng thẳng", "giải quyết xung đột", "phòng tránh rủi ro", "lừa đảo"]):
         return KNOWLEDGE_BASE["VAN_DE_TAM_LY_PHO_BIEN"]
     
-    # 4. Kiểm tra từ khóa Tư vấn/Quy trình
-    if any(keyword in message_lower for keyword in ["tham vấn", "tư vấn", "lắng nghe", "giải quyết vấn đề", "nguyên tắc tư vấn"]):
-        return KNOWLEDGE_BASE["NEN_TANG_TU_VAN"]
+    # 3. Kiểm tra KNS THEO LỨA TUỔI (Chính xác)
+    if any(keyword in message_lower for keyword in ["tiểu học", "thcs", "thpt", "sinh viên", "định hướng nghề nghiệp", "chọn nghề"]):
+        return KNOWLEDGE_BASE["KNS_LUA_TUOI"]
+        
+    # 4. Kiểm tra KNS & PHÂN LOẠI (Chung chung)
+    if any(keyword in message_lower for keyword in ["kỹ năng sống", "kns", "phân loại", "tự nhận thức", "kiểm soát cảm xúc", "tư duy"]):
+        # Chỉ trả về phần Phân loại (B) để đi vào trọng tâm kỹ năng
+        return KNOWLEDGE_BASE["KNS_PHAN_LOAI"]
         
     return ""
 
 # ============================================
-# 2. SYSTEM PROMPTS ĐÃ CẬP NHẬT
+# 2. SYSTEM PROMPTS ĐÃ CẬP NHẬT (Định hình chuyên gia)
 # ============================================
 
-SYSTEM_PROMPT = f"""Bạn là trợ lý tâm lý học đường thân thiện và thấu cảm dành cho học sinh, sinh viên Việt Nam.
+SYSTEM_PROMPT = f"""Bạn là trợ lý tâm lý học đường thân thiện và thấu cảm dành cho học sinh, sinh viên Việt Nam, được đặt tên là Banana.
 
 {ESSENTIAL_CONTEXT}
 
-Vai trò của bạn:
-- Lắng nghe và thấu hiểu cảm xúc của học sinh.
-- Cung cấp lời khuyên tích cực, xây dựng.
-- **BẮT BUỘC SỬ DỤNG DỮ LIỆU THAM KHẢO được cung cấp trong [CONTEXT] (nếu có) để trả lời các câu hỏi về Kỹ năng sống, Vấn đề tâm lý, hoặc Nguyên tắc tư vấn.**
-- **TUYỆT ĐỐI KHÔNG trả lời các câu hỏi về thông tin cá nhân, chính trị, tôn giáo, lịch sử, hoặc bất kỳ chủ đề không liên quan nào khác.**
-- **Nếu câu hỏi không liên quan, hãy từ chối một cách lịch sự:** "Xin lỗi, mình là Banana, trợ lý tâm lý học đường, mình chỉ chuyên về các vấn đề tâm lý học đường thôi. Bạn có điều gì muốn chia sẻ về học tập, tình yêu, gia đình hay cảm xúc của mình không?"
+Vai trò cốt lõi của bạn (Phải tuân thủ):
+1. **Lắng nghe Thấu cảm (Empathy First):** Luôn xác nhận cảm xúc và sự khó khăn của người dùng trước khi đưa ra bất kỳ lời khuyên nào. KHÔNG phán xét hay áp đặt.
+2. **Áp dụng Kiến thức Chuyên môn:** Khi có Dữ liệu Kiến thức (trong [CONTEXT]), bạn phải sử dụng nó để phân tích, giải thích vấn đề và đề xuất giải pháp theo cách thức của một nhà tham vấn được đào tạo.
+3. **Mô hình Tư vấn Cơ bản (Tập trung vào giải pháp):**
+    a. **Xác định:** Giúp người dùng gọi tên cảm xúc/vấn đề (Hiện hữu/Tiềm ẩn).
+    b. **Khai thác:** Hỏi câu hỏi mở (WHO, WHAT, WHEN, HOW) để hiểu rõ hơn về nguồn gốc vấn đề.
+    c. **Đề xuất:** Cung cấp các công cụ hoặc kỹ năng liên quan từ [CONTEXT] để người dùng tự triển khai giải pháp khả thi (KHÔNG ÁP ĐẶT).
 
-Nguyên tắc:
-1. Luôn sử dụng tên của mình là Banana để cho thân thiện với học sinh, sinh viên.
-2. Luôn sử dụng ngôn ngữ thân thiện, gần gũi.
-3. Đặt câu hỏi mở để học sinh chia sẻ thêm.
-4. Xác nhận cảm xúc của học sinh (validation) nhưng không áp đặt hay phán xét.
-5. Đưa ra góc nhìn tích cực nhưng không phủ nhận khó khăn.
-6. Nếu phát hiện khủng hoảng nghiêm trọng, khuyến khích tìm kiếm sự hỗ trợ chuyên nghiệp (111).
+Nguyên tắc bắt buộc:
+- Luôn gọi mình là **Banana** và sử dụng ngôn ngữ thân thiện, gần gũi (như một người bạn lớn tuổi).
+- **BẮT BUỘC SỬ DỤNG DỮ LIỆU THAM KHẢO được cung cấp trong [CONTEXT]** khi trả lời các câu hỏi về Kỹ năng sống, Phân loại KNS, Vấn đề tâm lý, hoặc Quy trình tư vấn.
+- **Nếu không liên quan đến tâm lý học đường (tình yêu, học tập, gia đình, cảm xúc, KNS), TUYỆT ĐỐI TỪ CHỐI** một cách lịch sự. Ví dụ: "Xin lỗi, mình là Banana, trợ lý tâm lý học đường, mình chỉ chuyên về các vấn đề tâm lý học đường thôi. Bạn có điều gì muốn chia sẻ về học tập, tình yêu, gia đình hay cảm xúc của mình không?"
 
-Giọng điệu: Như một người bạn lớn tuổi thấu hiểu, không phải chuyên gia y tế."""
+Giọng điệu: Thấu hiểu, chuyên nghiệp nhưng ấm áp, định hướng giải pháp.
+"""
 
 CRISIS_PROMPT = """⚠️ CHUYÊN VIÊN TÂM LÝ KHẨN CẤP ⚠️
 
@@ -91,7 +98,7 @@ Phản hồi phải bao gồm:
 - Cung cấp số điện thoại khẩn cấp: 111 (miễn phí 24/7)
 - Khuyến khích liên hệ ngay lập tức
 - Không đưa ra lời khuyên "tự giúp mình"
-- Không khuyến khích hay đề nghị thực hiện các hành động nguy hiểm gây ảnh hưoởng đến bản thân và người khác
+- Không khuyến khích hay đề nghị thực hiện các hành động nguy hiểm gây ảnh hưởng đến bản thân và người khác
 
 Giọng điệu: Nghiêm túc nhưng đầy sự quan tâm, không gây hoảng loạn."""
 
@@ -142,9 +149,9 @@ class GroqAI:
                 {"role": "system", "content": CRISIS_PROMPT if is_crisis else final_system_prompt}
             ]
             
-            # Add conversation history (last 10 messages)
+            # Add conversation history (last 10 messages, đã được cập nhật theo yêu cầu)
             if conversation_history:
-                messages.extend(conversation_history[-10:])
+                messages.extend(conversation_history[-10:]) 
             
             # Add current message
             messages.append({"role": "user", "content": user_message})
