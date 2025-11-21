@@ -21,12 +21,12 @@ const ChatInterface = () => {
   const [error, setError] = useState(null);
   const [isInitializing, setIsInitializing] = useState(true);
   
-  // ✅ REF CHO VIỆC CUỘN NỘI BỘ
+  // REF CHO VIỆC CUỘN NỘI BỘ
   const messagesEndRef = useRef(null);
   const messagesContainerRef = useRef(null);
-  const inputContainerRef = useRef(null);
+  const inputRef = useRef(null); // ✅ NEW: Ref cho input để auto-focus
   
-  // ✅ Track để bỏ qua cuộn cho welcome message
+  // Track để bỏ qua cuộn cho welcome message
   const initialLoadRef = useRef(true);
 
   useEffect(() => {
@@ -53,7 +53,7 @@ const ChatInterface = () => {
     initSession();
   }, []);
 
-  // ✅ CUỘN NỘI BỘ - Scroll to bottom of messages container
+  // CUỘN NỘI BỘ - Scroll to bottom of messages container
   useEffect(() => {
     // Bỏ qua welcome message (lần render đầu)
     if (initialLoadRef.current && messages.length === 1) {
@@ -65,10 +65,9 @@ const ChatInterface = () => {
     if (messages.length > 1 || isTyping) {
       const scrollTimer = setTimeout(() => {
         if (messagesEndRef.current && messagesContainerRef.current) {
-          // Scroll nội bộ trong container
           messagesEndRef.current.scrollIntoView({ 
             behavior: 'smooth',
-            block: 'nearest' // Giữ tin nhắn mới ở cuối container
+            block: 'nearest'
           });
         }
       }, 100);
@@ -132,6 +131,13 @@ const ChatInterface = () => {
     } finally {
       setIsTyping(false);
       setIsSending(false);
+      
+      // Auto-focus lại input sau khi gửi xong
+      setTimeout(() => {
+        if (inputRef.current) {
+          inputRef.current.focus();
+        }
+      }, 150);
     }
   };
 
@@ -156,7 +162,7 @@ const ChatInterface = () => {
   return (
     <div 
       id="chat-box" 
-      className="flex flex-col h-[600px] bg-white rounded-2xl shadow-lg overflow-hidden border-2 border-gray-200"
+      className="flex flex-col h-[600px] md:h-[650px] bg-white rounded-2xl shadow-lg overflow-hidden border-2 border-gray-200"
     >
       
       {error && (
@@ -168,11 +174,15 @@ const ChatInterface = () => {
         </div>
       )}
 
-      {/* ✅ Vùng tin nhắn có thanh cuộn - Thêm ref */}
+      {/* Vùng tin nhắn có thanh cuộn */}
       <div 
         ref={messagesContainerRef}
         className="flex-1 overflow-y-auto"
-        style={{ scrollBehavior: 'smooth' }}
+        style={{ 
+          scrollBehavior: 'smooth',
+          // Thêm padding bottom để tránh bị che bởi keyboard trên mobile
+          paddingBottom: '20px' 
+        }}
       >
         <MessageList 
           messages={messages} 
@@ -181,9 +191,10 @@ const ChatInterface = () => {
         />
       </div>
 
-      {/* Vùng Input */}
-      <div className="flex-shrink-0" ref={inputContainerRef}>
+      {/* Vùng Input - Truyền inputRef để control focus */}
+      <div className="flex-shrink-0">
         <MessageInput
+          ref={inputRef}
           onSend={handleSendMessage}
           disabled={isSending || !sessionId || isInitializing}
           isSending={isSending}

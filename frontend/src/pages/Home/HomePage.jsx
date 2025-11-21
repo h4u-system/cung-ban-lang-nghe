@@ -3,6 +3,7 @@
 // Unified design
 // *************************************************
 
+
 import React, { useEffect, useRef } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import ChatInterface from '../../components/Chat/ChatInterface';
@@ -73,9 +74,8 @@ const HomePage = () => {
 
   return (
     <div className="space-y-12">
-      {/* ✅ Hero Section - FIXED Typography */}
+      {/* Hero Section */}
       <section className="relative overflow-hidden bg-gradient-to-br from-blue-600 via-blue-700 to-indigo-800 rounded-3xl p-8 md:p-12 lg:p-14 text-center shadow-2xl">
-        {/* Background Pattern */}
         <div className="absolute inset-0 opacity-10">
           <div className="absolute top-0 left-0 w-96 h-96 bg-white rounded-full blur-3xl"></div>
           <div className="absolute bottom-0 right-0 w-96 h-96 bg-white rounded-full blur-3xl"></div>
@@ -86,22 +86,18 @@ const HomePage = () => {
             <span className="text-5xl md:text-6xl">💙</span>
           </div>
 
-          {/* ✅ FIXED: Typography với line breaks được kiểm soát */}
           <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold mb-4 md:mb-5 text-white leading-tight">
             Chào mừng đến với
             <br className="sm:hidden" />
-            {/* ✅ Đảm bảo "Cùng Bạn Lắng Nghe" không bị tách */}
             <span className="block mt-2 md:mt-3">
               <span className="inline-block">Cùng Bạn Lắng Nghe</span>
             </span>
           </h1>
 
-          {/* ✅ FIXED: Tăng spacing và line-height */}
           <p className="text-base sm:text-lg md:text-xl text-blue-100 mb-6 md:mb-8 leading-relaxed px-4">
             Trợ lý tâm lý học đường với công nghệ AI
           </p>
           
-          {/* ✅ FIXED: Responsive badges */}
           <div className="flex flex-wrap items-center justify-center gap-2 md:gap-3 text-xs sm:text-sm md:text-base font-semibold text-white mb-6 md:mb-8 px-4">
             <span className="flex items-center gap-2 bg-white/20 backdrop-blur-md px-3 md:px-4 py-2 rounded-full border border-white/30">
               <svg className="w-4 h-4 md:w-5 md:h-5" fill="currentColor" viewBox="0 0 20 20">
@@ -123,7 +119,6 @@ const HomePage = () => {
             </span>
           </div>
 
-          {/* CTA Button */}
           <button
             onClick={() => chatSectionRef.current?.scrollIntoView({ behavior: 'smooth' })}
             className="inline-flex items-center gap-2 md:gap-3 bg-white hover:bg-blue-50 text-blue-600 px-6 md:px-8 py-3 md:py-4 rounded-xl font-bold text-base md:text-lg transition-all shadow-xl hover:shadow-2xl hover:scale-105 active:scale-95"
@@ -165,7 +160,7 @@ const HomePage = () => {
         </div>
       </section>
 
-      {/* Chat Section */}
+      {/* Chat Section - MOBILE OPTIMIZED */}
       <section ref={chatSectionRef} id="chat-section" className="scroll-mt-8">
         <div className="flex items-center gap-3 mb-6">
           <span className="text-3xl md:text-4xl">💬</span>
@@ -179,7 +174,8 @@ const HomePage = () => {
           </div>
         </div>
 
-        <div className="bg-white rounded-3xl shadow-2xl border-2 border-gray-200 overflow-hidden">
+        {/* Mobile-optimized chat container */}
+        <div className="bg-white rounded-2xl md:rounded-3xl shadow-2xl border-2 border-gray-200 overflow-hidden">
           <ChatInterface />
         </div>
       </section>
