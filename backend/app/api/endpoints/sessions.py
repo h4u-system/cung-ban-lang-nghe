@@ -41,21 +41,32 @@ class SessionCreateRequest(BaseModel):
     }
 
 
-class SessionResponse(BaseModel):
-    """Schema for session response"""
+class SessionData(BaseModel):
+    """Inner session data schema"""
     session_token: str
     expires_at: datetime
     language_preference: str
     is_crisis_mode: bool
     
     model_config = {
-        "from_attributes": True,
+        "from_attributes": True
+    }
+
+
+# Nested response wrapper
+class SessionResponse(BaseModel):
+    """Schema for session response - NESTED STRUCTURE"""
+    session: SessionData
+    
+    model_config = {
         "json_schema_extra": {
             "example": {
-                "session_token": "anon_abc123...",
-                "expires_at": "2025-12-18T10:30:00Z",
-                "language_preference": "vi",
-                "is_crisis_mode": False
+                "session": {
+                    "session_token": "anon_abc123...",
+                    "expires_at": "2025-12-18T10:30:00Z",
+                    "language_preference": "vi",
+                    "is_crisis_mode": False
+                }
             }
         }
     }
@@ -135,14 +146,14 @@ def get_session_by_token(db: Session, session_token: str) -> SessionModel:
 # ============================================
 
 @router.post(
-    "",  # ✅ FIX: No trailing slash - FastAPI will auto-handle both /sessions and /sessions/
+    "",
     response_model=SessionResponse,
     status_code=status.HTTP_201_CREATED,
     summary="Create New Session",
     description="Create a new anonymous session for chatting"
 )
 async def create_session(
-    session_data: SessionCreateRequest = SessionCreateRequest(),  # ✅ FIX: Default value for empty body
+    session_data: SessionCreateRequest = SessionCreateRequest(),
     db: Session = Depends(get_db)
 ):
     """
@@ -173,17 +184,19 @@ async def create_session(
     db.commit()
     db.refresh(new_session)
     
-    logger.info(f"New session created: {new_session.id}")
+    logger.info(f"✅ New session created: {new_session.id} - Token: {session_token[:12]}...")
     
+    # Return nested structure that frontend expects
     return SessionResponse(
-        session_token=new_session.session_token,
-        expires_at=new_session.expires_at,
-        language_preference=new_session.language_preference,
-        is_crisis_mode=new_session.is_crisis_mode
+        session=SessionData(
+            session_token=new_session.session_token,
+            expires_at=new_session.expires_at,
+            language_preference=new_session.language_preference,
+            is_crisis_mode=new_session.is_crisis_mode
+        )
     )
 
 
-# ✅ NEW: GET endpoint to validate session by token
 @router.get(
     "/{session_token}",
     response_model=SessionStatusResponse,
@@ -208,6 +221,8 @@ async def get_session(
         Message.session_id == session.id
     ).count()
     
+    logger.info(f"✅ Session validated: {session.id}")
+    
     return SessionStatusResponse(
         is_valid=True,
         is_expired=session.is_expired(),
@@ -221,7 +236,7 @@ async def get_session(
 
 
 @router.get(
-    "/status",  # ⚠️  This will be /sessions/status (OK)
+    "/status",
     response_model=SessionStatusResponse,
     summary="Check Session Status",
     description="Check if a session is valid and get its status"
@@ -282,18 +297,21 @@ async def refresh_session(
     db.commit()
     db.refresh(session)
     
-    logger.info(f"Session refreshed: {session.id}")
+    logger.info(f"✅ Session refreshed: {session.id}")
     
+    # Return nested structure
     return SessionResponse(
-        session_token=session.session_token,
-        expires_at=session.expires_at,
-        language_preference=session.language_preference,
-        is_crisis_mode=session.is_crisis_mode
+        session=SessionData(
+            session_token=session.session_token,
+            expires_at=session.expires_at,
+            language_preference=session.language_preference,
+            is_crisis_mode=session.is_crisis_mode
+        )
     )
 
 
 @router.delete(
-    "",  # ✅ FIX: No trailing slash
+    "",
     status_code=status.HTTP_204_NO_CONTENT,
     summary="Delete Session",
     description="Soft delete a session and all its data"
@@ -318,7 +336,7 @@ async def delete_session(
     
     db.commit()
     
-    logger.info(f"Session deleted: {session.id}")
+    logger.info(f"✅ Session deleted: {session.id}")
     
     return None  # 204 No Content
 
