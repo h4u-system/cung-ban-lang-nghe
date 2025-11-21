@@ -10,11 +10,24 @@ export const SESSION_TIMEOUT = 30 * 60 * 1000; // 30 minutes
 export const MESSAGE_MAX_LENGTH = 2000;
 export const TYPING_INDICATOR_DELAY = 1000;
 
-// Crisis Detection Keywords (client-side warning)
+// Crisis Detection Keywords (client-side warning + sync với backend)
 export const CRISIS_KEYWORDS = [
-  'tự tử', 'tự sát', 'kết thúc cuộc đời', 'muốn chết',
-  'cắt tay', 'tự làm đau', 'làm hại bản thân',
-  'vô vọng', 'cuộc sống vô nghĩa', 'không còn hy vọng'
+  // Nhóm Tự tử
+  'tự tử', 'tự sát', 'kết thúc cuộc đời', 'muốn chết', 'biến mất', 'chết', 'chấm dứt',
+  
+  // Nhóm Tự làm hại
+  'cắt tay', 'tự làm đau', 'làm hại bản thân', 'tự hành xác', 'tự hành hạ', 'đâm bản thân',
+  
+  // Nhóm Tuyệt vọng
+  'vô vọng', 'cuộc sống vô nghĩa', 'không còn hy vọng', 'tuyệt vọng', 'khủng hoảng',
+  
+  // Xâm hại tình dục
+  'quấy rối tình dục', 'hiếp dâm', 'cưỡng bức', 'lạm dụng tình dục', 
+  'xâm hại tình dục', 'bị cưỡng hiếp', 'bị sờ mó', 'bị xâm hại',
+  
+  // Bạo lực
+  'bị đánh đập', 'bạo lực gia đình', 'xâm hại', 'bạo lực học đường',
+  'đánh chết', 'chém', 'giết', 'hành hạ', 'tra tấn'
 ];
 
 // Emergency Contacts

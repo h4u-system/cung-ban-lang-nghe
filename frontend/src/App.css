@@ -2,22 +2,51 @@
  * File: frontend/src/App.css
  */
 
+/* ============================================ */
+/* ROOT CONTAINER */
+/* ============================================ */
+
 #root {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 2rem;
-  text-align: center;
+  width: 100%;
+  min-height: 100vh;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
 }
+
+/* ============================================ */
+/* MAIN APP CONTAINER */
+/* ============================================ */
+
+.app-container {
+  max-width: 1440px;
+  margin: 0 auto;
+  padding: 0 1rem;
+  width: 100%;
+}
+
+@media (min-width: 768px) {
+  .app-container {
+    padding: 0 2rem;
+  }
+}
+
+/* ============================================ */
+/* LOGO STYLES */
+/* ============================================ */
 
 .logo {
   height: 6em;
   padding: 1.5em;
   will-change: filter;
-  transition: filter 300ms;
+  transition: filter 300ms ease;
 }
+
 .logo:hover {
   filter: drop-shadow(0 0 2em #646cffaa);
 }
+
 .logo.react:hover {
   filter: drop-shadow(0 0 2em #61dafbaa);
 }
@@ -37,10 +66,398 @@
   }
 }
 
+/* ============================================ */
+/* CARD STYLES */
+/* ============================================ */
+
 .card {
   padding: 2em;
+  background: white;
+  border-radius: 1rem;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.07);
+  transition: all 0.2s ease;
 }
+
+.card:hover {
+  box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
+  transform: translateY(-2px);
+}
+
+/* ============================================ */
+/* LEGAL COMPONENTS SPECIFIC STYLES */
+/* ============================================ */
+
+/* Disclaimer Modal Overlay */
+.disclaimer-overlay {
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+}
+
+/* Privacy Notice Container */
+.privacy-notice-container {
+  max-width: 100%;
+  transition: all 0.3s ease;
+}
+
+@media (min-width: 768px) {
+  .privacy-notice-container {
+    max-width: 800px;
+  }
+}
+
+/* Privacy Dashboard */
+.privacy-dashboard {
+  max-width: 1024px;
+  margin: 0 auto;
+  padding: 1.5rem;
+}
+
+@media (min-width: 768px) {
+  .privacy-dashboard {
+    padding: 2rem;
+  }
+}
+
+/* ============================================ */
+/* CHAT INTERFACE STYLES */
+/* ============================================ */
+
+/* Chat Container */
+.chat-container-wrapper {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 1rem;
+}
+
+@media (min-width: 768px) {
+  .chat-container-wrapper {
+    padding: 2rem;
+  }
+}
+
+/* Chat Messages Area */
+.chat-messages {
+  scroll-behavior: smooth;
+  scroll-padding-bottom: 120px;
+}
+
+/* Prevent text selection on rapid clicking */
+.chat-bubble {
+  user-select: text;
+  -webkit-user-select: text;
+  -moz-user-select: text;
+  -ms-user-select: text;
+}
+
+/* ============================================ */
+/* UTILITY CLASSES */
+/* ============================================ */
 
 .read-the-docs {
   color: #888;
+  font-size: 0.875rem;
+  line-height: 1.5;
 }
+
+/* Hide element visually but keep accessible */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}
+
+/* Focus visible for keyboard navigation */
+.focus-ring {
+  outline: 2px solid transparent;
+  outline-offset: 2px;
+  transition: outline 0.15s ease;
+}
+
+.focus-ring:focus-visible {
+  outline: 2px solid #3b82f6;
+  outline-offset: 2px;
+}
+
+/* ============================================ */
+/* LOADING STATES */
+/* ============================================ */
+
+.loading-spinner {
+  border: 3px solid #f3f4f6;
+  border-top: 3px solid #3b82f6;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* Skeleton Loading */
+.skeleton {
+  background: linear-gradient(
+    90deg,
+    #f0f0f0 25%,
+    #e0e0e0 50%,
+    #f0f0f0 75%
+  );
+  background-size: 200% 100%;
+  animation: skeleton-loading 1.5s ease-in-out infinite;
+}
+
+@keyframes skeleton-loading {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
+}
+
+/* ============================================ */
+/* TRANSITIONS & ANIMATIONS */
+/* ============================================ */
+
+/* Fade In */
+.fade-in {
+  animation: fadeIn 0.3s ease-in;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* Slide Up */
+.slide-up {
+  animation: slideUp 0.4s ease-out;
+}
+
+@keyframes slideUp {
+  from {
+    transform: translateY(20px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+/* Scale In */
+.scale-in {
+  animation: scaleIn 0.3s ease-out;
+}
+
+@keyframes scaleIn {
+  from {
+    transform: scale(0.95);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+/* ============================================ */
+/* MOBILE OPTIMIZATION */
+/* ============================================ */
+
+@media (max-width: 768px) {
+  #root {
+    padding: 0;
+  }
+
+  .app-container {
+    padding: 0 0.75rem;
+  }
+
+  .card {
+    padding: 1.5em;
+    border-radius: 0.75rem;
+  }
+
+  /* Disable hover effects on mobile */
+  .card:hover {
+    transform: none;
+  }
+
+  /* Optimize chat for mobile */
+  .chat-container-wrapper {
+    padding: 0.5rem;
+  }
+
+  /* Ensure modals are mobile-friendly */
+  .disclaimer-overlay,
+  .privacy-dashboard {
+    padding: 1rem;
+  }
+}
+
+/* ============================================ */
+/* PRINT STYLES */
+/* ============================================ */
+
+@media print {
+  #root {
+    padding: 0;
+  }
+
+  .no-print,
+  .chat-input,
+  button {
+    display: none !important;
+  }
+
+  .card {
+    box-shadow: none;
+    border: 1px solid #ddd;
+  }
+
+  /* Ensure legal documents print well */
+  .privacy-notice-container,
+  .privacy-dashboard {
+    max-width: 100%;
+    padding: 0;
+  }
+}
+
+/* ============================================ */
+/* ACCESSIBILITY */
+/* ============================================ */
+
+/* High contrast mode */
+@media (prefers-contrast: high) {
+  .card {
+    border: 2px solid currentColor;
+  }
+
+  .logo:hover {
+    filter: none;
+  }
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+
+  .logo {
+    animation: none !important;
+  }
+}
+
+/* Focus indicator for keyboard navigation */
+*:focus-visible {
+  outline: 2px solid #3b82f6;
+  outline-offset: 2px;
+  border-radius: 0.25rem;
+}
+
+/* ============================================ */
+/* DARK MODE SUPPORT (Optional) */
+/* ============================================ */
+
+@media (prefers-color-scheme: dark) {
+  /* Uncomment to enable dark mode */
+  /*
+  #root {
+    background-color: #1a1a1a;
+    color: #f5f5f5;
+  }
+
+  .card {
+    background: #2a2a2a;
+    color: #f5f5f5;
+  }
+
+  .read-the-docs {
+    color: #aaa;
+  }
+  */
+}
+
+/* ============================================ */
+/* EMERGENCY/CRISIS STYLES */
+/* ============================================ */
+
+/* Crisis Alert specific styles */
+.crisis-alert-overlay {
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  z-index: 9999; /* Highest priority */
+}
+
+.crisis-alert-modal {
+  box-shadow: 0 25px 50px rgba(0, 0, 0, 0.3);
+  animation: crisis-alert-appear 0.3s ease-out;
+}
+
+@keyframes crisis-alert-appear {
+  from {
+    transform: scale(0.9) translateY(-20px);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1) translateY(0);
+    opacity: 1;
+  }
+}
+
+/* Emergency button pulse animation */
+.emergency-button {
+  animation: emergency-pulse 2s ease-in-out infinite;
+}
+
+@keyframes emergency-pulse {
+  0%, 100% {
+    box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.7);
+  }
+  50% {
+    box-shadow: 0 0 0 10px rgba(239, 68, 68, 0);
+  }
+}
+
+/* ============================================ */
+/* PERFORMANCE OPTIMIZATIONS */
+/* ============================================ */
+
+/* GPU acceleration for animations */
+.gpu-accelerated {
+  transform: translateZ(0);
+  will-change: transform;
+}
+
+/* Smooth scrolling optimization */
+.smooth-scroll {
+  scroll-behavior: smooth;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* Prevent layout shifts */
+.prevent-shift {
+  contain: layout;
+}
+
+/* ============================================ */
+/* END OF APP.CSS */
+/* ============================================ */

@@ -1,9 +1,9 @@
 // ============================================
-// 
 // File: frontend/src/App.jsx
+// Integrated: DisclaimerModal + Auto Cleanup
 // ============================================
 
-import React from 'react';
+import React, { useEffect } from 'react';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import MainLayout from './components/Layout/MainLayout';
 import HomePage from './pages/Home/HomePage';
@@ -34,9 +34,26 @@ import AnalyticsPage from './pages/Admin/AnalyticsPage';
 import SettingsPage from './pages/Admin/SettingsPage';
 import ContentPage from './pages/Admin/ContentPage';
 
+// Legal Components
+import { DisclaimerModal, PrivacyDashboard } from './components/Legal';
+import { checkAndCleanupOldData } from './utils/legalHelper';
+
 function App() {
+  // Auto cleanup old data on app load
+  useEffect(() => {
+    try {
+      checkAndCleanupOldData();
+      console.log('✅ Auto cleanup completed');
+    } catch (error) {
+      console.error('❌ Auto cleanup failed:', error);
+    }
+  }, []);
+
   return (
     <BrowserRouter>
+      {/* ✅ Disclaimer Modal - Hiển thị tự động lần đầu */}
+      <DisclaimerModal />
+
       <Routes>
         {/* Public Routes */}
         <Route path="/" element={<MainLayout />}>
@@ -57,7 +74,10 @@ function App() {
           {/* Other Routes */}
           <Route path="hoi-dap" element={<QAPage />} />
           <Route path="gioi-thieu" element={<AboutPage />} />
-          <Route path="lien-he" element={<ContactPage />} /> 
+          <Route path="lien-he" element={<ContactPage />} />
+          
+          {/* Privacy Dashboard Route */}
+          <Route path="quyen-rieng-tu" element={<PrivacyDashboard />} />
           
           {/* 404 */}
           <Route path="404" element={<NotFoundPage />} />
