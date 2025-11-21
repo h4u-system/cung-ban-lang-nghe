@@ -11,6 +11,9 @@ import messageService from '../../services/message';
 import encryptionService from '../../utils/encryption';
 import { UI_MESSAGES } from '../../utils/constants';
 
+import { PrivacyNotice } from '../Legal';
+import { logLocalEvent } from '../../utils/legalHelper';
+
 const ChatInterface = () => {
   const [sessionId, setSessionId] = useState(null);
   const [messages, setMessages] = useState([]);
