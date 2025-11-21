@@ -1,6 +1,6 @@
 # ****************************************************
 # File: backend/app/utils/knowledge_base.py
-# ***************************************************
+# ****************************************************
 
 KNOWLEDGE_BASE = {
     "KNS_KHAI_NIEM": """
@@ -72,6 +72,21 @@ KNOWLEDGE_BASE = {
         * Kỹ năng phòng chống bạo lực (xâm hại thân thể, bạo lực học đường).
         * Kỹ năng sinh tồn (đuối nước, sơ cứu).
         * Kỹ năng phòng chống lừa đảo trực tuyến (nhận diện biểu mẫu giả mạo).
+        
+        ### 5. ⚠️ VẤN ĐỀ XÂM HẠI TÌNH DỤC (Cần hỗ trợ khẩn cấp):
+        * **Định nghĩa:** Xâm hại tình dục là bất kỳ hành vi tình dục nào không được đồng ý, bao gồm quấy rối, sờ mó, cưỡng bức quan hệ.
+        * **Dấu hiệu nhận biết:** 
+          - Bị ai đó sờ mó vùng nhạy cảm mà không muốn
+          - Bị ép buộc xem hình ảnh/video khiêu dâm
+          - Bị đe dọa hoặc cưỡng ép quan hệ tình dục
+        * **QUAN TRỌNG - Điều học sinh cần biết:**
+          1. Đây KHÔNG PHẢI lỗi của bạn, dù trong bất kỳ hoàn cảnh nào
+          2. Bạn có quyền nói KHÔNG và được bảo vệ
+          3. Cần tìm sự giúp đỡ NGAY LẬP TỨC từ người lớn đáng tin cậy
+        * **Hành động khẩn cấp:**
+          - Gọi ngay 111 (Tổng đài Bảo vệ Trẻ em, miễn phí 24/7)
+          - Liên hệ với cha mẹ, thầy cô, hoặc cơ quan chức năng
+          - Đi đến bệnh viện để khám và giữ bằng chứng
         """,
 
     "NEN_TANG_TU_VAN": """
@@ -91,5 +106,21 @@ KNOWLEDGE_BASE = {
         2. Phân tích vấn đề.
         3. Đưa ra các giải pháp khả thi nhưng **không ĐƯỢC PHÉP ÁP ĐẶT**.
         4. Đánh giá và Thử nghiệm.
+        
+        ### 4. ⚠️ XỬ LÝ CÁC TÌNH HUỐNG KHỦNG HOẢNG:
+        
+        #### A. Tình huống Tự tử/Tự làm hại:
+        * **Dấu hiệu cảnh báo:** Nói về cái chết, từ biệt, tuyệt vọng, trao đi đồ vật quan trọng
+        * **Ứng phó:** KHÔNG đưa ra lời khuyên, GỌI NGAY 111 hoặc 115
+        
+        #### B. Tình huống Xâm hại/Bạo lực:
+        * **Dấu hiệu:** Bị đánh đập, xâm hại tình dục, bạo lực gia đình
+        * **Ứng phó:** Đảm bảo an toàn ngay lập tức, GỌI 111, liên hệ cơ quan chức năng
+        
+        #### C. Nguyên tắc vàng khi xử lý khủng hoảng:
+        1. **Tin tưởng và xác nhận:** "Mình tin lời bạn nói"
+        2. **Không phán xét:** Không hỏi "Tại sao bạn không...?"
+        3. **Kết nối chuyên gia:** Luôn luôn chuyển đến hỗ trợ chuyên nghiệp
+        4. **Tài liệu hóa:** Ghi nhận thời gian, nội dung (nhưng bảo mật tuyệt đối)
         """
 }

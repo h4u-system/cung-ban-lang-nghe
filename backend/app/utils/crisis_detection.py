@@ -4,7 +4,8 @@
 # ============================================
 
 import logging
-from typing import Dict, List, Tuple
+import re
+from typing import Dict, List, Tuple, Optional
 from sqlalchemy.orm import Session
 
 from app.models import BlockedKeyword
@@ -18,10 +19,10 @@ logger = logging.getLogger(__name__)
 
 class CrisisDetector:
     """
-    Multi-tier crisis detection system
-    Tier 1: Keyword matching
-    Tier 2: Pattern detection (future)
-    Tier 3: Context analysis (future)
+    Enhanced Multi-tier crisis detection system
+    Tier 1: Database keyword matching (dynamic)
+    Tier 2: Pattern detection (regex-based)
+    Tier 3: Context analysis (future ML enhancement)
     """
     
     def __init__(self, db: Session):
@@ -30,13 +31,13 @@ class CrisisDetector:
         self._load_keywords()
     
     def _load_keywords(self):
-        """Load crisis keywords from database"""
+        """Load crisis keywords from database with improved organization"""
         try:
             keywords = self.db.query(BlockedKeyword).filter(
                 BlockedKeyword.is_active == True
             ).all()
             
-            # Group by category
+            # Group by category với structure tốt hơn
             self._keywords_cache = {
                 'suicide': [],
                 'self_harm': [],
@@ -47,22 +48,50 @@ class CrisisDetector:
             for kw in keywords:
                 category = kw.category
                 if category in self._keywords_cache:
+                    # Tạo regex pattern linh hoạt từ keyword
+                    keyword_normalized = re.escape(kw.keyword.lower())
+                    # Cho phép khoảng trắng linh hoạt giữa các từ
+                    flexible_pattern = keyword_normalized.replace(r'\ ', r'\s+')
+                    
                     self._keywords_cache[category].append({
                         'keyword': kw.keyword.lower(),
                         'severity': kw.severity,
                         'is_exact_match': kw.is_exact_match,
-                        'is_case_sensitive': kw.is_case_sensitive
+                        'is_case_sensitive': kw.is_case_sensitive,
+                        'regex_pattern': flexible_pattern
                     })
             
-            logger.info(f"Loaded {len(keywords)} crisis keywords from database")
+            total = sum(len(v) for v in self._keywords_cache.values())
+            logger.info(f"✅ Loaded {total} crisis keywords from database")
+            logger.info(f"   - Suicide: {len(self._keywords_cache['suicide'])}")
+            logger.info(f"   - Self-harm: {len(self._keywords_cache['self_harm'])}")
+            logger.info(f"   - Violence: {len(self._keywords_cache['violence'])}")
+            logger.info(f"   - Abuse: {len(self._keywords_cache['abuse'])}")
         
         except Exception as e:
-            logger.error(f"Failed to load crisis keywords: {e}")
+            logger.error(f"❌ Failed to load crisis keywords: {e}")
             self._keywords_cache = {'suicide': [], 'self_harm': [], 'violence': [], 'abuse': []}
+    
+    def _normalize_message(self, message: str) -> str:
+        """
+        Chuẩn hóa tin nhắn để tăng độ chính xác phát hiện
+        - Loại bỏ dấu câu
+        - Chuẩn hóa khoảng trắng
+        - Giữ nguyên tiếng Việt có dấu
+        """
+        # Loại bỏ dấu câu nhưng giữ nguyên chữ cái tiếng Việt
+        normalized = re.sub(
+            r'[^\w\sáàảãạăắằẳẵặâấầẩẫậéèẻẽẹêếềểễệíìỉĩịóòỏõọôốồổỗộơớờởỡợúùủũụưứừửữựýỳỷỹỵđ]',
+            ' ',
+            message.lower()
+        )
+        # Chuẩn hóa nhiều khoảng trắng thành 1
+        normalized = re.sub(r'\s+', ' ', normalized).strip()
+        return normalized
     
     def detect_crisis(self, message: str) -> Dict:
         """
-        Detect if message contains crisis indicators
+        ENHANCED: Detect if message contains crisis indicators
         
         Args:
             message: User message text
@@ -74,41 +103,46 @@ class CrisisDetector:
                 'severity': str,  # 'critical', 'high', 'medium', 'low'
                 'categories': list,  # ['suicide', 'self_harm', etc.]
                 'matched_keywords': list,
-                'confidence': float  # 0.0 to 1.0
+                'confidence': float,  # 0.0 to 1.0
+                'detection_method': str  # 'database' or 'pattern'
             }
         """
         if not message or not self._keywords_cache:
             return self._no_crisis_result()
         
-        message_lower = message.lower()
+        # Chuẩn hóa tin nhắn
+        message_normalized = self._normalize_message(message)
         
         detected_categories = []
         matched_keywords = []
         max_severity = 'low'
+        detection_method = 'none'
         
-        # Check each category
+        # Check each category với improved matching
         for category, keywords in self._keywords_cache.items():
             for kw_data in keywords:
                 keyword = kw_data['keyword']
+                pattern = kw_data['regex_pattern']
                 
-                # Check for match
-                if kw_data['is_exact_match']:
-                    # Exact word boundary match
-                    if f" {keyword} " in f" {message_lower} ":
+                try:
+                    # Sử dụng regex pattern đã được tối ưu
+                    if re.search(pattern, message_normalized, re.I | re.U):
                         matched_keywords.append(keyword)
                         detected_categories.append(category)
+                        detection_method = 'database'
                         
                         # Update severity
                         if self._compare_severity(kw_data['severity'], max_severity) > 0:
                             max_severity = kw_data['severity']
-                else:
-                    # Substring match
-                    if keyword in message_lower:
-                        matched_keywords.append(keyword)
-                        detected_categories.append(category)
                         
-                        if self._compare_severity(kw_data['severity'], max_severity) > 0:
-                            max_severity = kw_data['severity']
+                        logger.warning(
+                            f"🚨 CRISIS KEYWORD MATCHED: '{keyword}' "
+                            f"(Category: {category}, Severity: {kw_data['severity']})"
+                        )
+                
+                except re.error as e:
+                    logger.error(f"Regex error for keyword '{keyword}': {e}")
+                    continue
         
         # Remove duplicates
         detected_categories = list(set(detected_categories))
@@ -117,15 +151,23 @@ class CrisisDetector:
         # Determine if crisis
         is_crisis = len(matched_keywords) > 0
         
-        # Calculate confidence (simple version)
-        confidence = min(len(matched_keywords) * 0.3, 1.0) if is_crisis else 0.0
+        # Calculate confidence
+        if is_crisis:
+            base_confidence = min(len(matched_keywords) * 0.25, 0.8)
+            # Tăng confidence nếu phát hiện critical severity
+            severity_boost = 0.2 if max_severity == 'critical' else 0.1 if max_severity == 'high' else 0
+            confidence = min(base_confidence + severity_boost, 1.0)
+        else:
+            confidence = 0.0
         
         if is_crisis:
-            logger.warning(
-                f"🚨 CRISIS DETECTED: "
-                f"Categories={detected_categories}, "
-                f"Keywords={matched_keywords}, "
-                f"Severity={max_severity}"
+            logger.critical(
+                f"🚨 CRISIS DETECTED 🚨\n"
+                f"   Categories: {detected_categories}\n"
+                f"   Keywords: {matched_keywords}\n"
+                f"   Severity: {max_severity}\n"
+                f"   Confidence: {confidence:.2%}\n"
+                f"   Message preview: '{message[:50]}...'"
             )
         
         return {
@@ -133,7 +175,8 @@ class CrisisDetector:
             'severity': max_severity if is_crisis else 'none',
             'categories': detected_categories,
             'matched_keywords': matched_keywords,
-            'confidence': confidence
+            'confidence': confidence,
+            'detection_method': detection_method
         }
     
     def _compare_severity(self, sev1: str, sev2: str) -> int:
@@ -160,49 +203,72 @@ class CrisisDetector:
             'severity': 'none',
             'categories': [],
             'matched_keywords': [],
-            'confidence': 0.0
+            'confidence': 0.0,
+            'detection_method': 'none'
         }
     
-    def get_emergency_response(self, categories: List[str]) -> Dict:
+    def get_emergency_response(self, categories: List[str], severity: str = 'high') -> Dict:
         """
-        Get emergency response information based on crisis categories
+        ENHANCED: Get emergency response information based on crisis categories
         
         Returns:
-            Dict with emergency contact info and instructions
+            Dict with emergency contact info and tailored instructions
         """
+        # Tùy chỉnh message dựa trên category
+        if 'abuse' in categories:
+            priority_message = (
+                "Mình hiểu bạn đang trải qua điều rất khó khăn và đau đớn. "
+                "Điều quan trọng nhất bây giờ là **AN TOÀN** của bạn. "
+                "Bạn không đơn độc và không phải lỗi của bạn."
+            )
+        elif 'suicide' in categories:
+            priority_message = (
+                "Mình biết bạn đang trong giai đoạn rất đau khổ. "
+                "Nhưng cuộc sống của bạn rất quan trọng. "
+                "Có những người sẵn sàng lắng nghe và giúp đỡ bạn ngay bây giờ."
+            )
+        else:
+            priority_message = (
+                "Mình nhận thấy bạn đang gặp tình huống nghiêm trọng. "
+                "An toàn của bạn là ưu tiên hàng đầu. "
+                "Hãy để chúng mình kết nối bạn với sự hỗ trợ chuyên nghiệp."
+            )
+        
         return {
+            'priority_message': priority_message,
             'hotlines': [
                 {
                     'name': 'Tổng đài Bảo vệ trẻ em',
                     'number': '111',
                     'available': '24/7',
-                    'free': True
+                    'free': True,
+                    'priority': 1,
+                    'description': 'Hỗ trợ khẩn cấp cho trẻ em và thanh thiếu niên'
                 },
                 {
                     'name': 'Cấp cứu Y tế',
                     'number': '115',
                     'available': '24/7',
-                    'free': True
+                    'free': True,
+                    'priority': 1,
+                    'description': 'Trường hợp cần can thiệp y tế ngay lập tức'
                 },
                 {
                     'name': 'Đường dây nóng Ngày Mai',
                     'number': '1900 636 976',
                     'available': '24/7',
-                    'free': False
+                    'free': False,
+                    'priority': 2,
+                    'description': 'Tư vấn tâm lý từ chuyên gia'
                 }
             ],
-            'message': {
-                'vi': 'Chúng mình nhận thấy bạn đang trải qua giai đoạn rất khó khăn. '
-                      'An toàn của bạn là ưu tiên số 1. Hãy liên hệ ngay với các đường dây nóng bên dưới.',
-                'en': 'We notice you\'re going through a very difficult time. '
-                      'Your safety is our top priority. Please contact the hotlines below immediately.'
-            },
             'immediate_actions': [
-                'Gọi ngay 111 (miễn phí 24/7)',
-                'Nói chuyện với người lớn đáng tin cậy',
-                'Không ở một mình',
-                'Loại bỏ các vật dụng nguy hiểm xung quanh'
-            ]
+                '🔴 Gọi ngay 111 (miễn phí 24/7) hoặc 115 nếu cần cấp cứu',
+                '🟡 Nói chuyện với người lớn đáng tin cậy (cha mẹ, thầy cô, người thân)',
+                '🟢 Không ở một mình - tìm đến nơi an toàn',
+                '🔵 Loại bỏ các vật dụng nguy hiểm xung quanh (nếu có thể)'
+            ],
+            'reassurance': 'Bạn đã rất dũng cảm khi chia sẻ. Hãy tin rằng mọi thứ có thể tốt hơn với sự hỗ trợ đúng đắn.'
         }
 
 
@@ -225,43 +291,94 @@ def detect_crisis_in_message(db: Session, message: str) -> Dict:
     return detector.detect_crisis(message)
 
 
-def get_emergency_info(db: Session, categories: List[str] = None) -> Dict:
+def get_emergency_info(db: Session, categories: List[str] = None, severity: str = 'high') -> Dict:
     """
     Get emergency response information
     
     Args:
         db: Database session
         categories: Crisis categories (optional)
+        severity: Crisis severity level
         
     Returns:
         Emergency information dict
     """
     detector = CrisisDetector(db)
-    return detector.get_emergency_response(categories or [])
+    return detector.get_emergency_response(categories or [], severity)
 
 
 # ============================================
-# TESTING
+# TESTING & VALIDATION
 # ============================================
 
 def test_crisis_detection(db: Session):
-    """Test crisis detection with sample messages"""
+    """Test crisis detection with comprehensive sample messages"""
     detector = CrisisDetector(db)
     
     test_cases = [
-        ("Tôi muốn tự tử", True),
-        ("Hôm nay thật vui", False),
-        ("Tôi bị trầm cảm và muốn cắt tay", True),
-        ("Học quá nhiều, mệt mỏi", False),
-        ("Bị bạo lực gia đình", True)
+        # Suicide cases
+        ("Tôi muốn tự tử", True, "suicide"),
+        ("em không muốn sống nữa", True, "suicide"),
+        ("Kết thúc cuộc đời cho xong", True, "suicide"),
+        
+        # Self-harm cases
+        ("em bị cắt tay", True, "self_harm"),
+        ("Tự làm đau bản thân", True, "self_harm"),
+        
+        # Abuse cases (CRITICAL TEST)
+        ("em bị quấy rối tình dục", True, "abuse"),
+        ("Bị xâm hại tình dục ở trường", True, "abuse"),
+        ("thầy giáo sờ mó em", True, "abuse"),
+        ("bị cưỡng hiếp", True, "abuse"),
+        
+        # Violence cases
+        ("Bị đánh đập ở nhà", True, "violence"),
+        ("bạo lực gia đình mỗi ngày", True, "violence"),
+        
+        # False positives (should NOT trigger)
+        ("Hôm nay thật vui", False, None),
+        ("Học quá nhiều, mệt mỏi", False, None),
+        ("Tôi chết mệt rồi", False, None),  # "chết" trong ngữ cảnh không nghiêm trọng
     ]
     
-    for message, expected_crisis in test_cases:
+    print("\n" + "="*60)
+    print("🧪 CRISIS DETECTION SYSTEM TEST")
+    print("="*60 + "\n")
+    
+    passed = 0
+    failed = 0
+    
+    for message, expected_crisis, expected_category in test_cases:
         result = detector.detect_crisis(message)
-        status = "✅" if result['is_crisis'] == expected_crisis else "❌"
-        print(f"{status} Message: '{message}'")
-        print(f"   Crisis: {result['is_crisis']}, Severity: {result['severity']}")
-        print(f"   Keywords: {result['matched_keywords']}\n")
+        
+        # Check if detection matches expectation
+        detection_correct = result['is_crisis'] == expected_crisis
+        category_correct = (
+            expected_category in result['categories'] 
+            if expected_crisis and expected_category 
+            else True
+        )
+        
+        test_passed = detection_correct and category_correct
+        
+        if test_passed:
+            status = "✅ PASS"
+            passed += 1
+        else:
+            status = "❌ FAIL"
+            failed += 1
+        
+        print(f"{status} | Message: '{message}'")
+        print(f"         Expected: Crisis={expected_crisis}, Category={expected_category}")
+        print(f"         Got: Crisis={result['is_crisis']}, Categories={result['categories']}")
+        print(f"         Severity: {result['severity']}, Confidence: {result['confidence']:.2%}")
+        print(f"         Matched: {result['matched_keywords']}\n")
+    
+    print("="*60)
+    print(f"📊 TEST SUMMARY: {passed} passed, {failed} failed out of {passed+failed} tests")
+    print("="*60 + "\n")
+    
+    return passed, failed
 
 
 # ============================================
@@ -271,5 +388,6 @@ def test_crisis_detection(db: Session):
 __all__ = [
     'CrisisDetector',
     'detect_crisis_in_message',
-    'get_emergency_info'
+    'get_emergency_info',
+    'test_crisis_detection'
 ]

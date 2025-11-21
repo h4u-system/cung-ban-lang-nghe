@@ -44,53 +44,53 @@ DỮ LIỆU CỐ ĐỊNH VỀ DỊCH VỤ BANANA:
 # ============================================
 TU_KHOA_VI_PHAM = [
     # Nhóm Ngôn từ thô tục
-    { "nhom": "Ngôn từ thô tục", "tu_khoa": "dm", "regex": r"(?:\s|^)dm(?:\s|$|\.|\!|\?)" },
-    { "nhom": "Ngôn từ thô tục", "tu_khoa": "đm", "regex": r"(?:\s|^)đm(?:\s|$|\.|\!|\?)" },
-    { "nhom": "Ngôn từ thô tục", "tu_khoa": "vl", "regex": r"(?:\s|^)vl(?:\s|$|\.|\!|\?)" },
-    { "nhom": "Ngôn từ thô tục", "tu_khoa": "cc", "regex": r"(?:\s|^)cc(?:\s|$|\.|\!|\?)" },
-    { "nhom": "Ngôn từ thô tục", "tu_khoa": "vkl", "regex": r"(?:\s|^)vkl(?:\s|$|\.|\!|\?)" },
-    { "nhom": "Ngôn từ thô tục", "tu_khoa": "m*", "regex": r"(?:\s|^)m\*(?:\s|$|\.|\!|\?)" },
-    { "nhom": "Ngôn từ thô tục", "tu_khoa": "địt", "regex": r"(?:\s|^)địt(?:\s|$|\.|\!|\?)" },
-    { "nhom": "Ngôn từ thô tục", "tu_khoa": "đếch", "regex": r"(?:\s|^)đếch(?:\s|$|\.|\!|\?)" },
-    { "nhom": "Ngôn từ thô tục", "tu_khoa": "l*", "regex": r"(?:\s|^)l\*(?:\s|$|\.|\!|\?)" },
-    { "nhom": "Ngôn từ thô tục", "tu_khoa": "cặc", "regex": r"(?:\s|^)cặc(?:\s|$|\.|\!|\?)" },
-    { "nhom": "Ngôn từ thô tục", "tu_khoa": "buồi", "regex": r"(?:\s|^)buồi(?:\s|$|\.|\!|\?)" },
-    { "nhom": "Ngôn từ thô tục", "tu_khoa": "lồn", "regex": r"(?:\s|^)lồn(?:\s|$|\.|\!|\?)" },
-    { "nhom": "Ngôn từ thô tục", "tu_khoa": "lol", "regex": r"(?:\s|^)lol(?:\s|$|\.|\!|\?)" },
-    { "nhom": "Ngôn từ thô tục", "tu_khoa": "cu", "regex": r"(?:\s|^)cu(?:\s|$|\.|\!|\?)" },
-    { "nhom": "Ngôn từ thô tục", "tu_khoa": "phò", "regex": r"(?:\s|^)phò(?:\s|$|\.|\!|\?)" },
-    { "nhom": "Ngôn từ thô tục", "tu_khoa": "cave", "regex": r"(?:\s|^)cave(?:\s|$|\.|\!|\?)" },
-    { "nhom": "Ngôn từ thô tục", "tu_khoa": "bú liếm", "regex": r"(?:\s|^)bú\sliếm(?:\s|$|\.|\!|\?)" },
-    { "nhom": "Ngôn từ thô tục", "tu_khoa": "bú mồm", "regex": r"(?:\s|^)bú\smồm(?:\s|$|\.|\!|\?)" },
-    { "nhom": "Ngôn từ thô tục", "tu_khoa": "bú bím", "regex": r"(?:\s|^)bú\sbím(?:\s|$|\.|\!|\?)" },
-    { "nhom": "Ngôn từ thô tục", "tu_khoa": "con đĩ", "regex": r"(?:\s|^)con\sđĩ(?:\s|$|\.|\!|\?)" },
-    { "nhom": "Ngôn từ thô tục", "tu_khoa": "thằng chó", "regex": r"(?:\s|^)thằng\schó(?:\s|$|\.|\!|\?)" },
-    { "nhom": "Ngôn từ thô tục", "tu_khoa": "đồ khốn", "regex": r"(?:\s|^)đồ\skhốn(?:\s|$|\.|\!|\?)" },
+    { "nhom": "Ngôn từ thô tục", "tu_khoa": "dm", "regex": r"\bdm\b" },
+    { "nhom": "Ngôn từ thô tục", "tu_khoa": "đm", "regex": r"\bđm\b" },
+    { "nhom": "Ngôn từ thô tục", "tu_khoa": "vl", "regex": r"\bvl\b" },
+    { "nhom": "Ngôn từ thô tục", "tu_khoa": "cc", "regex": r"\bcc\b" },
+    { "nhom": "Ngôn từ thô tục", "tu_khoa": "vkl", "regex": r"\bvkl\b" },
+    { "nhom": "Ngôn từ thô tục", "tu_khoa": "m*", "regex": r"\bm\*\b" },
+    { "nhom": "Ngôn từ thô tục", "tu_khoa": "địt", "regex": r"\bđịt\b" },
+    { "nhom": "Ngôn từ thô tục", "tu_khoa": "đếch", "regex": r"\bđếch\b" },
+    { "nhom": "Ngôn từ thô tục", "tu_khoa": "l*", "regex": r"\bl\*\b" },
+    { "nhom": "Ngôn từ thô tục", "tu_khoa": "cặc", "regex": r"\bcặc\b" },
+    { "nhom": "Ngôn từ thô tục", "tu_khoa": "buồi", "regex": r"\bbuồi\b" },
+    { "nhom": "Ngôn từ thô tục", "tu_khoa": "lồn", "regex": r"\blồn\b" },
+    { "nhom": "Ngôn từ thô tục", "tu_khoa": "lol", "regex": r"\blol\b" },
+    { "nhom": "Ngôn từ thô tục", "tu_khoa": "cu", "regex": r"\bcu\b" },
+    { "nhom": "Ngôn từ thô tục", "tu_khoa": "phò", "regex": r"\bphò\b" },
+    { "nhom": "Ngôn từ thô tục", "tu_khoa": "cave", "regex": r"\bcave\b" },
+    { "nhom": "Ngôn từ thô tục", "tu_khoa": "bú liếm", "regex": r"bú\s+liếm" },
+    { "nhom": "Ngôn từ thô tục", "tu_khoa": "bú mồm", "regex": r"bú\s+mồm" },
+    { "nhom": "Ngôn từ thô tục", "tu_khoa": "bú bím", "regex": r"bú\s+bím" },
+    { "nhom": "Ngôn từ thô tục", "tu_khoa": "con đĩ", "regex": r"con\s+đĩ" },
+    { "nhom": "Ngôn từ thô tục", "tu_khoa": "thằng chó", "regex": r"thằng\s+chó" },
+    { "nhom": "Ngôn từ thô tục", "tu_khoa": "đồ khốn", "regex": r"đồ\s+khốn" },
     
     # Nhóm Phân biệt giới tính
-    { "nhom": "Phân biệt giới tính", "tu_khoa": "đàn bà ngu", "regex": r"(?:\s|^)đàn\sbà\sngu(?:\s|$|\.|\!|\?)" },
-    { "nhom": "Phân biệt giới tính", "tu_khoa": "đồ đàn bà", "regex": r"(?:\s|^)đồ\sđàn\sbà(?:\s|$|\.|\!|\?)" },
-    { "nhom": "Phân biệt giới tính", "tu_khoa": "phụ nữ không nên", "regex": r"(?:\s|^)phụ\snữ\skhông\snên(?:\s|$|\.|\!|\?)" },
-    { "nhom": "Phân biệt giới tính", "tu_khoa": "con gái thì", "regex": r"(?:\s|^)con\sgái\sthì(?:\s|$|\.|\!|\?)" },
+    { "nhom": "Phân biệt giới tính", "tu_khoa": "đàn bà ngu", "regex": r"đàn\s+bà\s+ngu" },
+    { "nhom": "Phân biệt giới tính", "tu_khoa": "đồ đàn bà", "regex": r"đồ\s+đàn\s+bà" },
+    { "nhom": "Phân biệt giới tính", "tu_khoa": "phụ nữ không nên", "regex": r"phụ\s+nữ\s+không\s+nên" },
+    { "nhom": "Phân biệt giới tính", "tu_khoa": "con gái thì", "regex": r"con\s+gái\s+thì" },
     
     # Nhóm Phân biệt chủng tộc
-    { "nhom": "Phân biệt chủng tộc", "tu_khoa": "dân da đen", "regex": r"(?:\s|^)dân\sda\sđen(?:\s|$|\.|\!|\?)" },
-    { "nhom": "Phân biệt chủng tộc", "tu_khoa": "dân mọi", "regex": r"(?:\s|^)dân\smọi(?:\s|$|\.|\!|\?)" },
-    { "nhom": "Phân biệt chủng tộc", "tu_khoa": "dân thiểu số ngu dốt", "regex": r"(?:\s|^)dân\sthiểu\ssố\sngu\sdốt(?:\s|$|\.|\!|\?)" },
+    { "nhom": "Phân biệt chủng tộc", "tu_khoa": "dân da đen", "regex": r"dân\s+da\s+đen" },
+    { "nhom": "Phân biệt chủng tộc", "tu_khoa": "dân mọi", "regex": r"dân\s+mọi" },
+    { "nhom": "Phân biệt chủng tộc", "tu_khoa": "dân thiểu số ngu dốt", "regex": r"dân\s+thiểu\s+số\s+ngu\s+dốt" },
     
     # Nhóm Phân biệt tôn giáo
-    { "nhom": "Phân biệt tôn giáo", "tu_khoa": "đạo Hồi là khủng bố", "regex": r"(?:\s|^)đạo\sHồi\slà\skhủng\sbố(?:\s|$|\.|\!|\?)" },
-    { "nhom": "Phân biệt tôn giáo", "tu_khoa": "Công giáo ngu tín", "regex": r"(?:\s|^)Công\sgiáo\sngu\stín(?:\s|$|\.|\!|\?)" },
+    { "nhom": "Phân biệt tôn giáo", "tu_khoa": "đạo Hồi là khủng bố", "regex": r"đạo\s+Hồi\s+là\s+khủng\s+bố" },
+    { "nhom": "Phân biệt tôn giáo", "tu_khoa": "Công giáo ngu tín", "regex": r"Công\s+giáo\s+ngu\s+tín" },
     
     # Nhóm Khiêu dâm (KHÔNG phải khủng hoảng)
-    { "nhom": "Khiêu dâm", "tu_khoa": "sex", "regex": r"(?:\s|^)sex(?:\s|$|\.|\!|\?)" },
-    { "nhom": "Khiêu dâm", "tu_khoa": "xxx", "regex": r"(?:\s|^)xxx(?:\s|$|\.|\!|\?)" },
-    { "nhom": "Khiêu dâm", "tu_khoa": "làm tình", "regex": r"(?:\s|^)làm\stình(?:\s|$|\.|\!|\?)" },
-    { "nhom": "Khiêu dâm", "tu_khoa": "khoả thân", "regex": r"(?:\s|^)khoả\sthân(?:\s|$|\.|\!|\?)" },
-    { "nhom": "Khiêu dâm", "tu_khoa": "dâm đãng", "regex": r"(?:\s|^)dâm\sđãng(?:\s|$|\.|\!|\?)" },
-    { "nhom": "Khiêu dâm", "tu_khoa": "thủ dâm", "regex": r"(?:\s|^)thủ\sdâm(?:\s|$|\.|\!|\?)" },
-    { "nhom": "Khiêu dâm", "tu_khoa": "porn", "regex": r"(?:\s|^)porn(?:\s|$|\.|\!|\?)" },
-    { "nhom": "Khiêu dâm", "tu_khoa": "18+", "regex": r"(?:\s|^)18\+(?:\s|$|\.|\!|\?)" },
+    { "nhom": "Khiêu dâm", "tu_khoa": "sex", "regex": r"\bsex\b" },
+    { "nhom": "Khiêu dâm", "tu_khoa": "xxx", "regex": r"\bxxx\b" },
+    { "nhom": "Khiêu dâm", "tu_khoa": "làm tình", "regex": r"làm\s+tình" },
+    { "nhom": "Khiêu dâm", "tu_khoa": "khoả thân", "regex": r"khoả\s+thân" },
+    { "nhom": "Khiêu dâm", "tu_khoa": "dâm đãng", "regex": r"dâm\s+đãng" },
+    { "nhom": "Khiêu dâm", "tu_khoa": "thủ dâm", "regex": r"thủ\s+dâm" },
+    { "nhom": "Khiêu dâm", "tu_khoa": "porn", "regex": r"\bporn\b" },
+    { "nhom": "Khiêu dâm", "tu_khoa": "18+", "regex": r"\b18\+\b" },
 ]
 
 
@@ -98,75 +98,81 @@ TU_KHOA_VI_PHAM = [
 # LỚP 2: HỆ THỐNG PHÁT HIỆN KHỦNG HOẢNG
 # ============================================
 TU_KHOA_KHUNG_HOANG = [
-    # Nhóm Tự tử
-    { "nhom": "tu_tu", "tu_khoa": "tự tử", "regex": r"(?:\s|^)tự\stử(?:\s|$|\.|\!|\?)" },
-    { "nhom": "tu_tu", "tu_khoa": "tự sát", "regex": r"(?:\s|^)tự\ssát(?:\s|$|\.|\!|\?)" },
-    { "nhom": "tu_tu", "tu_khoa": "kết thúc cuộc đời", "regex": r"(?:\s|^)kết\sthúc\scuộc\sđời(?:\s|$|\.|\!|\?)" },
-    { "nhom": "tu_tu", "tu_khoa": "muốn chết", "regex": r"(?:\s|^)muốn\schết(?:\s|$|\.|\!|\?)" },
-    { "nhom": "tu_tu", "tu_khoa": "biến mất", "regex": r"(?:\s|^)biến\smất(?:\s|$|\.|\!|\?)" },
-    { "nhom": "tu_tu", "tu_khoa": "chết", "regex": r"(?:\s|^)chết(?:\s|$|\.|\!|\?)" },
-    { "nhom": "tu_tu", "tu_khoa": "chấm dứt", "regex": r"(?:\s|^)chấm\sdứt(?:\s|$|\.|\!|\?)" },
+    # Nhóm Tự tử (CRITICAL)
+    { "nhom": "tu_tu", "tu_khoa": "tự tử", "regex": r"tự\s*tử" },
+    { "nhom": "tu_tu", "tu_khoa": "tự sát", "regex": r"tự\s*sát" },
+    { "nhom": "tu_tu", "tu_khoa": "kết thúc cuộc đời", "regex": r"kết\s+thúc\s+cuộc\s+đời" },
+    { "nhom": "tu_tu", "tu_khoa": "muốn chết", "regex": r"muốn\s+chết" },
+    { "nhom": "tu_tu", "tu_khoa": "không muốn sống", "regex": r"không\s+muốn\s+sống" },
+    { "nhom": "tu_tu", "tu_khoa": "biến mất", "regex": r"\bbiến\s+mất\b" },
+    { "nhom": "tu_tu", "tu_khoa": "chấm dứt", "regex": r"\bchấm\s+dứt\b" },
 
-    # Nhóm Tự làm hại
-    { "nhom": "tu_lam_hai", "tu_khoa": "cắt tay", "regex": r"(?:\s|^)cắt\stay(?:\s|$|\.|\!|\?)" },
-    { "nhom": "tu_lam_hai", "tu_khoa": "tự làm đau", "regex": r"(?:\s|^)tự\slàm\sđau(?:\s|$|\.|\!|\?)" },
-    { "nhom": "tu_lam_hai", "tu_khoa": "làm hại bản thân", "regex": r"(?:\s|^)làm\shại\sbản\sthân(?:\s|$|\.|\!|\?)" },
-    { "nhom": "tu_lam_hai", "tu_khoa": "tự hành xác", "regex": r"(?:\s|^)tự\shành\sxác(?:\s|$|\.|\!|\?)" },
-    { "nhom": "tu_lam_hai", "tu_khoa": "tự hành hạ", "regex": r"(?:\s|^)tự\shành\shạ(?:\s|$|\.|\!|\?)" },
-    { "nhom": "tu_lam_hai", "tu_khoa": "đâm bản thân", "regex": r"(?:\s|^)đâm\sbản\sthân(?:\s|$|\.|\!|\?)" },
+    # Nhóm Tự làm hại (HIGH)
+    { "nhom": "tu_lam_hai", "tu_khoa": "cắt tay", "regex": r"cắt\s+tay" },
+    { "nhom": "tu_lam_hai", "tu_khoa": "tự làm đau", "regex": r"tự\s+làm\s+đau" },
+    { "nhom": "tu_lam_hai", "tu_khoa": "làm hại bản thân", "regex": r"làm\s+hại\s+bản\s+thân" },
+    { "nhom": "tu_lam_hai", "tu_khoa": "tự hành xác", "regex": r"tự\s+hành\s+xác" },
+    { "nhom": "tu_lam_hai", "tu_khoa": "tự hành hạ", "regex": r"tự\s+hành\s+hạ" },
+    { "nhom": "tu_lam_hai", "tu_khoa": "đâm bản thân", "regex": r"đâm\s+bản\s+thân" },
 
-    # Nhóm Tuyệt vọng
-    { "nhom": "tuyet_vong", "tu_khoa": "tuyệt vọng", "regex": r"(?:\s|^)tuyệt\svọng(?:\s|$|\.|\!|\?)" },
-    { "nhom": "tuyet_vong", "tu_khoa": "vô vọng", "regex": r"(?:\s|^)vô\svọng(?:\s|$|\.|\!|\?)" },
-    { "nhom": "tuyet_vong", "tu_khoa": "cuộc sống vô nghĩa", "regex": r"(?:\s|^)cuộc\ssống\svô\snghĩa(?:\s|$|\.|\!|\?)" },
-    { "nhom": "tuyet_vong", "tu_khoa": "không còn hy vọng", "regex": r"(?:\s|^)không\scòn\shy\svọng(?:\s|$|\.|\!|\?)" },
-    { "nhom": "tuyet_vong", "tu_khoa": "khủng hoảng", "regex": r"(?:\s|^)khủng\shoảng(?:\s|$|\.|\!|\?)" },
+    # Nhóm Tuyệt vọng (MEDIUM-HIGH)
+    { "nhom": "tuyet_vong", "tu_khoa": "tuyệt vọng", "regex": r"tuyệt\s+vọng" },
+    { "nhom": "tuyet_vong", "tu_khoa": "vô vọng", "regex": r"vô\s+vọng" },
+    { "nhom": "tuyet_vong", "tu_khoa": "cuộc sống vô nghĩa", "regex": r"cuộc\s+sống\s+vô\s+nghĩa" },
+    { "nhom": "tuyet_vong", "tu_khoa": "không còn hy vọng", "regex": r"không\s+còn\s+hy\s+vọng" },
+    { "nhom": "tuyet_vong", "tu_khoa": "khủng hoảng", "regex": r"\bkhủng\s+hoảng\b" },
 
-    # ===== KHỐI MỚI: NHÓM BẠO LỰC & XÂM HẠI (KHỦNG HOẢNG) =====
-    { "nhom": "bao_luc_khung_hoang", "tu_khoa": "bị đánh đập", "regex": r"(?:\s|^)bị\sđánh\sđập(?:\s|$|\.|\!|\?)" },
-    { "nhom": "bao_luc_khung_hoang", "tu_khoa": "bạo lực gia đình", "regex": r"(?:\s|^)bạo\slực\sgia\sđình(?:\s|$|\.|\!|\?)" },
-    { "nhom": "bao_luc_khung_hoang", "tu_khoa": "xâm hại", "regex": r"(?:\s|^)xâm\shại(?:\s|$|\.|\!|\?)" },
-    { "nhom": "bao_luc_khung_hoang", "tu_khoa": "bạo lực học đường", "regex": r"(?:\s|^)bạo\slực\shọc\sđường(?:\s|$|\.|\!|\?)" },
+    # ===== NHÓM XÂM HẠI TÌNH DỤC (CRITICAL) =====
+    { "nhom": "xam_hai_tinh_duc", "tu_khoa": "quấy rối tình dục", "regex": r"quấy\s+rối\s+tình\s+dục" },
+    { "nhom": "xam_hai_tinh_duc", "tu_khoa": "hiếp dâm", "regex": r"hiếp\s+dâm" },
+    { "nhom": "xam_hai_tinh_duc", "tu_khoa": "cưỡng bức", "regex": r"cưỡng\s+bức" },
+    { "nhom": "xam_hai_tinh_duc", "tu_khoa": "lạm dụng tình dục", "regex": r"lạm\s+dụng\s+tình\s+dục" },
+    { "nhom": "xam_hai_tinh_duc", "tu_khoa": "xâm hại tình dục", "regex": r"xâm\s+hại\s+tình\s+dục" },
+    { "nhom": "xam_hai_tinh_duc", "tu_khoa": "bị cưỡng hiếp", "regex": r"bị\s+cưỡng\s+hiếp" },
+    { "nhom": "xam_hai_tinh_duc", "tu_khoa": "bị sờ mó", "regex": r"bị\s+sờ\s+mó" },
+    { "nhom": "xam_hai_tinh_duc", "tu_khoa": "bị xâm hại", "regex": r"bị\s+xâm\s+hại" },
+    { "nhom": "xam_hai_tinh_duc", "tu_khoa": "bị lạm dụng", "regex": r"bị\s+lạm\s+dụng" },
     
-    # QUAN TRỌNG: Các từ khóa về xâm hại tình dục (YÊU CẦU HỖ TRỢ KHẨN CẤP)
-    { "nhom": "xam_hai_tinh_duc", "tu_khoa": "quấy rối tình dục", "regex": r"(?:\s|^)quấy\srối\stình\sdục(?:\s|$|\.|\!|\?)" },
-    { "nhom": "xam_hai_tinh_duc", "tu_khoa": "hiếp dâm", "regex": r"(?:\s|^)hiếp\sdâm(?:\s|$|\.|\!|\?)" },
-    { "nhom": "xam_hai_tinh_duc", "tu_khoa": "cưỡng bức", "regex": r"(?:\s|^)cưỡng\sbức(?:\s|$|\.|\!|\?)" },
-    { "nhom": "xam_hai_tinh_duc", "tu_khoa": "lạm dụng tình dục", "regex": r"(?:\s|^)lạm\sdụng\stình\sdục(?:\s|$|\.|\!|\?)" },
-    { "nhom": "xam_hai_tinh_duc", "tu_khoa": "xâm hại tình dục", "regex": r"(?:\s|^)xâm\shại\stình\sdục(?:\s|$|\.|\!|\?)" },
-    { "nhom": "xam_hai_tinh_duc", "tu_khoa": "bị cưỡng hiếp", "regex": r"(?:\s|^)bị\scưỡng\shiếp(?:\s|$|\.|\!|\?)" },
-    { "nhom": "xam_hai_tinh_duc", "tu_khoa": "bị sờ mó", "regex": r"(?:\s|^)bị\ssờ\smó(?:\s|$|\.|\!|\?)" },
-    { "nhom": "xam_hai_tinh_duc", "tu_khoa": "bị xâm hại", "regex": r"(?:\s|^)bị\sxâm\shại(?:\s|$|\.|\!|\?)" },
-    
-    # Bạo lực nghiêm trọng khác
-    { "nhom": "bao_luc_nghiem_trong", "tu_khoa": "đánh chết", "regex": r"(?:\s|^)đánh\schết(?:\s|$|\.|\!|\?)" },
-    { "nhom": "bao_luc_nghiem_trong", "tu_khoa": "chém", "regex": r"(?:\s|^)chém(?:\s|$|\.|\!|\?)" },
-    { "nhom": "bao_luc_nghiem_trong", "tu_khoa": "giết", "regex": r"(?:\s|^)giết(?:\s|$|\.|\!|\?)" },
-    { "nhom": "bao_luc_nghiem_trong", "tu_khoa": "hành hạ", "regex": r"(?:\s|^)hành\shạ(?:\s|$|\.|\!|\?)" },
-    { "nhom": "bao_luc_nghiem_trong", "tu_khoa": "tra tấn", "regex": r"(?:\s|^)tra\stấn(?:\s|$|\.|\!|\?)" },
+    # Nhóm Bạo lực (HIGH)
+    { "nhom": "bao_luc_khung_hoang", "tu_khoa": "bị đánh đập", "regex": r"bị\s+đánh\s+đập" },
+    { "nhom": "bao_luc_khung_hoang", "tu_khoa": "bạo lực gia đình", "regex": r"bạo\s+lực\s+gia\s+đình" },
+    { "nhom": "bao_luc_khung_hoang", "tu_khoa": "xâm hại", "regex": r"\bxâm\s+hại\b" },
+    { "nhom": "bao_luc_khung_hoang", "tu_khoa": "bạo lực học đường", "regex": r"bạo\s+lực\s+học\s+đường" },
+    { "nhom": "bao_luc_nghiem_trong", "tu_khoa": "đánh chết", "regex": r"đánh\s+chết" },
+    { "nhom": "bao_luc_nghiem_trong", "tu_khoa": "chém", "regex": r"\bchém\b" },
+    { "nhom": "bao_luc_nghiem_trong", "tu_khoa": "giết", "regex": r"\bgiết\b" },
+    { "nhom": "bao_luc_nghiem_trong", "tu_khoa": "hành hạ", "regex": r"hành\s+hạ" },
+    { "nhom": "bao_luc_nghiem_trong", "tu_khoa": "tra tấn", "regex": r"tra\s+tấn" },
 ]
 
 
 # ============================================
-# 2. RULE-BASED RETRIEVAL & CHECK FUNCTIONS
+# 2. IMPROVED CRISIS DETECTION FUNCTION
 # ============================================
 
 def check_for_crisis(user_message: str) -> bool:
     """
-    Kiểm tra tin nhắn người dùng có chứa từ khóa khủng hoảng không. (LỚP 2 - Cấp độ 1)
-    Sử dụng Regex để đảm bảo độ chính xác.
+    IMPROVED: Kiểm tra tin nhắn có chứa từ khóa khủng hoảng.
+    Sử dụng regex linh hoạt hơn (cho phép dấu cách bất thường).
     
     Returns:
         bool: True nếu phát hiện khủng hoảng, False nếu không
     """
-    message_lower = user_message.lower()
+    if not user_message:
+        return False
+        
+    # Chuẩn hóa: loại bỏ dấu câu, chuyển thành chữ thường, chuẩn hóa khoảng trắng
+    message_normalized = re.sub(r'[^\w\sáàảãạăắằẳẵặâấầẩẫậéèẻẽẹêếềểễệíìỉĩịóòỏõọôốồổỗộơớờởỡợúùủũụưứừửữựýỳỷỹỵđ]', ' ', user_message.lower())
+    message_normalized = re.sub(r'\s+', ' ', message_normalized).strip()
     
     for crisis_item in TU_KHOA_KHUNG_HOANG:
         try:
-            if re.search(crisis_item["regex"], message_lower, re.I | re.U):
+            # Tìm kiếm trong chuỗi đã chuẩn hóa
+            if re.search(crisis_item["regex"], message_normalized, re.I | re.U):
                 logger.critical(
-                    f"🚨 CRISIS ALERT DETECTED (REGEX) - "
-                    f"Group: {crisis_item['nhom']}, Keyword: {crisis_item['tu_khoa']}"
+                    f"🚨 CRISIS ALERT DETECTED - "
+                    f"Group: {crisis_item['nhom']}, Keyword: '{crisis_item['tu_khoa']}', "
+                    f"Message: '{user_message[:50]}...'"
                 )
                 return True
         except re.error as e:
@@ -178,16 +184,20 @@ def check_for_crisis(user_message: str) -> bool:
 
 def check_content_violation(user_message: str) -> Optional[str]:
     """
-    Kiểm tra tin nhắn người dùng có chứa từ khóa vi phạm. (LỚP 1)
+    Kiểm tra tin nhắn có chứa từ khóa vi phạm.
     
     Returns:
         str: Tên nhóm vi phạm nếu phát hiện, None nếu không
     """
-    message_lower = user_message.lower()
+    if not user_message:
+        return None
+        
+    message_normalized = re.sub(r'[^\w\sáàảãạăắằẳẵặâấầẩẫậéèẻẽẹêếềểễệíìỉĩịóòỏõọôốồổỗộơớờởỡợúùủũụưứừửữựýỳỷỹỵđ]', ' ', user_message.lower())
+    message_normalized = re.sub(r'\s+', ' ', message_normalized).strip()
     
     for violation_item in TU_KHOA_VI_PHAM:
         try:
-            if re.search(violation_item["regex"], message_lower, re.I | re.U): 
+            if re.search(violation_item["regex"], message_normalized, re.I | re.U): 
                 logger.warning(
                     f"🚫 VIOLATION DETECTED - "
                     f"Group: {violation_item['nhom']}, Keyword: {violation_item['tu_khoa']}"
@@ -201,7 +211,7 @@ def check_content_violation(user_message: str) -> Optional[str]:
 
 
 def rule_based_retrieve_context(user_message: str) -> str:
-    """Truy xuất ngữ cảnh dựa trên từ khóa đơn giản từ KNOWLEDGE_BASE."""
+    """Truy xuất ngữ cảnh dựa trên từ khóa từ KNOWLEDGE_BASE."""
     message_lower = user_message.lower()
     
     if any(keyword in message_lower for keyword in ["tham vấn", "tư vấn", "lắng nghe thấu hiểu", "nguyên tắc tư vấn"]):
