@@ -3,8 +3,7 @@
 // Unified design
 // *************************************************
 
-
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import ChatInterface from '../../components/Chat/ChatInterface';
 
@@ -12,6 +11,7 @@ const HomePage = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const chatSectionRef = useRef(null);
+  const [showPrivacyDetails, setShowPrivacyDetails] = useState(false);
 
   useEffect(() => {
     if (location.pathname === '/' && !location.hash && location.key === 'default') {
@@ -65,7 +65,7 @@ const HomePage = () => {
       icon: 'ℹ️',
       gradient: 'from-orange-500 to-orange-600',
       title: 'Giới thiệu',
-      desc: 'Về chúng tôi',
+      desc: 'Về chúng mình',
       bgColor: 'bg-orange-50',
       borderColor: 'border-orange-200',
       hoverShadow: 'hover:shadow-orange-200'
@@ -174,36 +174,200 @@ const HomePage = () => {
           </div>
         </div>
 
-        {/* Mobile-optimized chat container */}
         <div className="bg-white rounded-2xl md:rounded-3xl shadow-2xl border-2 border-gray-200 overflow-hidden">
           <ChatInterface />
         </div>
       </section>
 
-      {/* Security Section */}
-      <section className="bg-gradient-to-br from-blue-50 to-indigo-50 rounded-3xl p-6 md:p-8 lg:p-10 border-2 border-blue-200 shadow-xl">
-        <div className="max-w-4xl mx-auto text-center">
-          <div className="text-4xl md:text-5xl mb-4 md:mb-5">🛡️</div>
-          <h3 className="text-xl md:text-2xl lg:text-3xl font-bold text-gray-800 mb-3 md:mb-4 leading-tight">
-            An toàn & Bảo mật tuyệt đối
-          </h3>
-          <p className="text-sm md:text-base lg:text-lg text-gray-600 leading-relaxed mb-6 md:mb-8 px-4">
-            Tất cả cuộc trò chuyện được <strong className="text-blue-700">mã hóa đầu cuối (AES-256)</strong> và 
-            <strong className="text-blue-700"> không lưu trữ thông tin cá nhân</strong>. 
-            Chúng tôi cam kết bảo vệ quyền riêng tư của bạn tuyệt đối.
-          </p>
-          <div className="grid sm:grid-cols-3 gap-4 md:gap-6 text-sm">
+      {/* ===== UNIFIED PRIVACY & SECURITY SECTION ===== */}
+      <section className="bg-gradient-to-br from-purple-50 via-blue-50 to-indigo-50 rounded-3xl p-6 md:p-10 border-2 border-purple-200 shadow-xl">
+        <div className="max-w-5xl mx-auto">
+          {/* Header */}
+          <div className="text-center mb-8">
+            <div className="text-5xl md:text-6xl mb-4">🔒</div>
+            <h3 className="text-2xl md:text-3xl lg:text-4xl font-bold text-gray-800 mb-3 leading-tight">
+              Bảo mật & Quyền riêng tư tuyệt đối
+            </h3>
+            <p className="text-base md:text-lg text-gray-600 leading-relaxed px-4">
+              Chúng tôi cam kết bảo vệ quyền riêng tư của bạn với công nghệ mã hóa hàng đầu
+            </p>
+          </div>
+
+          {/* Key Features Grid */}
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6 mb-8">
             {[
-              { icon: '🔐', title: 'Mã hóa AES-256', desc: 'Bảo mật cấp ngân hàng' },
-              { icon: '🚫', title: 'Zero PII Policy', desc: 'Không thu thập dữ liệu cá nhân' },
-              { icon: '⏱️', title: 'Tự động xóa', desc: 'Tin nhắn xóa sau 30 ngày' }
+              { 
+                icon: '🔐', 
+                title: 'Mã hóa AES-256', 
+                desc: 'Bảo mật với công nghệ mã hóa tiên tiến',
+                color: 'blue'
+              },
+              { 
+                icon: '🚫', 
+                title: 'Zero PII Policy', 
+                desc: 'Không thu thập dữ liệu cá nhân',
+                color: 'purple'
+              },
+              { 
+                icon: '⏱️', 
+                title: 'Tự động xóa', 
+                desc: 'Tin nhắn xóa sau 30 ngày',
+                color: 'indigo'
+              },
+              { 
+                icon: '🌐', 
+                title: 'Hoàn toàn ẩn danh', 
+                desc: 'Không cần đăng ký tài khoản',
+                color: 'green'
+              },
+              { 
+                icon: '⚖️', 
+                title: 'Tuân thủ NĐ 13/2023', 
+                desc: 'Đúng pháp luật Việt Nam',
+                color: 'orange'
+              },
+              { 
+                icon: '🛡️', 
+                title: 'An toàn 24/7', 
+                desc: 'Giám sát khủng hoảng liên tục bằng AI',
+                color: 'red'
+              }
             ].map((item, idx) => (
-              <div key={idx} className="bg-white rounded-2xl p-5 md:p-6 border-2 border-blue-200 hover:shadow-xl transition-all">
-                <div className="text-3xl md:text-4xl mb-3">{item.icon}</div>
-                <div className="font-bold text-gray-800 mb-2 text-sm md:text-base">{item.title}</div>
-                <div className="text-xs text-gray-600">{item.desc}</div>
+              <div 
+                key={idx} 
+                className={`bg-white rounded-2xl p-5 md:p-6 border-2 border-${item.color}-200 hover:shadow-xl transition-all hover:-translate-y-1 group`}
+              >
+                <div className="text-4xl mb-3 group-hover:scale-110 transition-transform">{item.icon}</div>
+                <div className="font-bold text-gray-800 mb-2 text-base md:text-lg">{item.title}</div>
+                <div className="text-sm text-gray-600">{item.desc}</div>
               </div>
             ))}
+          </div>
+
+          {/* Expandable Details Section */}
+          <div className="bg-white rounded-2xl border-2 border-purple-200 overflow-hidden shadow-md">
+            <button
+              onClick={() => setShowPrivacyDetails(!showPrivacyDetails)}
+              className="w-full px-6 py-5 flex items-center justify-between hover:bg-purple-50 transition-colors group"
+            >
+              <div className="flex items-center gap-3">
+                <span className="text-2xl">📋</span>
+                <div className="text-left">
+                  <h4 className="font-bold text-gray-800 text-lg">Chi tiết Chính sách Bảo mật</h4>
+                  <p className="text-sm text-gray-600">Xem đầy đủ cam kết bảo vệ quyền riêng tư</p>
+                </div>
+              </div>
+              <svg 
+                className={`w-6 h-6 text-purple-600 transition-transform duration-300 ${showPrivacyDetails ? 'rotate-180' : ''}`}
+                fill="none" 
+                stroke="currentColor" 
+                viewBox="0 0 24 24"
+              >
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+              </svg>
+            </button>
+
+            {/* Collapsible Content */}
+            <div 
+              className={`overflow-hidden transition-all duration-300 ${
+                showPrivacyDetails ? 'max-h-[2000px]' : 'max-h-0'
+              }`}
+            >
+              <div className="px-6 py-5 border-t-2 border-purple-100 space-y-6">
+                {/* Core Commitments */}
+                <div>
+                  <h5 className="font-bold text-gray-800 mb-3 flex items-center text-lg">
+                    <span className="mr-2">✅</span>
+                    Cam kết của Banana
+                  </h5>
+                  <div className="space-y-3 text-sm text-gray-700">
+                    <div className="flex items-start gap-2">
+                      <span className="text-blue-500 mt-0.5">▪</span>
+                      <span><strong>Không yêu cầu đăng ký:</strong> Truy cập ngay, Session ID tạm thời</span>
+                    </div>
+                    <div className="flex items-start gap-2">
+                      <span className="text-blue-500 mt-0.5">▪</span>
+                      <span><strong>Mã hóa End-to-End:</strong> Mọi tin nhắn được mã hóa AES-256 trên thiết bị của bạn</span>
+                    </div>
+                    <div className="flex items-start gap-2">
+                      <span className="text-blue-500 mt-0.5">▪</span>
+                      <span><strong>Zero-Knowledge:</strong> Chúng tôi KHÔNG THỂ đọc nội dung trò chuyện của bạn</span>
+                    </div>
+                    <div className="flex items-start gap-2">
+                      <span className="text-blue-500 mt-0.5">▪</span>
+                      <span><strong>Tự động xóa:</strong> Dữ liệu tự động bị xóa sau 30 ngày, KHÔNG THỂ khôi phục</span>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Legal Compliance Badges */}
+                <div>
+                  <h5 className="font-bold text-gray-800 mb-3 flex items-center text-lg">
+                    <span className="mr-2">⚖️</span>
+                    Tuân thủ Pháp luật
+                  </h5>
+                  <div className="grid sm:grid-cols-2 gap-3">
+                    {[
+                      { 
+                        title: 'Nghị định 13/2023/NĐ-CP', 
+                        desc: 'Bảo vệ dữ liệu cá nhân',
+                        icon: '📜'
+                      },
+                      { 
+                        title: 'Luật An toàn Thông tin Mạng', 
+                        desc: 'Đảm bảo an ninh hệ thống',
+                        icon: '🔐'
+                      },
+                      { 
+                        title: 'Luật Bảo vệ Trẻ em', 
+                        desc: 'Ưu tiên an toàn học sinh',
+                        icon: '👶'
+                      },
+                      { 
+                        title: 'GDPR-compliant', 
+                        desc: 'Chuẩn quốc tế về privacy',
+                        icon: '🌍'
+                      }
+                    ].map((item, idx) => (
+                      <div key={idx} className="bg-gradient-to-br from-green-50 to-emerald-50 p-4 rounded-xl border border-green-200">
+                        <div className="flex items-center gap-2 mb-1">
+                          <span className="text-xl">{item.icon}</span>
+                          <span className="font-semibold text-gray-800 text-sm">{item.title}</span>
+                        </div>
+                        <p className="text-xs text-gray-600">{item.desc}</p>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
+                {/* CTA to Privacy Dashboard */}
+                <div className="bg-gradient-to-r from-purple-100 to-indigo-100 rounded-xl p-5 border-2 border-purple-300">
+                  <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
+                    <div className="text-center sm:text-left">
+                      <p className="font-bold text-gray-800 mb-1 text-base">Quản lý Quyền riêng tư của bạn</p>
+                      <p className="text-sm text-gray-600">Xem, xuất, hoặc xóa dữ liệu bất cứ lúc nào</p>
+                    </div>
+                    <a
+                      href="/quyen-rieng-tu"
+                      className="flex items-center gap-2 px-5 py-3 bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-700 hover:to-indigo-700 text-white font-bold rounded-xl transition-all shadow-lg hover:shadow-xl hover:scale-105 active:scale-95 whitespace-nowrap"
+                    >
+                      <span>🔐</span>
+                      <span>Privacy Dashboard</span>
+                      <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                      </svg>
+                    </a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Bottom Note */}
+          <div className="text-center mt-6">
+            <p className="text-sm text-gray-500">
+              Mọi thắc mắc về quyền riêng tư, vui lòng liên hệ: <strong className="text-purple-600">privacy@banana.vn</strong>
+            </p>
           </div>
         </div>
       </section>
