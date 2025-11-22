@@ -87,10 +87,10 @@
 /* LEGAL COMPONENTS SPECIFIC STYLES */
 /* ============================================ */
 
-/* Disclaimer Modal Overlay */
+/* webkit prefix BEFORE standard property */
 .disclaimer-overlay {
-  backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
+  backdrop-filter: blur(8px);
 }
 
 /* Privacy Notice Container */
@@ -141,12 +141,12 @@
   scroll-padding-bottom: 120px;
 }
 
-/* Prevent text selection on rapid clicking */
+/* All prefixes in correct order */
 .chat-bubble {
-  user-select: text;
   -webkit-user-select: text;
   -moz-user-select: text;
   -ms-user-select: text;
+  user-select: text;
 }
 
 /* ============================================ */
@@ -374,37 +374,14 @@
 }
 
 /* ============================================ */
-/* DARK MODE SUPPORT (Optional) */
-/* ============================================ */
-
-@media (prefers-color-scheme: dark) {
-  /* Uncomment to enable dark mode */
-  /*
-  #root {
-    background-color: #1a1a1a;
-    color: #f5f5f5;
-  }
-
-  .card {
-    background: #2a2a2a;
-    color: #f5f5f5;
-  }
-
-  .read-the-docs {
-    color: #aaa;
-  }
-  */
-}
-
-/* ============================================ */
 /* EMERGENCY/CRISIS STYLES */
 /* ============================================ */
 
-/* Crisis Alert specific styles */
+/* webkit prefix BEFORE standard property */
 .crisis-alert-overlay {
-  backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
-  z-index: 9999; /* Highest priority */
+  backdrop-filter: blur(12px);
+  z-index: 9999;
 }
 
 .crisis-alert-modal {
@@ -450,7 +427,7 @@
 /* Smooth scrolling optimization */
 .smooth-scroll {
   scroll-behavior: smooth;
-  -webkit-overflow-scrolling: touch;
+  /* Removed -webkit-overflow-scrolling as it's deprecated */
 }
 
 /* Prevent layout shifts */

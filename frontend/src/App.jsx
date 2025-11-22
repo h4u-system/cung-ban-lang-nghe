@@ -1,6 +1,5 @@
 // ============================================
 // File: frontend/src/App.jsx
-// Integrated: DisclaimerModal + Auto Cleanup
 // ============================================
 
 import React, { useEffect } from 'react';
@@ -34,8 +33,9 @@ import AnalyticsPage from './pages/Admin/AnalyticsPage';
 import SettingsPage from './pages/Admin/SettingsPage';
 import ContentPage from './pages/Admin/ContentPage';
 
-// Legal Components
-import { DisclaimerModal, PrivacyDashboard } from './components/Legal';
+// Legal Components - Import from components
+import { DisclaimerModal } from './components/Legal';
+import PrivacyDashboard from './components/Legal/PrivacyDashboard';
 import { checkAndCleanupOldData } from './utils/legalHelper';
 
 function App() {
@@ -51,7 +51,7 @@ function App() {
 
   return (
     <BrowserRouter>
-      {/* ✅ Disclaimer Modal - Hiển thị tự động lần đầu */}
+      {/* Disclaimer Modal - Hiển thị tự động lần đầu */}
       <DisclaimerModal />
 
       <Routes>
