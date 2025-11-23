@@ -8,7 +8,6 @@ import { Link } from 'react-router-dom';
 import ChatInterface from '../../components/Chat/ChatInterface';
 import RelatedStories from '../../components/Shared/RelatedStories';
 
-
 const ExamPage = () => {
   return (
     <div className="space-y-10 max-w-5xl mx-auto">
@@ -18,7 +17,7 @@ const ExamPage = () => {
           Chủ đề cảm xúc
         </Link>
         <span>›</span>
-        <span className="font-semibold text-gray-800">Thi cử & Áp lực</span>
+        <span className="font-semibold text-gray-800">Thi cử & Áp lực thành tích</span>
       </nav>
 
       {/* Header - Unified Design */}
@@ -28,7 +27,7 @@ const ExamPage = () => {
           Thi cử & Áp lực thành tích
         </h1>
         <p className="text-purple-100 text-lg md:text-xl max-w-2xl mx-auto leading-relaxed">
-          Căng thẳng trước kỳ thi? Áp lực điểm số? Mình sẽ giúp bạn vượt qua! 💪
+          Căng thẳng trước kỳ thi? Áp lực điểm số? Mình sẽ giúp bạn vượt qua!
         </p>
       </div>
 
@@ -40,7 +39,7 @@ const ExamPage = () => {
         </h2>
         <div className="space-y-5 text-gray-700 text-base leading-relaxed">
           <p>
-            <span className="font-semibold text-gray-800">Lo lắng trước thi là bình thường,</span> 
+            <span className="font-semibold text-gray-800">Lo lắng trước thi là bình thường,</span>
             {' '}nhưng quá mức sẽ ảnh hưởng đến kết quả. Hãy học cách quản lý!
           </p>
           <div className="grid md:grid-cols-2 gap-6 mt-6">
@@ -66,7 +65,7 @@ const ExamPage = () => {
             </div>
             <div className="bg-gradient-to-br from-red-50 to-orange-50 rounded-2xl p-6 border-2 border-red-200 shadow-md">
               <h3 className="font-bold text-red-700 mb-4 flex items-center gap-2 text-xl">
-                <span className="text-3xl">❌</span>
+                <span className="text-3xl">⚠️</span>
                 Lo lắng quá mức
               </h3>
               <ul className="space-y-2 text-sm">
@@ -95,21 +94,21 @@ const ExamPage = () => {
       {/* Study Tips */}
       <div className="bg-white rounded-3xl shadow-xl p-8 md:p-10 border-2 border-gray-200">
         <h2 className="text-3xl font-bold mb-6 flex items-center gap-3 text-gray-800">
-          <span className="text-4xl">📖</span>
+          <span className="text-4xl">💡</span>
           Mẹo học và thi hiệu quả
         </h2>
-        
+
         {/* Before Exam */}
         <div className="mb-8">
           <h3 className="font-bold text-purple-700 mb-4 text-xl flex items-center gap-2">
-            <span className="text-2xl">📅</span>
+            <span className="text-2xl">📖</span>
             Trước kỳ thi (1-2 tuần):
           </h3>
           <div className="grid md:grid-cols-2 gap-4">
             {[
-              { icon: '⏰', title: 'Lập kế hoạch rõ ràng', desc: 'Chia nhỏ kiến thức, ôn từng phần mỗi ngày' },
-              { icon: '🔄', title: 'Kỹ thuật Pomodoro', desc: 'Học 25 phút, nghỉ 5 phút, hiệu quả hơn học dài' },
-              { icon: '✍️', title: 'Làm đề thi thử', desc: 'Làm quen với format, quản lý thời gian' },
+              { icon: '📅', title: 'Lập kế hoạch rõ ràng', desc: 'Chia nhỏ kiến thức, ôn từng phần mỗi ngày' },
+              { icon: '⏰', title: 'Kỹ thuật Pomodoro', desc: 'Học 25 phút, nghỉ 5 phút, hiệu quả hơn học dài' },
+              { icon: '📝', title: 'Làm đề thi thử', desc: 'Làm quen với format, quản lý thời gian' },
               { icon: '👥', title: 'Học nhóm', desc: 'Giải thích cho người khác giúp nhớ lâu hơn' },
             ].map((item, index) => (
               <div key={index} className="bg-gradient-to-br from-purple-50 to-indigo-50 rounded-xl p-4 border-2 border-purple-200">
@@ -133,10 +132,10 @@ const ExamPage = () => {
           </h3>
           <ul className="space-y-3 text-gray-700">
             {[
-              { icon: '📝', text: 'Ôn nhẹ', detail: 'Không học khuya, chỉ xem lại tóm tắt' },
+              { icon: '📚', text: 'Ôn nhẹ', detail: 'Không học khuya, chỉ xem lại tóm tắt' },
               { icon: '😴', text: 'Ngủ đủ 7-8 tiếng', detail: 'Não cần nghỉ để ghi nhớ' },
               { icon: '🎒', text: 'Chuẩn bị đồ dùng', detail: 'Bút, thẻ, đồng hồ... để sáng không vội' },
-              { icon: '🛁', text: 'Tắm nước ấm', detail: 'Giúp thư giãn, ngủ ngon hơn' },
+              { icon: '🚿', text: 'Tắm nước ấm', detail: 'Giúp thư giãn, ngủ ngon hơn' },
             ].map((item, index) => (
               <li key={index} className="flex items-start gap-3 bg-purple-50 rounded-xl p-4">
                 <span className="text-xl flex-shrink-0">{item.icon}</span>
@@ -152,15 +151,15 @@ const ExamPage = () => {
         {/* During Exam */}
         <div>
           <h3 className="font-bold text-purple-700 mb-4 text-xl flex items-center gap-2">
-            <span className="text-2xl">✏️</span>
+            <span className="text-2xl">✍️</span>
             Trong khi thi:
           </h3>
           <ul className="space-y-3 text-gray-700">
             {[
-              { icon: '👓', text: 'Đọc kỹ đề', detail: 'Hiểu rõ yêu cầu trước khi làm' },
+              { icon: '👀', text: 'Đọc kỹ đề', detail: 'Hiểu rõ yêu cầu trước khi làm' },
               { icon: '🎯', text: 'Làm dễ trước', detail: 'Tạo tự tin, tiết kiệm thời gian' },
-              { icon: '🫁', text: 'Thở sâu nếu căng thẳng', detail: '3 lần hít thở sâu giúp bình tĩnh' },
-              { icon: '✔️', text: 'Kiểm tra lại', detail: 'Dành 10 phút cuối xem lại bài' },
+              { icon: '🧘', text: 'Thở sâu nếu căng thẳng', detail: '3 lần hít thở sâu giúp bình tĩnh' },
+              { icon: '✅', text: 'Kiểm tra lại', detail: 'Dành 10 phút cuối xem lại bài' },
             ].map((item, index) => (
               <li key={index} className="flex items-start gap-3 bg-indigo-50 rounded-xl p-4">
                 <span className="text-xl flex-shrink-0">{item.icon}</span>
@@ -189,7 +188,7 @@ const ExamPage = () => {
               color: 'from-blue-500 to-blue-600'
             },
             {
-              icon: '🤲',
+              icon: '💪',
               title: 'Thư giãn cơ',
               steps: ['Căng chặt tay 5s', 'Thả lỏng hoàn toàn', 'Làm với các nhóm cơ', 'Cảm nhận sự khác biệt'],
               color: 'from-green-500 to-green-600'
@@ -219,11 +218,11 @@ const ExamPage = () => {
         </div>
       </div>
 
-      {/* ===== RELATED STORIES SECTION ===== */}
-      <RelatedStories 
-        category="exam" 
-        categoryLabel="Thi cử & Áp lực thành tich"
-        categoryColor="orange"
+      {/* ✅ THÊM RELATED STORIES SECTION */}
+      <RelatedStories
+        category="exam"
+        categoryLabel="Thi cử & Áp lực"
+        categoryColor="purple"
       />
 
       {/* Important Note */}
@@ -235,8 +234,8 @@ const ExamPage = () => {
               Nhớ rằng: Điểm số không định nghĩa bạn!
             </p>
             <p className="text-sm text-gray-700 leading-relaxed">
-              Một kỳ thi không quyết định cả tương lai. Quan trọng là bạn đã cố gắng hết sức. 
-              Nếu kết quả không như ý, hãy học hỏi và cải thiện lần sau. Bạn vẫn có giá trị! ❤️
+              Một kỳ thi không quyết định cả tương lai. Quan trọng là bạn đã cố gắng hết sức.
+              Nếu kết quả không như ý, hãy học hỏi và cải thiện lần sau. Bạn vẫn có giá trị!
             </p>
           </div>
         </div>
@@ -247,9 +246,9 @@ const ExamPage = () => {
         <div className="text-5xl mb-4">🌟</div>
         <h3 className="text-2xl font-bold mb-3">Bạn làm được!</h3>
         <p className="text-purple-100 text-lg max-w-2xl mx-auto leading-relaxed">
-          Mỗi kỳ thi là một bài học, không phải đích đến. 
-          Hãy tin vào bản thân, chuẩn bị tốt và làm hết khả năng của mình. 
-          Dù kết quả thế nào, bạn vẫn là người tuyệt vời! 💪
+          Mỗi kỳ thi là một bài học, không phải đích đến.
+          Hãy tin vào bản thân, chuẩn bị tốt và làm hết khả năng của mình.
+          Dù kết quả thế nào, bạn vẫn là người tuyệt vời!
         </p>
       </div>
 

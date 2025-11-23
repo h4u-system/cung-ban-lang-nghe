@@ -283,7 +283,7 @@ const PrivacyDashboard = () => {
       <div className="text-center text-sm text-gray-500 pt-4 border-t border-gray-200">
         <p>Báo cáo được tạo lúc: {new Date(report.timestamp).toLocaleString('vi-VN')}</p>
         <p className="mt-1">
-          Mọi thắc mắc về quyền riêng tư, vui lòng liên hệ: <strong>privacy@banana.vn</strong>
+          Mọi thắc mắc về quyền riêng tư, vui lòng liên hệ: <strong>privacy@h4u.vn</strong>
         </p>
       </div>
     </div>

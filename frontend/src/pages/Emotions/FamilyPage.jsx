@@ -3,11 +3,11 @@
 // Unified Design
 // **********************************************************
 
+
 import React from 'react';
 import { Link } from 'react-router-dom';
 import ChatInterface from '../../components/Chat/ChatInterface';
 import RelatedStories from '../../components/Shared/RelatedStories';
-
 
 const FamilyPage = () => {
   return (
@@ -23,7 +23,7 @@ const FamilyPage = () => {
 
       {/* Header - Unified Design */}
       <div className="bg-gradient-to-br from-green-500 via-emerald-600 to-teal-700 rounded-3xl p-10 md:p-14 text-white text-center shadow-2xl">
-        <div className="text-7xl mb-5 animate-bounce">🏠</div>
+        <div className="text-7xl mb-5 animate-bounce">👨‍👩‍👧‍👦</div>
         <h1 className="text-4xl md:text-5xl font-bold mb-4 leading-tight">
           Quan hệ gia đình
         </h1>
@@ -35,12 +35,12 @@ const FamilyPage = () => {
       {/* Understanding Family Conflicts */}
       <div className="bg-white rounded-3xl shadow-xl p-8 md:p-10 border-2 border-gray-200">
         <h2 className="text-3xl font-bold mb-6 flex items-center gap-3 text-gray-800">
-          <span className="text-4xl">💭</span>
+          <span className="text-4xl">🤔</span>
           Tại sao hay xung đột gia đình?
         </h2>
         <div className="space-y-5 text-gray-700 text-base leading-relaxed">
           <p>
-            Tuổi teen là giai đoạn <span className="font-semibold text-gray-800">muốn tự do, độc lập</span> 
+            Tuổi teen là giai đoạn <span className="font-semibold text-gray-800">muốn tự do, độc lập</span>
             {' '}nhưng bố mẹ vẫn muốn bảo vệ. Đây là điều bình thường!
           </p>
           <div className="grid md:grid-cols-2 gap-6 mt-6">
@@ -68,9 +68,10 @@ const FamilyPage = () => {
                 </li>
               </ul>
             </div>
+
             <div className="bg-gradient-to-br from-orange-50 to-amber-50 rounded-2xl p-6 border-2 border-orange-200 shadow-md">
               <h3 className="font-bold text-orange-700 mb-4 flex items-center gap-2 text-xl">
-                <span className="text-3xl">👨‍👩‍👦</span>
+                <span className="text-3xl">👪</span>
                 Góc nhìn của bố mẹ
               </h3>
               <ul className="space-y-2 text-sm">
@@ -93,6 +94,7 @@ const FamilyPage = () => {
               </ul>
             </div>
           </div>
+
           <p className="text-sm italic bg-gray-50 p-4 rounded-xl border-2 border-gray-200">
             <span className="text-2xl mr-2">💡</span>
             <strong>Chìa khóa:</strong> Cả hai đều yêu thương nhau, chỉ là cách thể hiện khác nhau.
@@ -103,13 +105,13 @@ const FamilyPage = () => {
       {/* Common Situations */}
       <div className="bg-white rounded-3xl shadow-xl p-8 md:p-10 border-2 border-gray-200">
         <h2 className="text-3xl font-bold mb-6 flex items-center gap-3 text-gray-800">
-          <span className="text-4xl">🗣️</span>
+          <span className="text-4xl">📋</span>
           Tình huống thường gặp & Cách giải quyết
         </h2>
         <div className="space-y-4">
           {[
             {
-              icon: '😤',
+              icon: '📱',
               title: 'Bố mẹ cấm dùng điện thoại/game',
               solutions: [
                 'Hiểu lý do: Bố mẹ lo bạn nghiện, ảnh hưởng học tập',
@@ -120,7 +122,7 @@ const FamilyPage = () => {
               color: 'from-red-500 to-orange-500'
             },
             {
-              icon: '😔',
+              icon: '🏆',
               title: 'Bố mẹ so sánh với người khác',
               solutions: [
                 'Bình tĩnh nói chuyện: "Con biết bố mẹ muốn con tốt, nhưng con cảm thấy buồn khi bị so sánh"',
@@ -142,7 +144,7 @@ const FamilyPage = () => {
               color: 'from-purple-500 to-pink-500'
             },
             {
-              icon: '😭',
+              icon: '💔',
               title: 'Bố mẹ ly hôn/cãi nhau thường xuyên',
               solutions: [
                 'Không phải lỗi của con: Vấn đề của người lớn, con không có lỗi',
@@ -175,7 +177,7 @@ const FamilyPage = () => {
               </summary>
               <div className="px-6 pb-6 space-y-3">
                 <div className={`h-1 w-20 rounded-full bg-gradient-to-r ${situation.color} mb-4`}></div>
-                <p className="font-semibold text-gray-800 mb-3">💡 Cách giải quyết:</p>
+                <p className="font-semibold text-gray-800 mb-3">✅ Cách giải quyết:</p>
                 {situation.solutions.map((solution, solIndex) => (
                   <div key={solIndex} className="flex items-start gap-3 bg-white rounded-xl p-4 shadow-sm">
                     <span className="text-green-600 font-bold mt-0.5">✓</span>
@@ -221,6 +223,7 @@ const FamilyPage = () => {
               </li>
             </ul>
           </div>
+
           <div className="bg-white rounded-2xl p-6 shadow-lg border-2 border-red-200">
             <div className="text-4xl mb-3">❌</div>
             <h3 className="font-bold text-red-700 mb-4 text-xl">KHÔNG NÊN</h3>
@@ -253,15 +256,15 @@ const FamilyPage = () => {
       {/* Building Better Relationship */}
       <div className="bg-white rounded-3xl shadow-xl p-8 md:p-10 border-2 border-gray-200">
         <h2 className="text-3xl font-bold mb-6 flex items-center gap-3 text-gray-800">
-          <span className="text-4xl">❤️</span>
+          <span className="text-4xl">🌱</span>
           Cải thiện quan hệ gia đình
         </h2>
         <div className="space-y-4">
           {[
             { icon: '🍽️', title: 'Ăn cơm cùng nhau', desc: 'Dành 15-30 phút mỗi ngày để trò chuyện tự nhiên' },
-            { icon: '🤝', title: 'Giúp việc nhà', desc: 'Chủ động rửa bát, quét nhà - Bố mẹ sẽ thấy con trưởng thành' },
-            { icon: '🎁', title: 'Những điều nhỏ', desc: 'Gửi tin nhắn "Bố mẹ ơi về nhớ ăn cơm nhé", nói lời cảm ơn' },
-            { icon: '📱', title: 'Chia sẻ cuộc sống', desc: 'Kể chuyện ở trường, show ảnh bạn bè - Bố mẹ muốn hiểu con hơn' },
+            { icon: '🧹', title: 'Giúp việc nhà', desc: 'Chủ động rửa bát, quét nhà - Bố mẹ sẽ thấy con trưởng thành' },
+            { icon: '💌', title: 'Những điều nhỏ', desc: 'Gửi tin nhắn "Bố mẹ ơi về nhớ ăn cơm nhé", nói lời cảm ơn' },
+            { icon: '📸', title: 'Chia sẻ cuộc sống', desc: 'Kể chuyện ở trường, show ảnh bạn bè - Bố mẹ muốn hiểu con hơn' },
           ].map((item, index) => (
             <div key={index} className="flex items-start gap-4 bg-gradient-to-br from-green-50 to-emerald-50 rounded-xl p-5 border-2 border-green-200 hover:shadow-md transition-all">
               <span className="text-4xl flex-shrink-0">{item.icon}</span>
@@ -274,6 +277,13 @@ const FamilyPage = () => {
         </div>
       </div>
 
+      {/* ===== RELATED STORIES SECTION ===== */}
+      <RelatedStories
+        category="family"
+        categoryLabel="Gia đình"
+        categoryColor="green"
+      />
+
       {/* When to Seek Help */}
       <div className="bg-gradient-to-br from-red-50 to-orange-50 border-l-4 border-red-500 rounded-r-2xl p-6 shadow-lg">
         <div className="flex items-start gap-4">
@@ -284,23 +294,23 @@ const FamilyPage = () => {
             </p>
             <ul className="text-sm text-gray-700 space-y-2">
               <li className="flex items-start gap-2">
-                <span className="text-red-600 font-bold">❌</span>
+                <span className="text-red-600 font-bold">⚠️</span>
                 <span>Bị bạo lực gia đình (đánh đập, chửi bới thường xuyên)</span>
               </li>
               <li className="flex items-start gap-2">
-                <span className="text-red-600 font-bold">❌</span>
+                <span className="text-red-600 font-bold">⚠️</span>
                 <span>Bị bỏ bê, không được chăm sóc</span>
               </li>
               <li className="flex items-start gap-2">
-                <span className="text-red-600 font-bold">❌</span>
+                <span className="text-red-600 font-bold">⚠️</span>
                 <span>Bố mẹ nghiện rượu/ma túy</span>
               </li>
               <li className="flex items-start gap-2">
-                <span className="text-red-600 font-bold">❌</span>
+                <span className="text-red-600 font-bold">⚠️</span>
                 <span>Bị xâm hại tình dục</span>
               </li>
               <li className="flex items-start gap-2">
-                <span className="text-red-600 font-bold">❌</span>
+                <span className="text-red-600 font-bold">⚠️</span>
                 <span>Bị ép làm điều trái pháp luật</span>
               </li>
             </ul>
@@ -318,22 +328,15 @@ const FamilyPage = () => {
         <p className="text-green-100 text-lg max-w-2xl mx-auto leading-relaxed">
           Họ không hoàn hảo, nhưng họ yêu thương con. Mâu thuẫn là bình thường, 
           quan trọng là cách giải quyết. Hãy kiên nhẫn và cho nhau cơ hội để hiểu hơn. 
-          Cùng nhau cải thiện, gia đình sẽ hạnh phúc hơn! 🏠❤️
+          Cùng nhau cải thiện, gia đình sẽ hạnh phúc hơn!
         </p>
       </div>
-
-      {/* ===== RELATED STORIES SECTION ===== */}
-      <RelatedStories 
-        category="family" 
-        categoryLabel="Gia đình"
-        categoryColor="orange"
-      />
 
       {/* Chat AI Section */}
       <div className="bg-white rounded-3xl shadow-2xl border-2 border-gray-200 overflow-hidden">
         <div className="bg-gradient-to-r from-green-500 to-emerald-600 p-6 text-white">
           <h2 className="text-2xl font-bold flex items-center gap-3">
-            <span className="text-3xl">💬</span>
+            <span className="text-3xl">🤖</span>
             Chat với Banana về gia đình
           </h2>
           <p className="text-green-100 mt-2">Chia sẻ về quan hệ gia đình, Banana sẽ lắng nghe và tư vấn</p>

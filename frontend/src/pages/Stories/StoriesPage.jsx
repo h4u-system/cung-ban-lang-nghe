@@ -68,7 +68,7 @@ const StoriesPage = () => {
     <div className="space-y-6">
       {/* Header */}
       <div className="bg-gradient-to-r from-primary-500 to-primary-600 rounded-lg p-6 text-white">
-        <h1 className="text-3xl font-bold mb-2">📝 Tâm sự học sinh</h1>
+        <h1 className="text-3xl font-bold mb-2">📝 Tâm sự của Bạn</h1>
         <p className="opacity-90">
           Chia sẻ câu chuyện của bạn, truyền cảm hứng cho người khác
         </p>
@@ -101,7 +101,7 @@ const StoriesPage = () => {
                 required
                 value={formData.title}
                 onChange={(e) => setFormData({...formData, title: e.target.value})}
-                placeholder="VD: Vượt qua nỗi sợ hãi của mình"
+                placeholder="Ví dụ: Vượt qua nỗi sợ hãi của mình"
                 className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
               />
             </div>
@@ -134,7 +134,7 @@ const StoriesPage = () => {
                 className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent resize-none"
               />
               <p className="text-sm text-gray-500 mt-1">
-                {formData.content.length} / 2000 ký tự
+                {formData.content.length} / 5000 ký tự
               </p>
             </div>
 
@@ -199,7 +199,7 @@ const StoriesPage = () => {
                 </div>
                 <p className="text-gray-600 mb-4">{story.excerpt}</p>
                 <div className="flex items-center justify-between">
-                  {/* ✅ FIX: Use Link with proper to prop */}
+                  {/* Use Link with proper to prop */}
                   <Link
                     to={`/tam-su/${story.id}`}
                     className="text-primary-500 hover:text-primary-600 font-semibold text-sm hover:underline transition"
