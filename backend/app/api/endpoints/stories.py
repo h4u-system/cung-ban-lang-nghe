@@ -3,7 +3,7 @@
 # File: backend/app/api/endpoints/stories.py
 # ============================================
 
-from fastapi import APIRouter, Depends, HTTPException
+from fastapi import APIRouter, Depends, HTTPException, status, Query
 from sqlalchemy.orm import Session
 from sqlalchemy import desc
 from pydantic import BaseModel
@@ -82,21 +82,27 @@ async def test_encryption():
 
 @router.post("/stories")
 async def submit_story(
-    story_data: StoryCreate,
+    story_data: dict,
     db: Session = Depends(get_db)
 ):
     """Submit a new anonymous story"""
     
     # Validate category
     valid_categories = ['stress', 'lonely', 'love', 'exam', 'family', 'other']
-    if story_data.category not in valid_categories:
+    if story_data.get('category') not in valid_categories:
         raise HTTPException(status_code=400, detail="Invalid category")
     
-    logger.info(f"🔐 Encrypting story with key length: {len(ENCRYPTION_KEY)}")
-    logger.info(f"📝 Story title preview: {story_data.title[:20]}...")
+    if not story_data.get('title') or len(story_data['title']) > 200:
+        raise HTTPException(status_code=400, detail="Tiêu đề phải từ 10-200 ký tự")
+    
+    if not story_data.get('content') or len(story_data['content']) > 5000:
+        raise HTTPException(status_code=400, detail="Nội dung phải từ 100-5000 ký tự")
+    
+    logger.info(f"Encrypting story with key length: {len(ENCRYPTION_KEY)}")
+    logger.info(f"Story title preview: {story_data['title'][:20]}...")
     
     try:
-        # ✅ FIX: Generate 1 shared IV for both title and content
+        # Generate 1 shared IV for both title and content
         shared_iv_bytes = os.urandom(16)
         shared_iv_b64 = base64.b64encode(shared_iv_bytes).decode('utf-8')
         
@@ -110,8 +116,8 @@ async def submit_story(
         story = Story(
             title_encrypted=title_encrypted,
             content_encrypted=content_encrypted,
-            encryption_iv=shared_iv_b64,  # ✅ Same IV for both
-            category=story_data.category,
+            encryption_iv=shared_iv_b64,  # Same IV for both
+            category=story_data['category'],
             is_approved=False,
             is_published=False
         )
@@ -120,7 +126,7 @@ async def submit_story(
         db.commit()
         db.refresh(story)
         
-        logger.info(f"✅ Story saved: {story.id}")
+        logger.info(f"Story saved: {story.id}")
         
         return {
             "success": True,
@@ -129,15 +135,15 @@ async def submit_story(
         }
     
     except Exception as e:
-        logger.error(f"❌ Failed: {e}")
+        logger.error(f"Failed: {e}")
         raise HTTPException(status_code=500, detail=str(e))
 
 
 @router.get("/stories")
 async def get_published_stories(
-    category: Optional[str] = None,
-    limit: int = 20,
-    offset: int = 0,
+    category: Optional[str] = Query(None, regex="^(stress|lonely|love|exam|family|other)$"),
+    limit: int = Query(20, ge=1, le=100),
+    offset: int = Query(0, ge=0),
     db: Session = Depends(get_db)
 ):
     """Get published stories"""

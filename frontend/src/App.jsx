@@ -14,6 +14,7 @@ import LonelyPage from './pages/Emotions/LonelyPage';
 import LovePage from './pages/Emotions/LovePage';
 import ExamPage from './pages/Emotions/ExamPage';
 import FamilyPage from './pages/Emotions/FamilyPage';
+import OtherEmotionPage from './pages/Emotions/OtherEmotionPage';
 
 // Other Pages
 import StoriesPage from './pages/Stories/StoriesPage';
@@ -66,6 +67,7 @@ function App() {
           <Route path="cam-xuc/tinh-yeu-hoc-tro" element={<LovePage />} />
           <Route path="cam-xuc/thi-cu-ap-luc" element={<ExamPage />} />
           <Route path="cam-xuc/gia-dinh" element={<FamilyPage />} />
+          <Route path="cam-xuc/khac" element={<OtherEmotionPage />} />
           
           {/* Stories Routes */}
           <Route path="tam-su" element={<StoriesPage />} />

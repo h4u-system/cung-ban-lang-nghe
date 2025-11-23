@@ -33,7 +33,7 @@ const emotionTopics = [
   },
   {
     id: 'exam',
-    title: 'Thi cử & Áp lực',
+    title: 'Thi cử & Áp lực điểm số',
     icon: '📚',
     description: 'Chuẩn bị tinh thần cho kỳ thi',
     color: 'from-purple-400 to-purple-500',
@@ -46,6 +46,14 @@ const emotionTopics = [
     description: 'Quan hệ với bố mẹ, anh chị em',
     color: 'from-green-400 to-green-500',
     path: '/cam-xuc/gia-dinh'
+  },
+  {
+    id: 'other',
+    title: 'Khác',
+    icon: '💭',
+    description: 'Các vấn đề tâm lý khác',
+    color: 'from-gray-400 to-gray-500',
+    path: '/cam-xuc/khac'
   }
 ];
 

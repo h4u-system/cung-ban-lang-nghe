@@ -1,8 +1,12 @@
+// *****************************************************
 // frontend/src/pages/Stories/StoriesPage.jsx
+// *****************************************************
 
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';  // ✅ ADDED
+import { Link } from 'react-router-dom'; 
 import publicApi from '../../services/publicApi';
+
+const MAX_CONTENT_LENGTH = 5000;
 
 const StoriesPage = () => {
   const [showForm, setShowForm] = useState(false);

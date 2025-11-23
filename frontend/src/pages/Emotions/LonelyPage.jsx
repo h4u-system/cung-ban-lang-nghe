@@ -6,6 +6,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import ChatInterface from '../../components/Chat/ChatInterface';
+import RelatedStories from '../../components/Shared/RelatedStories';
 
 const LonelyPage = () => {
   return (
@@ -116,6 +117,13 @@ const LonelyPage = () => {
           ))}
         </div>
       </div>
+
+      {/* ===== RELATED STORIES SECTION ===== */}
+      <RelatedStories 
+        category="lonely" 
+        categoryLabel="Cô đơn"
+        categoryColor="blue"
+      />
 
       {/* Emergency Box */}
       <div className="bg-gradient-to-br from-yellow-50 to-amber-50 border-l-4 border-yellow-400 rounded-r-2xl p-6 shadow-lg">

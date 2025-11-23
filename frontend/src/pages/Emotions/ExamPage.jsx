@@ -6,6 +6,8 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import ChatInterface from '../../components/Chat/ChatInterface';
+import RelatedStories from '../../components/Shared/RelatedStories';
+
 
 const ExamPage = () => {
   return (
@@ -216,6 +218,13 @@ const ExamPage = () => {
           ))}
         </div>
       </div>
+
+      {/* ===== RELATED STORIES SECTION ===== */}
+      <RelatedStories 
+        category="exam" 
+        categoryLabel="Thi cử & Áp lực thành tich"
+        categoryColor="orange"
+      />
 
       {/* Important Note */}
       <div className="bg-gradient-to-br from-yellow-50 to-amber-50 border-l-4 border-yellow-400 rounded-r-2xl p-6 shadow-lg">

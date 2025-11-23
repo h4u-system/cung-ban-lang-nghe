@@ -6,6 +6,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import ChatInterface from '../../components/Chat/ChatInterface';
+import RelatedStories from '../../components/Shared/RelatedStories';
 
 const StressPage = () => {
   return (
@@ -136,6 +137,13 @@ const StressPage = () => {
           ))}
         </div>
       </div>
+
+      {/* ===== RELATED STORIES SECTION ===== */}
+      <RelatedStories 
+        category="stress" 
+        categoryLabel="Stress & Áp lực"
+        categoryColor="orange"
+      />
 
       {/* Warning Box */}
       <div className="bg-gradient-to-br from-yellow-50 to-amber-50 border-l-4 border-yellow-400 rounded-r-2xl p-6 shadow-lg">

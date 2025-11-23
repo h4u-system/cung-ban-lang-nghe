@@ -6,6 +6,8 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import ChatInterface from '../../components/Chat/ChatInterface';
+import RelatedStories from '../../components/Shared/RelatedStories';
+
 
 const FamilyPage = () => {
   return (
@@ -319,6 +321,13 @@ const FamilyPage = () => {
           Cùng nhau cải thiện, gia đình sẽ hạnh phúc hơn! 🏠❤️
         </p>
       </div>
+
+      {/* ===== RELATED STORIES SECTION ===== */}
+      <RelatedStories 
+        category="family" 
+        categoryLabel="Gia đình"
+        categoryColor="orange"
+      />
 
       {/* Chat AI Section */}
       <div className="bg-white rounded-3xl shadow-2xl border-2 border-gray-200 overflow-hidden">

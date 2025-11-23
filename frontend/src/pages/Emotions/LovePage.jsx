@@ -6,6 +6,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import ChatInterface from '../../components/Chat/ChatInterface';
+import RelatedStories from '../../components/Shared/RelatedStories';
 
 const LovePage = () => {
   return (
@@ -125,6 +126,13 @@ const LovePage = () => {
           ))}
         </div>
       </div>
+
+      {/* ===== RELATED STORIES SECTION ===== */}
+      <RelatedStories 
+        category="love" 
+        categoryLabel="Tình yêu học trò"
+        categoryColor="pink"
+      />
 
       {/* Red Flags */}
       <div className="bg-gradient-to-br from-red-50 to-orange-50 border-l-4 border-red-500 rounded-r-2xl p-6 shadow-lg">
